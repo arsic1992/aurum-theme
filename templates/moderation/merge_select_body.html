@@ -1,0 +1,18 @@
+<div class="fx fx-meta">
+	<!-- BEGIN switch_user_logged_in -->
+	<p class="right rightside fx-meta__visit">{LAST_VISIT_DATE}</p>
+	<!-- END switch_user_logged_in -->
+	<p class="fx-meta__time">{CURRENT_TIME}</p>
+</div>
+
+<form action="{S_ACTION}" method="post" name="post" class="fx fx-mod fx-mod--merge">
+	<p class="pagination fx-mod__bar">
+		<span class="fx-mod__pick">{S_LIST_FORUMS}&nbsp;<input class="button2 fx-mbtn" type="submit" name="go" value="{L_GO}" /></span><br />
+		<span class="fx-mod__pages">{PAGINATION}</span>
+	</p>
+	<div class="fx-mod__box">{MERGE_BOX}</div>
+	<fieldset class="submit-buttons fx fx-groups fx-fbar">
+		<input class="button2 fx-mbtn fx-mbtn--ok" type="submit" name="go" value="{L_SELECT}" />
+		{S_HIDDEN_FIELDS}
+	</fieldset>
+</form>

@@ -1,0 +1,115 @@
+<ul class="linklist fx fx-toolbar">
+	<!-- BEGIN switch_user_logged_in -->
+	<li class="fx-toolbar__item"><a href="{U_SEARCH_NEW}">{L_SEARCH_NEW}</a></li>
+	<li class="fx-toolbar__item"><a href="{U_SEARCH_SELF}">{L_SEARCH_SELF}</a></li>
+	<!-- END switch_user_logged_in -->
+	<li class="fx-toolbar__item"><a href="{U_SEARCH_UNANSWERED}">{L_SEARCH_UNANSWERED}</a></li>
+	<!-- BEGIN switch_user_logged_in -->
+	<li class="rightside fx-toolbar__item fx-toolbar__item--end"><a href="{U_MARK_READ}" accesskey="m">{L_MARK_FORUMS_READ}</a></li>
+	<!-- END switch_user_logged_in -->
+</ul>
+
+<!-- BEGIN catrow -->
+	<!-- BEGIN tablehead -->
+		<div class="forabg fx fx-category">
+			<div class="inner fx-category__inner"><span class="corners-top"><span></span></span>
+			<ul class="topiclist fx-category__headlist">
+				<li class="header fx-category__head">
+					<dl class="icon fx-category__headrow">
+						<dd class="dterm fx-category__title"><div class="table-title">{catrow.tablehead.L_FORUM}</div></dd>
+						<dd class="topics fx-category__label">{L_TOPICS}</dd>
+						<dd class="posts fx-category__label">{L_POSTS}</dd>
+						<dd class="lastpost fx-category__label fx-category__label--last"><span>{L_LASTPOST}</span></dd>
+					</dl>
+				</li>
+			</ul>
+			<ul class="topiclist forums fx-category__list">
+	<!-- END tablehead -->
+
+	<!-- BEGIN forumrow -->
+				<li class="row fx-forum fx-forum--lvl{catrow.forumrow.LEVEL}">
+					<dl class="icon fx-forum__grid">
+						<dd class="topics fx-stat">{catrow.forumrow.TOPICS} <dfn>{L_TOPICS}</dfn></dd>
+						<dd class="posts fx-stat">{catrow.forumrow.POSTS} <dfn>{L_POSTS}</dfn></dd>
+						<dd class="dterm fx-forum__main">
+							<img class="fx-forum__icon" src="{catrow.forumrow.FORUM_FOLDER_IMG}" alt="" />
+							<div class="fx-forum__text">
+								<h{catrow.forumrow.LEVEL} class="hierarchy fx-forum__name">
+								<a href="{catrow.forumrow.U_VIEWFORUM}" class="forumtitle">{catrow.forumrow.FORUM_NAME}</a>
+								</h{catrow.forumrow.LEVEL}>
+								<div class="fx-forum__desc">
+									{catrow.forumrow.FORUM_DESC}
+								</div>
+
+								<div class="fx-forum__meta">
+									<!-- BEGIN switch_moderators_links -->
+										{catrow.forumrow.switch_moderators_links.L_MODERATOR}{catrow.forumrow.switch_moderators_links.MODERATORS}
+									<!-- END switch_moderators_links -->
+									{catrow.forumrow.L_LINKS}{catrow.forumrow.LINKS}
+									<strong>{forumrow.L_SUBFORUM_STR}</strong> {forumrow.SUBFORUMS}
+								</div>
+							</div>
+						</dd>
+						<dd class="lastpost fx-last">
+							<!-- BEGIN ads -->
+							<span class="AD_LastPA">
+                                <span class="lastpost-avatar fx-last__avatar"><img src="{catrow.forumrow.ads.IMG}" alt="{catrow.forumrow.ads.TITLE}" loading="lazy" /></span>
+                                <span class="AD_LastInfos">
+                                    <b><a href="{catrow.forumrow.ads.LINK}">{catrow.forumrow.ads.TITLE}</a></b><br />
+                                    {catrow.forumrow.ads.DATE}<br />
+                                    {catrow.forumrow.ads.LOCATION}
+                                </span>
+							</span>
+                            <!-- END ads -->
+
+                            <!-- BEGIN avatar -->
+                            <span class="lastpost-avatar fx-last__avatar">{catrow.forumrow.avatar.LAST_POST_AVATAR}</span>
+                            <!-- END avatar -->
+
+							<span class="fx-last__info">
+							<!-- BEGIN switch_topic_title -->
+							<a class="fx-last__topic" href="{catrow.forumrow.U_LATEST_TOPIC}" title="{catrow.forumrow.LATEST_TOPIC_TITLE}">{catrow.forumrow.LATEST_TOPIC_NAME}</a><br />
+							<!-- END switch_topic_title -->
+							{catrow.forumrow.USER_LAST_POST}
+							</span>
+						</dd>
+					</dl>
+				</li>
+	<!-- END forumrow -->
+
+	<!-- BEGIN tablefoot -->
+				</ul>
+
+			<span class="corners-bottom"><span></span></span></div>
+		</div>
+	<!-- END tablefoot -->
+<!-- END catrow -->
+
+<!-- BEGIN switch_forum_images -->
+<div class="forabg fx fx-category fx-category--gallery">
+	<div class="inner fx-category__inner"><span class="corners-top"><span></span></span>
+		<ul class="topiclist fx-category__headlist">
+			<li class="header fx-category__head">
+				<dl class="icon fx-category__headrow">
+					<dd class="dterm fx-category__title"><div class="table-title"><h2>{switch_forum_images.TITLE}</h2></div></dd>
+				</dl>
+			</li>
+		</ul>
+		<div class="container-imgs-list fx-gallery" id="imageList">
+			{switch_forum_images.SCRIPTS}
+		</div>
+	</div>
+	<span class="corners-bottom"><span></span></span>
+</div>
+<!-- END switch_forum_images -->
+
+<!-- BEGIN switch_on_index -->
+<ul class="linklist fx fx-toolbar fx-toolbar--foot">
+	<li class="fx-toolbar__item"><a href="{U_TODAY_ACTIVE}">{L_TODAY_ACTIVE}</a></li>
+	<li class="fx-toolbar__item"><a href="{U_TODAY_POSTERS}">{L_TODAY_POSTERS}</a></li>
+	<li class="last fx-toolbar__item"><a href="{U_OVERALL_POSTERS}">{L_OVERALL_POSTERS}</a></li>
+	<!-- BEGIN switch_delete_cookies -->
+	<li class="rightside fx-toolbar__item fx-toolbar__item--end"><a href="{switch_on_index.switch_delete_cookies.U_DELETE_COOKIES}" rel="nofollow">{switch_on_index.switch_delete_cookies.L_DELETE_COOKIES}</a></li>
+	<!-- END switch_delete_cookies -->
+</ul>
+<!-- END switch_on_index -->

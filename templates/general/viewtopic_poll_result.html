@@ -1,0 +1,42 @@
+<div class="panel fx fx-vote fx-vote--result">
+	<div class="inner fx-vote__inner"><span class="corners-top"><span></span></span>
+	<div class="content fx-vote__content">
+		<div class="fx-vote__head">
+		<h2 class="left-box fx-vote__q">{POLL_QUESTION}</h2><p class="right-box fx-vote__close">{CLOSE_POLL}</p>
+		</div>
+		<div class="clear"></div>
+		<fieldset class="polls fx-vote__list">
+		<!-- BEGIN poll_option -->
+		<dl class="fx-vote__opt fx-vote__opt--res">
+			<dt class="fx-vote__cap"><label>{poll_option.POLL_OPTION_CAPTION}</label></dt>
+
+			<dd class="fx-vote__bar"><span class="fx-vote__track"><span class="fx-vote__fill" style="width:{poll_option.POLL_OPTION_PERCENT}"></span></span><span class="fx-vote__orig"><img src="{VOTE_LCAP_IMG}" height="12" alt="" loading="lazy" /><img src="{poll_option.POLL_OPTION_IMG}" width="{poll_option.POLL_OPTION_IMG_WIDTH}" height="12" alt="{poll_option.POLL_OPTION_PERCENT}" loading="lazy" /><img src="{VOTE_RCAP_IMG}" height="12" alt="" loading="lazy" /></span><span class="fx-vote__pct">{poll_option.POLL_OPTION_PERCENT}</span></dd>
+			<dd class="fx-vote__count"><span class="fx-vote__br">[</span> {poll_option.POLL_OPTION_RESULT} <span class="fx-vote__br">]</span></dd>
+			<!-- BEGIN option_voters --><dd class="option_voters_list fx-vote__voters">{poll_option.option_voters.POLL_OPTION_VOTERS}</dd><!-- END option_voters -->
+		</dl>
+		<!-- END poll_option -->
+		<dl class="fx-vote__total">
+			<dt class="fx-vote__spacer">&nbsp;</dt>
+			<dd class="fx-vote__sum"><strong>{L_TOTAL_VOTES} : {TOTAL_VOTES}</strong></dd>
+			<!-- BEGIN cancel_vote -->
+			<dd class="fx-vote__link"><b><a href="{U_CANCEL_VOTE}">{L_CANCEL_VOTE}</a></b></dd>
+			<!-- END cancel_vote -->
+			<!-- BEGIN switch_back_to_vote -->
+			<dd class="fx-vote__link"><b><a href="{switch_back_to_vote.U_BACK_TO_VOTE}">{switch_back_to_vote.L_BACK}</a></b></dd>
+			<!-- END switch_back_to_vote -->
+		</dl>
+		<dl class="fx-vote__meta fx-vote__meta--voters">
+			<dt class="fx-vote__spacer">&nbsp;</dt>
+			<dd class="fx-vote__allvoters">{ALL_POLL_VOTERS_LIST}</dd>
+		</dl>
+		<dl class="fx-vote__meta">
+			<dt class="fx-vote__spacer">&nbsp;</dt>
+			<dd class="fx-vote__expire">{L_VOTE_EXPIRE}</dd>
+		</dl>
+		<!-- BEGIN switch_hide_result -->
+		<div id="hide_result_msg" class="fx-vote__hidden">{L_POLL_HIDE_RESULT}</div>
+		<!-- END switch_hide_result -->
+		</fieldset>
+		</div>
+	<span class="corners-bottom"><span></span></span></div>
+</div>

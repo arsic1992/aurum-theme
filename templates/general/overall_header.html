@@ -1,0 +1,723 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="{S_CONTENT_DIRECTION}" id="min-width" lang="{L_LANG_HTML}"
+	  xml:lang="{L_LANG_HTML}" {NAMESPACE_FB_LIKE} {NAMESPACE_FB} {NAMESPACE_BBCODE}>
+<head>
+	<title>{SITENAME_TITLE}{PAGE_TITLE}</title>
+	<meta http-equiv="content-type" content="text/html; charset={S_CONTENT_ENCODING}"/>
+	<meta http-equiv="content-script-type" content="text/javascript"/>
+	<meta http-equiv="content-style-type" content="text/css"/>
+	<!-- BEGIN switch_compat_meta -->
+	<meta http-equiv="X-UA-Compatible" content="IE={switch_compat_meta.VERSION}"/>
+	<!-- END switch_compat_meta -->
+	<!-- BEGIN switch_canonical_url -->
+	<link rel="canonical" href="{switch_canonical_url.CANONICAL_URL}"/>
+	<!-- END switch_canonical_url -->
+	{META_FAVICO}
+	{META}
+	{META_FB_LIKE}
+	<meta name="title" content="{SITENAME_TITLE}{PAGE_TITLE}"/>
+	{T_HEAD_STYLESHEET}
+	{CSS}
+  	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/arsic1992/forum-css@2e0df4d/style.css">
+	<script type="text/javascript">
+		/* dark mode: runs before the page paints so there is no light flash. Saved choice first, otherwise the system setting */
+		(function () {
+			var mode = 'light';
+			try {
+				var saved = localStorage.getItem('fx-theme');
+				if (saved) { mode = saved === 'dark' ? 'dark' : 'light'; }
+				else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { mode = 'dark'; }
+			} catch (e) { }
+			document.documentElement.setAttribute('data-fx-theme', mode);
+		})();
+	</script>
+	<script type="text/javascript">//<![CDATA[
+		/* FX EDITOR FRAMES - start (delete this whole block to revert)
+		   The editor's writing area and the smiley list are separate pages inside <iframe>s, so the stylesheet cannot reach them.
+		   This paints them to match the current light / dark mode, and repaints when the switch is pressed. */
+		(function () {
+			var root = document.documentElement;
+			var CSS = {
+				light: 'html{color-scheme:light}body{background:#fffdf9!important;color:#1e1c19!important;font:14px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}'
+					+ 'a{color:#8a6a2c}blockquote{margin:.6em 0;padding:6px 12px;background:#f6f0e2;border:0;border-left:3px solid #b08433;border-radius:0 8px 8px 0}'
+					+ '#sce_smilies_body{padding:6px 4px!important}#smilies_header{margin-bottom:10px!important}'
+					+ '#smilies_categ select{color:#1e1c19;background:#fffdf9;border:1px solid #d9cdb2;border-radius:999px;padding:5px 12px;font:inherit;font-size:12px}'
+					+ '.smiley-element{display:flex!important;flex-wrap:wrap;justify-content:center;gap:2px;font-size:0;padding:0!important}'
+					+ '.smiley-element img{box-sizing:content-box;padding:4px;border-radius:8px;cursor:pointer;transition:background-color .15s,transform .15s}'
+					+ '.smiley-element img:hover{background:rgba(176,132,51,.2);transform:scale(1.18)}',
+				dark: 'html{color-scheme:dark}body{background:#2b261e!important;color:#ede7d9!important;font:14px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}'
+					+ 'a{color:#d6ac5b}blockquote{margin:.6em 0;padding:6px 12px;background:#1f1b14;border:0;border-left:3px solid #b08433;border-radius:0 8px 8px 0;color:#cfc7b6}'
+					+ '#sce_smilies_body{padding:6px 4px!important;background:#2b261e!important}#smilies_header{margin-bottom:10px!important}'
+					+ '#smilies_categ select{color:#ede7d9;background:#221e17;border:1px solid #4a4132;border-radius:999px;padding:5px 12px;font:inherit;font-size:12px}'
+					+ '.smiley-element{display:flex!important;flex-wrap:wrap;justify-content:center;gap:2px;font-size:0;padding:0!important}'
+					+ '.smiley-element img{box-sizing:content-box;padding:4px;border-radius:8px;cursor:pointer;transition:background-color .15s,transform .15s}'
+					+ '.smiley-element img:hover{background:rgba(176,132,51,.3);transform:scale(1.18)}'
+			};
+			function mode() { return root.getAttribute('data-fx-theme') === 'dark' ? 'dark' : 'light'; }
+			function paint(doc) {
+				var m = mode(), st = doc.getElementById('fx-frame-theme');
+				if (!st) { st = doc.createElement('style'); st.id = 'fx-frame-theme'; (doc.head || doc.documentElement).appendChild(st); }
+				if (st.getAttribute('data-mode') !== m) { st.textContent = CSS[m]; st.setAttribute('data-mode', m); }
+			}
+			function scan() {
+				var list = document.getElementsByTagName('iframe');
+				for (var i = 0; i < list.length; i++) {
+					try {
+						var d = list[i].contentDocument;
+						if (!d || !d.body) { continue; }
+						if (d.getElementById('sce_smilies_body') || (list[i].parentNode && /sceditor-container/.test(list[i].parentNode.className))) { paint(d); }
+					} catch (e) { /* frame from another site: leave it alone */ }
+				}
+			}
+			scan();
+			setInterval(scan, 700);
+			if (window.MutationObserver) { new MutationObserver(scan).observe(root, { attributes: true, attributeFilter: ['data-fx-theme'] }); }
+		})();
+		/* FX EDITOR FRAMES - end */
+	//]]>
+	</script>
+	<script type="text/javascript">//<![CDATA[
+		/* FX CODE COPY - start (delete this whole block to revert)
+		   Adds a "copy" button to every [code] box in posts; a click copies the whole box content. */
+		(function () {
+			function copyText(text, done) {
+				function fallback() {
+					var ta = document.createElement('textarea');
+					ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+					document.body.appendChild(ta); ta.select();
+					var ok = false; try { ok = document.execCommand('copy'); } catch (e) { }
+					document.body.removeChild(ta); done(ok);
+				}
+				if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(text).then(function () { done(true); }, fallback); }
+				else { fallback(); }
+			}
+			function decorate() {
+				var boxes = document.querySelectorAll('dl.codebox:not(.fx-code)');
+				for (var i = 0; i < boxes.length; i++) {
+					var box = boxes[i], head = box.querySelector('dt'), code = box.querySelector('code');
+					if (!head || !code) { continue; }
+					box.className += ' fx-code';
+					var b = document.createElement('button');
+					b.type = 'button'; b.className = 'fx-code__copy'; b.setAttribute('aria-label', 'Copy code');
+					head.appendChild(b);
+				}
+			}
+			document.addEventListener('click', function (ev) {
+				var b = ev.target.closest ? ev.target.closest('.fx-code__copy') : null;
+				if (!b) { return; }
+				ev.preventDefault();
+				var code = b.parentNode.parentNode.querySelector('code');
+				if (!code) { return; }
+				copyText(code.innerText || code.textContent, function (ok) {
+					if (!ok) { return; }
+					b.className += ' is-copied';
+					setTimeout(function () { b.className = b.className.replace(/\s*is-copied/g, ''); }, 1800);
+				});
+			});
+			if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', decorate); } else { decorate(); }
+			if (window.MutationObserver) {
+				var t = null;
+				new MutationObserver(function () { clearTimeout(t); t = setTimeout(decorate, 150); }).observe(document.documentElement, { childList: true, subtree: true });
+			}
+		})();
+		/* FX CODE COPY - end */
+	//]]>
+	</script>
+	<link rel="search" type="application/opensearchdescription+xml" href="/improvedsearch.xml" title="{SITENAME}"/>
+	<link rel="search" type="application/opensearchdescription+xml" href="{URL_BOARD_DIRECTORY}/search/improvedsearch.xml" title="{SEARCH_FORUMS}"/>
+	<script src="{JQUERY_PATH}" type="text/javascript"></script>
+	<!-- BEGIN switch_recent_jquery -->
+	<script src="{JS_DIR}jquery1.9/jquery-migrate-1.4.1.js" type="text/javascript"></script>
+	<script src="{JQUERY_DIR}browser/v1.0/jquery.browser.min.js" type="text/javascript"></script>
+	<script src="{JQUERY_DIR}support/jquery.support.js" type="text/javascript"></script>
+	<!-- END switch_recent_jquery -->
+	<script src="{JS_DIR}{L_LANG}.js" type="text/javascript"></script>
+	{RICH_SNIPPET_GOOGLE}
+
+	<!-- BEGIN switch_fb_login -->
+	<script src="https://connect.facebook.net/{switch_fb_login.FB_LOCAL}/all.js" type="text/javascript"></script>
+	<script src="{switch_fb_login.JS_FB_LOGIN}" type="text/javascript"></script>
+	<!-- END switch_fb_login -->
+
+	<!-- BEGIN switch_ticker -->
+	<link type="text/css" rel="stylesheet" href="{JQUERY_DIR}ticker/ticker.css"/>
+	<script src="{JQUERY_DIR}ticker/ticker.js" type="text/javascript"></script>
+	<!-- END switch_ticker -->
+
+	<!-- BEGIN switch_ticker_new -->
+	<script src="{JQUERY_DIR}jcarousel/jquery.jcarousel.js" type="text/javascript"></script>
+	<script type="text/javascript">//<![CDATA[
+		/* Definir le sens de direction en fonction du panneau admin */
+		var tickerDirParam = "{switch_ticker.DIRECTION}";
+		var slid_vert = false;
+		var auto_dir = 'next';
+		var h_perso = parseInt({switch_ticker.HEIGHT});
+
+		switch (tickerDirParam) {
+			case 'top' :
+				slid_vert = true;
+				break;
+
+			case 'left':
+				break;
+
+			case 'bottom':
+				slid_vert = true;
+				auto_dir = 'prev';
+				break;
+
+			case 'right':
+				auto_dir = 'prev';
+				break;
+
+			default:
+				slid_vert = true;
+		}
+
+		$(document).ready(function () {
+
+			$('#fa_ticker_content').css('display', 'block');
+
+			var width_max = $('ul#fa_ticker_content').width();
+			var width_item = Math.floor(width_max / {switch_ticker.SIZE});
+
+			if (width_max > 0) {
+				$('ul#fa_ticker_content li').css('float', 'left').css('list-style', 'none').width(width_item).find('img').each(function () {
+					if ($(this).width() > width_item) {
+						var ratio = $(this).width() / width_item;
+						var new_height = Math.round($(this).height() / ratio);
+						$(this).height(new_height).width(width_item);
+					}
+				});
+
+				if (slid_vert) {
+					var height_max = h_perso;
+
+					$('ul#fa_ticker_content li').each(function () {
+						if ($(this).height() > height_max) {
+							height_max = $(this).height();
+						}
+					});
+
+					$('ul#fa_ticker_content').width(width_item).height(height_max).css('marginLeft', 'auto').css('marginRight', 'auto');
+					$('ul#fa_ticker_content li').height(height_max);
+				}
+
+
+				$('#fa_ticker_content').jcarousel({
+					vertical: slid_vert,
+					wrap: 'circular',
+					auto: {switch_ticker.STOP_TIME},
+					auto_direction: auto_dir,
+					scroll: 1,
+					size: {switch_ticker.SIZE},
+					height_max: height_max,
+					animation: {switch_ticker.SPEED}
+				});
+			} else {
+				$('ul#fa_ticker_content li:not(:first)').css('display', 'none');
+				$('ul#fa_ticker_content li:first').css('list-style', 'none').css('text-align', 'center');
+			}
+		});
+		//]]>
+	</script>
+	<!-- END switch_ticker_new -->
+
+	<script type="text/javascript">//<![CDATA[
+		$(document).ready(function () {
+			<!-- BEGIN switch_enable_pm_popup -->
+			pm = window.open('{U_PRIVATEMSGS_POPUP}', '_faprivmsg', 'HEIGHT=225,resizable=yes,WIDTH=400');
+			if (pm != null) {
+				pm.focus();
+			}
+			<!-- END switch_enable_pm_popup -->
+			<!-- BEGIN switch_report_popup -->
+			report = window.open('{switch_report_popup.U_REPORT_POPUP}', '_phpbbreport', 'HEIGHT={switch_report_popup.S_HEIGHT},resizable=yes,scrollbars=no,WIDTH={switch_report_popup.S_WIDTH}');
+			if (report != null) {
+				report.focus();
+			}
+			<!-- END switch_report_popup -->
+			<!-- BEGIN switch_ticker -->
+			$(document).ready(function () {
+				Ticker.start({
+					height: {switch_ticker.HEIGHT},
+					spacing: {switch_ticker.SPACING},
+					speed: {switch_ticker.SPEED},
+					direction: '{switch_ticker.DIRECTION}',
+					pause: {switch_ticker.STOP_TIME}
+				});
+			});
+			<!-- END switch_ticker -->
+		});
+
+		<!-- BEGIN switch_login_popup -->
+		var logInPopUpLeft, logInPopUpTop, logInPopUpWidth = {LOGIN_POPUP_WIDTH},
+			logInPopUpHeight = {LOGIN_POPUP_HEIGHT}, logInBackgroundResize = true, logInBackgroundClass = false;
+		<!-- END switch_login_popup -->
+
+		<!-- BEGIN switch_login_popup -->
+		$(document).ready(function () {
+			$(window).resize(function () {
+				var windowWidth = document.documentElement.clientWidth;
+				var popupWidth = $("#login_popup").width();
+				var mypopup = $("#login_popup");
+
+				$("#login_popup").css({
+					"left": windowWidth / 2 - popupWidth / 2
+				});
+			});
+		});
+		<!-- END switch_login_popup -->
+		//]]>
+	</script>
+	{GREETING_POPUP}
+	<style type="text/css">
+		#page-footer, div.navbar, div.navbar ul.linklist {
+			display: block !important;
+		}
+
+		ul.linklist li.rightside, ul.linklist li.rightside a.copyright {
+			display: inline !important;
+		}
+
+		<!-- BEGIN switch_ticker_new -->
+		.jcarousel-skin-tango .jcarousel-item {
+			text-align: center;
+			width: 10px;
+		}
+
+		.jcarousel-skin-tango .jcarousel-item-horizontal {
+			margin-right: {switch_ticker.SPACING}px;
+		}
+
+		.jcarousel-skin-tango .jcarousel-item-vertical {
+			margin-bottom: {switch_ticker.SPACING}px;
+		}
+
+		<!-- END switch_ticker_new -->
+	</style>
+	{HOSTING_JS}
+
+	<!-- BEGIN google_analytics_code -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id={G_ANALYTICS_ID}"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', '{G_ANALYTICS_ID}', {'anonymize_ip': true, 'store_gac': false, 'cookie_expires': 13 * 30 * 24 * 60 * 60});
+		<!-- BEGIN google_analytics_code_bis -->
+		gtag('config', '{G_ANALYTICS_ID_BIS}', {'anonymize_ip': true, 'store_gac': false, 'cookie_expires': 13 * 30 * 24 * 60 * 60});
+		<!-- END google_analytics_code_bis -->
+	</script>
+	<!-- END google_analytics_code -->
+</head>
+
+<body id="phpbb">
+  
+<div class="fx-nav-spacer" aria-hidden="true"></div>
+<div class="linklist navlinks{NAVBAR_BORDERLESS} fx fx-nav">
+	<div class="fx-nav__acts" id="fx-acts" hidden>
+		<div class="fx-act fx-act--profile" id="fx-act-profile" hidden>
+			<button type="button" class="fx-act__btn" id="fx-act-profile-btn" aria-haspopup="true" aria-expanded="false" aria-controls="fx-act-profile-panel" aria-label="Profile" title="Profile">
+				<svg class="fx-act__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c.6-4 3.7-6.2 7.5-6.2s6.9 2.2 7.5 6.2"/></svg>
+				<img class="fx-act__avatar" alt="" hidden>
+			</button>
+			<div class="fx-act__panel" id="fx-act-profile-panel" hidden>
+				<div class="fx-prof">
+					<img class="fx-prof__img" alt="" hidden>
+					<div class="fx-prof__info">
+						<strong class="fx-prof__name"></strong>
+						<span class="fx-prof__rank"></span>
+						<div class="fx-prof__stats"></div>
+					</div>
+				</div>
+				<ul class="fx-links"></ul>
+			</div>
+		</div>
+		<div class="fx-act fx-act--notif" id="fx-act-notif" hidden>
+			<button type="button" class="fx-act__btn" id="fx-act-notif-btn" aria-haspopup="true" aria-expanded="false" aria-controls="fx-act-notif-panel" aria-label="Notifications" title="Notifications">
+				<svg class="fx-act__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.6 2H4.4z"/><path d="M10 21.2a2.2 2.2 0 0 0 4 0"/></svg>
+				<span class="fx-act__badge" hidden></span>
+			</button>
+			<div class="fx-act__panel fx-act__panel--notif" id="fx-act-notif-panel" hidden>
+				<div class="fx-notif__head"><strong>Notifications</strong><span class="fx-notif__count" hidden></span></div>
+				<ul class="fx-notif__list"></ul>
+				<p class="fx-notif__empty">No notifications yet</p>
+				<a class="fx-notif__all" href="#" hidden>See all notifications</a>
+			</div>
+		</div>
+	</div>
+	<div class="fx-toasts" id="fx-toasts" aria-live="polite"></div>
+	<script type="text/javascript">//<![CDATA[
+		/* FX ACCOUNT MENUS - start (delete this whole block, the .fx-nav__acts markup above and CSS section 28f to revert)
+		   The forum builds its own toolbar (#fa_toolbar) after the page loads. That toolbar is hidden by the stylesheet but kept:
+		   this script copies its profile menu and its notification list into the two panels above and keeps them up to date.
+		   Deleting a notification here presses the delete link of the original, so the forum still does the real work. */
+		(function () {
+			var acts = document.getElementById('fx-acts');
+			if (!acts) { return; }
+			function $(id) { return document.getElementById(id); }
+			function txt(el) { return el ? (el.textContent || '').replace(/\s+/g, ' ').trim() : ''; }
+			function el(tag, cls, text) { var e = document.createElement(tag); if (cls) { e.className = cls; } if (text) { e.textContent = text; } return e; }
+			var pWrap = $('fx-act-profile'), pBtn = $('fx-act-profile-btn'), pPanel = $('fx-act-profile-panel');
+			var nWrap = $('fx-act-notif'), nBtn = $('fx-act-notif-btn'), nPanel = $('fx-act-notif-panel');
+			var nList = nPanel.querySelector('.fx-notif__list'), nEmpty = nPanel.querySelector('.fx-notif__empty'), nAll = nPanel.querySelector('.fx-notif__all');
+			var nCount = nPanel.querySelector('.fx-notif__count'), nBadge = nBtn.querySelector('.fx-act__badge');
+
+			function buildProfile() {
+				var menu = $('fa_menulist');
+				pWrap.hidden = !menu;
+				if (!menu) { return; }
+				var img = menu.querySelector('#fa_usermenu img'), welcome = txt($('fa_welcome'));
+				var name = (img && img.getAttribute('alt')) || welcome.replace(/^[^ ]+ /, '');
+				var big = pPanel.querySelector('.fx-prof__img'), small = pBtn.querySelector('.fx-act__avatar');
+				if (img && img.getAttribute('src')) {
+					big.src = img.getAttribute('src'); big.alt = name; big.hidden = false;
+					small.src = img.getAttribute('src'); small.hidden = false; pBtn.className = 'fx-act__btn has-avatar';
+				} else { big.hidden = true; small.hidden = true; pBtn.className = 'fx-act__btn'; }
+				pPanel.querySelector('.fx-prof__name').textContent = name;
+				pPanel.querySelector('.fx-prof__rank').textContent = txt($('fa_ranktitle'));
+				var stats = pPanel.querySelector('.fx-prof__stats'); stats.innerHTML = '';
+				var rows = menu.querySelectorAll('#fa_usermenu tr');
+				for (var i = 0; i < rows.length; i++) {
+					var cells = rows[i].getElementsByTagName('td');
+					if (cells.length < 3) { continue; }
+					var s = el('span', 'fx-prof__stat', txt(cells[0]) + ' '); s.appendChild(el('b', '', txt(cells[2]))); stats.appendChild(s);
+				}
+				var ul = pPanel.querySelector('.fx-links'); ul.innerHTML = '';
+				var items = menu.children;
+				for (var j = 0; j < items.length; j++) {
+					if (items[j].tagName !== 'LI') { continue; }
+					var li = el('li');
+					if (/fa_separator/.test(items[j].className)) { li.className = 'is-sep'; ul.appendChild(li); continue; }
+					var a = items[j].querySelector('a'); if (!a) { continue; }
+					var link = el('a', /logout/.test(a.getAttribute('href') || '') ? 'is-out' : '', txt(a));
+					link.setAttribute('href', a.getAttribute('href') || '#');
+					if (a.getAttribute('target')) { link.setAttribute('target', a.getAttribute('target')); }
+					li.appendChild(link); ul.appendChild(li);
+				}
+			}
+
+			function buildNotifs() {
+				var src = $('notif_list');
+				nWrap.hidden = !src;
+				if (!src) { return; }
+				nList.innerHTML = '';
+				var rows = src.querySelectorAll('li[id]');
+				for (var i = 0; i < rows.length; i++) {
+					var body = rows[i].querySelector('.contentText'), time = rows[i].querySelector('.contentTime');
+					var li = el('li', 'fx-notif__item'); li.setAttribute('data-nid', rows[i].id);
+					var t = el('div', 'fx-notif__text'); t.innerHTML = body ? body.innerHTML : txt(rows[i]);
+					li.appendChild(t);
+					if (time) { li.appendChild(el('div', 'fx-notif__time', txt(time))); }
+					var del = el('a', 'fx-notif__del'); del.setAttribute('href', '#'); del.setAttribute('aria-label', 'Delete'); li.appendChild(del);
+					nList.appendChild(li);
+				}
+				var all = src.querySelector('.see_all a');
+				if (all) { nAll.href = all.getAttribute('href'); nAll.hidden = false; } else { nAll.hidden = true; }
+				var unread = parseInt((txt($('notif_unread')).match(/\d+/) || [0])[0], 10) || 0;
+				nBadge.textContent = unread > 99 ? '99+' : unread; nBadge.hidden = !unread;
+				nCount.textContent = unread; nCount.hidden = !unread;
+				nEmpty.hidden = rows.length > 0;
+			}
+
+			function sync() { buildProfile(); buildNotifs(); acts.hidden = pWrap.hidden && nWrap.hidden; }
+
+			function close(btn, panel) { panel.hidden = true; btn.setAttribute('aria-expanded', 'false'); }
+			function toggle(btn, panel, other, otherPanel, onOpen) {
+				var open = panel.hidden;
+				close(other.btn, otherPanel);
+				if (open) { panel.hidden = false; btn.setAttribute('aria-expanded', 'true'); if (onOpen) { onOpen(); } } else { close(btn, panel); }
+			}
+			var P = { btn: pBtn }, N = { btn: nBtn };
+			pBtn.addEventListener('click', function () { toggle(pBtn, pPanel, N, nPanel); });
+			nBtn.addEventListener('click', function () {
+				toggle(nBtn, nPanel, P, pPanel, function () { var o = $('fa_notifications'); if (o) { try { o.click(); } catch (e) { } } });
+			});
+			nList.addEventListener('click', function (ev) {
+				var d = ev.target.closest ? ev.target.closest('.fx-notif__del') : null;
+				if (!d) { return; }
+				ev.preventDefault();
+				var item = d.parentNode, orig = $(item.getAttribute('data-nid')), od = orig && orig.querySelector('a.delete');
+				if (od) { try { od.click(); } catch (e) { } }
+				item.parentNode.removeChild(item);
+				nEmpty.hidden = nList.children.length > 0;
+			});
+			document.addEventListener('click', function (ev) {
+				if (ev.target.closest && ev.target.closest('#fa_toolbar')) { return; }      /* the script's own press on the hidden original must not close the panel */
+				if (!acts.contains(ev.target)) { close(pBtn, pPanel); close(nBtn, nPanel); }
+			});
+			document.addEventListener('keydown', function (ev) {
+				if (ev.key === 'Escape') { close(pBtn, pPanel); close(nBtn, nPanel); }
+			});
+
+			/* toast: the forum drops a .fa_notification into its hidden #live_notif for every new notification; draw the same message under the bell */
+			var toasts = $('fx-toasts'), seen = [];
+			function toast(node) {
+				if (seen.indexOf(node) > -1) { return; }
+				seen.push(node);
+				var body = node.querySelector('.content') || node;
+				var t = el('div', 'fx-toast'), ic = el('span', 'fx-toast__icon');
+				ic.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.6 2H4.4z"/><path d="M10 21.2a2.2 2.2 0 0 0 4 0"/></svg>';
+				var tx = el('div', 'fx-toast__text'); tx.innerHTML = body.innerHTML;
+				var x = el('button', 'fx-toast__close', 'Close'); x.type = 'button'; x.setAttribute('aria-label', 'Close');
+				t.appendChild(ic); t.appendChild(tx); t.appendChild(x); t.appendChild(el('span', 'fx-toast__bar'));
+				toasts.appendChild(t);
+				var gone = false, timeout = null;
+				function leave() { if (gone) { return; } gone = true; clearTimeout(timeout); t.className += ' is-leaving'; setTimeout(function () { if (t.parentNode) { t.parentNode.removeChild(t); } }, 320); }
+				function arm() { clearTimeout(timeout); timeout = setTimeout(leave, 7000); }
+				arm();
+				t.addEventListener('mouseenter', function () { clearTimeout(timeout); });
+				t.addEventListener('mouseleave', arm);
+				x.addEventListener('click', leave);
+				later();
+			}
+			var liveObs = null;
+			function watchLive() {
+				var live = $('live_notif');
+				if (!live || liveObs || !window.MutationObserver) { return; }
+				for (var i = 0; i < live.children.length; i++) { toast(live.children[i]); }
+				liveObs = new MutationObserver(function (list) {
+					for (var k = 0; k < list.length; k++) { for (var n = 0; n < list[k].addedNodes.length; n++) { if (list[k].addedNodes[n].nodeType === 1) { toast(list[k].addedNodes[n]); } } }
+				});
+				liveObs.observe(live, { childList: true });
+			}
+
+			var obs = null, timer = null;
+			function later() { clearTimeout(timer); timer = setTimeout(sync, 120); }
+			function attach() {
+				var root = $('fa_right') || $('fa_toolbar');
+				if (!root || obs || !window.MutationObserver) { return; }
+				obs = new MutationObserver(later);
+				obs.observe(root, { childList: true, subtree: true, characterData: true });
+			}
+			var tries = 0, poll = setInterval(function () {
+				tries++;
+				if ($('fa_menulist') || $('notif_list')) { sync(); attach(); watchLive(); clearInterval(poll); }
+				else if (tries > 60) { clearInterval(poll); }
+			}, 300);
+		})();
+		/* FX ACCOUNT MENUS - end */
+	//]]>
+	</script>
+	<div class="fx-nav__inner"><li>{GENERATED_NAV_BAR}</li></div>
+	<button type="button" class="fx-theme-toggle" id="fx-theme-toggle" role="switch" aria-checked="false" aria-label="Dark mode" title="Light / dark">
+		<svg class="fx-theme-toggle__icon fx-theme-toggle__icon--sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.6M12 18.9v2.6M2.5 12h2.6M18.9 12h2.6M5.3 5.3l1.9 1.9M16.8 16.8l1.9 1.9M18.7 5.3l-1.9 1.9M7.2 16.8l-1.9 1.9"/></svg>
+		<svg class="fx-theme-toggle__icon fx-theme-toggle__icon--moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.2A8.6 8.6 0 0 1 9.8 3.5a8.6 8.6 0 1 0 10.7 10.7z"/></svg>
+		<span class="fx-theme-toggle__thumb"></span>
+	</button>
+	<script type="text/javascript">//<![CDATA[
+		/* light / dark switch: remembers the choice in the browser, first visit follows the visitor's system setting */
+		(function () {
+			var btn = document.getElementById('fx-theme-toggle'), root = document.documentElement;
+			if (!btn) { return; }
+			function current() { return root.getAttribute('data-fx-theme') === 'dark' ? 'dark' : 'light'; }
+			function sync() { btn.setAttribute('aria-checked', current() === 'dark' ? 'true' : 'false'); }
+			function apply(mode, save) {
+				root.classList.add('fx-theme-switching');
+				root.setAttribute('data-fx-theme', mode);
+				if (save) { try { localStorage.setItem('fx-theme', mode); } catch (e) { } }
+				sync();
+				setTimeout(function () { root.classList.remove('fx-theme-switching'); }, 350);
+			}
+			btn.addEventListener('click', function () { apply(current() === 'dark' ? 'light' : 'dark', true); });
+			sync();
+			if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').addEventListener) {
+				window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (ev) {
+					var saved = null; try { saved = localStorage.getItem('fx-theme'); } catch (e) { }
+					if (!saved) { apply(ev.matches ? 'dark' : 'light', false); }
+				});
+			}
+			window.addEventListener('storage', function (ev) { if (ev.key === 'fx-theme' && ev.newValue) { apply(ev.newValue === 'dark' ? 'dark' : 'light', false); } });
+		})();
+	//]]>
+	</script>
+</div>
+  
+  
+<!-- BEGIN hitskin_preview -->
+<div id="hitskin_preview" style="display: block;">
+	<h1><img src="https://2img.net/i/fa/hitskin/hitskin_logo.png" alt=""/> <em>Hit</em>skin.com</h1>
+	<div class="content">
+		<p>
+			{hitskin_preview.L_THEME_SITE_PREVIEW}
+			<br/>
+			<span>{hitskin_preview.U_INSTALL_THEME}<a href="https://{hitskin_preview.U_RETURN_THEME}">{hitskin_preview.L_RETURN_THEME}</a></span>
+		</p>
+
+	</div>
+</div>
+<!-- END hitskin_preview -->
+
+<!-- BEGIN inactive_users_modal -->
+<div id="inactive_popup" style="z-index: 10000 !important; width: 480px;">
+	<div class="h3">{inactive_users_modal.L_MODAL_TITLE}</div>
+	<div id="inactive_popup_message">{inactive_users_modal.L_MODAL_BODY}</div>
+	<div id="inactive_popup_buttons">
+		<input type="button" id="inactive_popup_url" class="button1" value="{inactive_users_modal.L_MODAL_BUTTON}" />
+		<input type="button" id="inactive_popup_close" class="button2" value="{inactive_users_modal.L_CLOSE}" />
+	</div>
+</div>
+<script type="text/javascript">
+	$('#inactive_popup #inactive_popup_close').on('mouseup', function () {
+		document.cookie = "modal_require_activation_closed=1; max-age=86400*15; path=/;";
+		$('#inactive_popup').hide(50);
+	});
+	$('#inactive_popup #inactive_popup_url').on('mouseup', function () {
+		document.cookie = "modal_require_activation_closed=1; max-age=86400*15; path=/;";
+		location.href = '{inactive_users_modal.U_MODAL}'
+	})
+</script>
+<!-- END inactive_users_modal -->
+
+<!-- BEGIN switch_login_popup -->
+<div id="login_popup" style="z-index: 10000 !important;">
+	<div class="h3">{SITENAME}</div>
+	{LOGIN_POPUP_MSG}
+	<!-- BEGIN switch_quick_login -->
+	<br/><br/>
+	<div>
+		<div class="h3">{switch_login_popup.switch_quick_login.L_QUICK_CONNECT}</div>
+		<div class="mt10">
+			<div class="social_btn">
+				<!-- BEGIN fb_quick_connect -->
+				<div class="fb-login-button"></div>
+				<!-- END fb_quick_connect -->
+				&nbsp;
+				<!-- BEGIN topicit_quick_connect -->
+				<div class="ti-connect"></div>
+				<!-- END topicit_quick_connect -->
+			</div>
+		</div>
+	</div>
+	<br/>
+	<!-- END switch_quick_login -->
+	<div id="login_popup_buttons">
+		<form action="{S_LOGIN_ACTION}" method="get">
+			<input type="submit" class="button1" value="{L_LOGIN}"/>
+			<input type="button" class="button1" value="{L_REGISTER}" onclick="parent.location='{U_REGISTER}';"/>
+			<input id="login_popup_close" type="button" class="button2" value="{L_DONT_DISPLAY_AGAIN}"/>
+		</form>
+	</div>
+</div>
+<!-- END switch_login_popup -->
+
+<!-- BEGIN switch_like_popup -->
+<div id="like_popup" style="z-index: 10000 !important;">
+	<div class="h3">{SITENAME}</div>
+	{LIKE_POPUP_MSG}
+	<div id="like_popup_buttons">
+		<form action="{S_LOGIN_ACTION}" method="get">
+			<input type="submit" class="button1" value="{L_LOGIN}"/>
+			<input type="button" class="button1" value="{L_REGISTER}" onclick="parent.location='{U_REGISTER}';"/>
+			<input id="like_popup_close" type="button" class="button2" value="{L_LIKE_CLOSE}"/>
+		</form>
+	</div>
+</div>
+<!-- END switch_like_popup -->
+
+<a id="top" name="top" accesskey="t"></a>
+<div id="page-header" class="fx fx-hero">
+	<div class="headerbar fx-hero__bar">
+		<div class="inner fx-hero__inner"><span class="corners-top"><span></span></span>
+
+			<div id="logo-desc" class="fx-hero__stage">
+				<a href="{U_INDEX}" id="logo" class="fx-hero__link"><img class="fx-hero__img" loading="lazy" src="{LOGO}" alt="{L_INDEX}"/></a>
+				<!-- BEGIN switch_h1 -->
+				<div id="site-title" class="fx-hero__title">{switch_h1.MAIN_SITENAME}</div>
+				<!-- END switch_h1 -->
+				<!-- BEGIN switch_desc -->
+				<p class="fx-hero__tag">{switch_desc.SITE_DESCRIPTION}</p>
+				<!-- END switch_desc -->
+			</div>
+
+			<span class="corners-bottom"><span></span></span></div>
+	</div>
+
+	<div class="navbar fx-hero__search">
+		<div class="inner"><span class="corners-top"><span></span></span>
+
+			<!-- BEGIN switch_search_box -->
+			<div id="search-box" class="fx-hero__form">
+				<form method="get" action="{ACTION_SEARCH}" id="search">
+					<p class="nomargin"><input type="text" name="search_keywords" id="keywords"
+											   maxlength="128" class="inputbox search"
+											   value="{L_SEARCH}..."
+											   onclick="if (this.value == '{L_SEARCH}...') this.value = '';"
+											   onblur="if (this.value == '') this.value = '{L_SEARCH}...';"/>
+						{JS_SESSION_ID_INPUT}
+						<input class="button2" type="submit" value="{L_SEARCH}"/></p>
+				</form>
+			</div>
+			<!-- END switch_search_box -->
+
+			<span class="corners-bottom"><span></span></span></div>
+	</div>
+</div>
+
+<div class="conteneur_minwidth_IE">
+	<div class="conteneur_layout_IE">
+		<div class="conteneur_container_IE">
+			<div id="wrap">
+				{JAVASCRIPT}
+
+				<div class="fx-tickers">
+					<!-- BEGIN switch_ticker_new -->
+					<div id="fa_ticker_blockD" style="margin-top:4px;">
+						<div class="module">
+							<div class="inner">
+								<span class="corners-top"><span></span></span>
+								<div id="fa_ticker_container">
+									<ul id="fa_ticker_content" class="jcarousel-skin-tango" style="display:none">
+										<!-- BEGIN ticker_row -->
+										<li>{switch_ticker.ticker_row.ELEMENT}</li>
+										<!-- END ticker_row -->
+									</ul>
+								</div>
+								<span class="corners-bottom"><span></span></span>
+							</div>
+						</div>
+					</div>
+					<!-- END switch_ticker_new -->
+
+					<!-- BEGIN switch_ticker -->
+					<div id="fa_ticker_block" style="margin-top:4px;">
+						<div class="module">
+							<div class="inner">
+								<span class="corners-top"><span></span></span>
+								<div id="fa_ticker_container">
+									<div id="fa_ticker" style="height:{switch_ticker.HEIGHT}px;">
+										<div class="fa_ticker_content">
+											<!-- BEGIN ticker_row -->
+											<div>{switch_ticker.ticker_row.ELEMENT}</div>
+											<!-- END ticker_row -->
+										</div>
+									</div>
+								</div>
+								<span class="corners-bottom"><span></span></span>
+							</div>
+						</div>
+					</div>
+					<!-- END switch_ticker -->
+				</div>
+
+				<div id="page-body">
+
+					<div id="{ID_CONTENT_CONTAINER}"{CLASS_CONTENT_CONTAINER}>
+						<div id="outer-wrapper">
+							<div id="wrapper">
+								<div id="container">
+									<div id="content">
+
+										<div id="{ID_LEFT}">
+											<!-- BEGIN giefmod_index1 -->
+											{giefmod_index1.MODVAR}
+											<!-- BEGIN saut -->
+											<div style="height:{SPACE_ROW}px"></div>
+											<!-- END saut -->
+											<!-- END giefmod_index1 -->
+										</div>
+
+										<div id="main">
+											<div id="main-content">

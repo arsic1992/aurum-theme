@@ -1,0 +1,28 @@
+<form action="{S_PROFILE_ACTION}" method="post">
+<div class="panel fx fx-category fx-groups fx-groups--slim fx-fpanel fx-fpanel--narrow">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<div class="content">
+		<h1 class="page-title fx fx-ptitle">{L_SEND_PASSWORD}</h1>
+		<fieldset class="fields2">
+		<p class="italic fx-fnote">{L_ITEMS_REQUIRED}</p>
+		<dl class="fx-field fx-field--stack">
+			<dt class="fx-field__label"><label>{L_USERNAME}: *</label></dt>
+			<dd class="fx-field__control"><input class="inputbox narrow" type="text" name="username" value="{USERNAME}" /></dd>
+		</dl>
+		<dl class="fx-field fx-field--stack">
+			<dt class="fx-field__label"><label>{L_EMAIL_ADDRESS}: *</label></dt>
+			<dd class="fx-field__control"><input class="inputbox narrow" type="text" name="email" value="{EMAIL}" /></dd>
+		</dl>
+		<dl class="fx-field fx-field--actions">
+			<dt class="fx-field__label"></dt>
+			<dd class="fx-field__control">
+				{S_HIDDEN_FIELDS}
+				<input class="button2" type="submit" name="submit" value="{L_SUBMIT}" />
+				<input class="button2" type="reset" name="reset" value="{L_RESET}" />
+			</dd>
+		</dl>
+		</fieldset>
+	</div>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+</form>

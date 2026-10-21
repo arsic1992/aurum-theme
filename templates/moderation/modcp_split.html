@@ -1,0 +1,70 @@
+<div class="fx fx-meta">
+	<!-- BEGIN switch_user_logged_in -->
+	<p class="right rightside fx-meta__visit">{LAST_VISIT_DATE}</p>
+	<!-- END switch_user_logged_in -->
+	<p class="fx-meta__time">{CURRENT_TIME}</p>
+</div>
+
+<form action="{S_SPLIT_ACTION}" method="post" class="fx-mod__form">
+<div class="topic-actions fx fx-actions">
+	<p class="fx-actions__path"><a href="{U_INDEX}"><span>{L_INDEX}</span></a>{NAV_CAT_DESC}</p>
+</div>
+
+<h1 class="page-title fx fx-viewhead">{L_SPLIT_TOPIC}</h1>
+<div class="panel row3 fx fx-ucp fx-mshell">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<div id="cp-main" class="mcp-main fx-mshell__main">
+	<br />
+	<div class="panel fx fx-category fx-groups fx-groups--slim fx-fpanel fx-mpanel">
+		<div class="inner"><span class="corners-top"><span></span></span>
+		<fieldset class="fields1">
+			<p class="fx-fnote">{L_SPLIT_TOPIC_EXPLAIN}</p>
+			<dl class="fx-field">
+				<dt class="fx-field__label"><label>{L_SPLIT_SUBJECT}</label></dt>
+				<dd class="fx-field__control"><input class="inputbox narrow" type="text" name="subject" maxlength="{MAX_TOPIC_LENGTH}" /></dd>
+			</dl>
+			<dl class="fx-field">
+				<dt class="fx-field__label"><label>{L_SPLIT_FORUM}</label></dt>
+				<dd class="fx-field__control">{S_FORUM_SELECT}</dd>
+			</dl>
+		</fieldset>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+
+	<fieldset class="submit-buttons fx fx-groups fx-fbar fx-split__bar">
+		<input class="button2 fx-mbtn fx-mbtn--ok" type="submit" name="split_type_all" value="{L_SPLIT_POSTS}" />&nbsp;
+		<input class="button2 fx-mbtn" type="submit" name="split_type_beyond" value="{L_SPLIT_AFTER}" />
+	</fieldset><br />
+
+	<div class="panel fx fx-split">
+		<div class="inner"><span class="corners-top"><span></span></span>
+		<div id="topicreview" class="fx-split__list">
+			<!-- BEGIN postrow -->
+			<div class="post {postrow.ROW_CLASS} fx-rev fx-split__post">
+				<div class="inner fx-rev__inner"><span class="corners-top"><span></span></span>
+					<div class="postbody fx-rev__body">
+						<p class="right-box fx-split__sel">{postrow.L_SELECT} {postrow.S_SPLIT_CHECKBOX}</p>
+						<h3 class="fx-rev__subject">{postrow.POST_SUBJECT}</h3>
+						<p class="author fx-rev__meta"><img class="fx-rev__mini" src="{MINI_POST_IMG}" alt="{L_POST}" />{L_POSTED}: {postrow.POST_DATE} {postrow.L_TOPIC_BY} {postrow.POSTER_NAME}</p>
+						<div class="content fx-rev__content">
+							{postrow.MESSAGE}
+						</div>
+					</div>
+				<span class="corners-bottom"><span></span></span></div>
+			</div><br />
+			<!-- END postrow -->
+		</div>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+
+	<fieldset class="submit-buttons fx fx-groups fx-fbar fx-split__bar">
+		<input class="button2 fx-mbtn fx-mbtn--ok" type="submit" name="split_type_all" value="{L_SPLIT_POSTS}" />&nbsp;
+		<input class="button2 fx-mbtn" type="submit" name="split_type_beyond" value="{L_SPLIT_AFTER}" />
+		{S_HIDDEN_FIELDS}
+	</fieldset>
+
+	</div>
+	<div class="clear"></div>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+</form>

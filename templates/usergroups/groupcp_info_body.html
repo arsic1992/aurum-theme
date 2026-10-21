@@ -1,0 +1,150 @@
+<div class="fx fx-meta">
+	<p class="fx-meta__time">{CURRENT_TIME}</p>
+	<!-- BEGIN switch_user_logged_in -->
+	<p class="right rightside fx-meta__visit">{LAST_VISIT_DATE}</p>
+	<!-- END switch_user_logged_in -->
+</div>
+
+<h1 class="page-title fx fx-viewhead">{GROUP_NAME}</h1>
+<div class="panel fx fx-category fx-groups fx-ghero">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<h2 class="h3 fx-ptitle">{L_GROUP_INFORMATION}</h2>
+	<form action="{S_GROUPCP_ACTION}" method="post" class="fx-ghero__form">
+	<fieldset class="fx-ghero__grid">
+		<dl class="fx-ghero__desc">
+			<dt><label>{L_GROUP_DESC}:</label></dt>
+			<dd>{GROUP_DESC}</dd>
+		</dl>
+		<!-- BEGIN switch_count_users_group -->
+		<dl class="fx-ghero__count">
+			<dt><label>{switch_count_users_group.L_GROUP_COUNT}:</label></dt>
+			<dd>{switch_count_users_group.GROUP_COUNT}</dd>
+		</dl>
+		<!-- END switch_count_users_group -->
+		<dl class="fx-ghero__member">
+			<dt><label>{L_GROUP_MEMBERSHIP}:</label></dt>
+			<dd>{GROUP_DETAILS}
+				<!-- BEGIN switch_subscribe_group_input -->
+				<input class="button2" type="submit" name="joingroup" value="{L_JOIN_GROUP}" />
+				<!-- END switch_subscribe_group_input -->
+				<!-- BEGIN switch_unsubscribe_group_input -->
+				<input class="button2" type="submit" name="unsub" value="{L_UNSUBSCRIBE_GROUP}" />
+				<!-- END switch_unsubscribe_group_input -->
+			</dd>
+		</dl>
+		<!-- BEGIN switch_mod_option -->
+		<dl class="fx-ghero__type">
+			<dt><label>{L_GROUP_TYPE}:</label></dt>
+			<dd><span class="fx-segs"><label class="fx-seg"><input type="radio" name="group_type" value="{S_GROUP_OPEN_TYPE}" {S_GROUP_OPEN_CHECKED} {S_GROUP_OPEN_DISABLED} /><span>{L_GROUP_OPEN}</span></label>
+				<label class="fx-seg"><input type="radio" name="group_type" value="{S_GROUP_CLOSED_TYPE}" {S_GROUP_CLOSED_CHECKED} /><span>{L_GROUP_CLOSED}</span></label>
+				<label class="fx-seg"><input type="radio" name="group_type" value="{S_GROUP_HIDDEN_TYPE}" {S_GROUP_HIDDEN_CHECKED} /><span>{L_GROUP_HIDDEN}</span></label></span>
+				<label class="fx-seg-update"><input class="button2" type="submit" name="groupstatus" value="{L_UPDATE}" /></label>
+			</dd>
+		</dl>
+		<!-- END switch_mod_option -->
+		<dl class="fx-sr">
+			<dt><label>{L_GROUP_NAME}:</label></dt>
+			<dd><strong>{GROUP_NAME}</strong></dd>
+		</dl>
+		{S_HIDDEN_FIELDS}
+	</fieldset>
+	</form>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+
+<form action="{S_GROUPCP_ACTION}" method="post" name="post">
+<div class="forumbg forumbg-table fx fx-category fx-groups fx-gpanel">
+	<div class="inner"><span class="corners-top"><span></span></span>
+
+		<!-- column labels are kept for the template engine; shown only to screen readers -->
+		<div class="fx-sr">
+			<!-- BEGIN switch_anonymous_auth -->
+			<span>{L_PM}</span>
+			<!-- END switch_anonymous_auth -->
+			<span>{L_USERNAME}</span>
+			<span>{L_POSTS}</span>
+			<span>{L_FROM}</span>
+			<!-- BEGIN switch_anonymous_auth -->
+			<span>{L_EMAIL}</span>
+			<!-- END switch_anonymous_auth -->
+			<span>{L_WEBSITE}</span>
+			<!-- BEGIN switch_mod_option --><span>{L_SELECT}</span><!-- END switch_mod_option -->
+		</div>
+
+		<div class="fx-gsection"><span>{L_GROUP_MODERATOR}</span></div>
+		<div class="row1 fx-gmember fx-gmember--mod">
+			<div class="fx-gmember__name"><a href="{U_MOD_VIEWPROFILE}">{MOD_USERNAME}</a></div>
+			<div class="fx-gmember__stat"><span class="fx-gmember__value">{MOD_POSTS}</span><span class="fx-gmember__label">{L_POSTS}</span></div>
+			<div class="fx-gmember__stat"><span class="fx-gmember__value">{MOD_FROM}</span><span class="fx-gmember__label">{L_FROM}</span></div>
+			<div class="fx-gmember__actions"><!-- BEGIN switch_anonymous_auth -->{MOD_PM_IMG}<!-- END switch_anonymous_auth --><!-- BEGIN switch_anonymous_auth -->{MOD_EMAIL_IMG}<!-- END switch_anonymous_auth -->{MOD_WWW_IMG}</div>
+			<!-- BEGIN switch_mod_option --><span class="fx-gcheck fx-gcheck--none">&nbsp;</span><!-- END switch_mod_option -->
+		</div>
+
+		<div class="fx-gsection"><span>{L_GROUP_MEMBERS}</span></div>
+		<!-- BEGIN member_row -->
+		<div class="{member_row.ROW_CLASS} fx-gmember">
+			<div class="fx-gmember__name"><a href="{member_row.U_VIEWPROFILE}">{member_row.USERNAME}</a></div>
+			<div class="fx-gmember__stat"><span class="fx-gmember__value">{member_row.POSTS}</span><span class="fx-gmember__label">{L_POSTS}</span></div>
+			<div class="fx-gmember__stat"><span class="fx-gmember__value">{member_row.FROM}</span><span class="fx-gmember__label">{L_FROM}</span></div>
+			<div class="fx-gmember__actions"><!-- BEGIN switch_anonymous_auth -->{member_row.PM_IMG}<!-- END switch_anonymous_auth --><!-- BEGIN switch_anonymous_auth -->{member_row.EMAIL_IMG}<!-- END switch_anonymous_auth -->{member_row.WWW_IMG}</div>
+			<!-- BEGIN switch_mod_option --><label class="fx-gcheck"><input type="checkbox" name="members[]" value="{member_row.USER_ID}" /></label><!-- END switch_mod_option -->
+		</div>
+		<!-- END member_row -->
+		<!-- BEGIN switch_no_members -->
+		<div class="row1 fx-gempty">
+			<p class="center">{L_NO_MEMBERS}</p>
+		</div>
+		<!-- END switch_no_members -->
+		<!-- BEGIN switch_hidden_group -->
+		<div class="row1 fx-gempty">
+			<p class="center">{L_HIDDEN_MEMBERS}</p>
+		</div>
+		<!-- END switch_hidden_group -->
+
+		<!-- BEGIN switch_mod_option -->
+		<!-- BEGIN switch_grp_admin -->
+			<p class="row1 fx-gnotice"><strong>{L_ADMIN_GRP_EXPLAIN}</strong></p>
+		<!-- END switch_grp_admin -->
+		<div class="fx-gbar">
+			<p class="left-box fx-gbar__add"><input class="inputbox tiny" type="text" id="username" name="username" />
+								<input class="button2" type="submit" name="add" value="{L_ADD_MEMBER}" />
+								<input class="button2" type="button" id="find_user" value="{L_FIND_USERNAME}" />
+			</p>
+			<p class="right-box fx-gbar__remove"><input class="button2" type="submit" name="remove" value="{L_REMOVE_SELECTED}" />{S_HIDDEN_FIELDS}</p>
+		</div>
+		<!-- END switch_mod_option -->
+		<div class="clear"></div>
+		<span class="corners-bottom"><span></span></span></div>
+</div>
+<p class="pagination fx fx-pagination">{PAGINATION}</p>
+<div class="clear"></div>
+{PENDING_USER_BOX}
+</form>
+<form action="{S_JUMPBOX_ACTION}" method="get" name="jumpbox" onsubmit="if(document.jumpbox.f.value == -1){return false;}">
+	<p class="right fx fx-jump">{L_JUMP_TO}:&nbsp;{S_JUMPBOX_SELECT}&nbsp;<input class="button2" type="submit" value="{L_GO}" /></p>
+</form>
+
+<!-- BEGIN switch_mod_option -->
+<div id="find_username" class="jqmWindow"></div>
+
+<script src="{JQUERY_DIR}jqmodal/jqmodal.js" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+	$(document).ready(function(){
+		function find_username(fieldname) {
+			$.get('{U_SEARCH_USER}&fieldname=' + fieldname + '&time=' + timestamp(), '',
+				function(data){
+					$('#find_username').html(data).jqmShow();
+					$('.jqmOverlay').bgiframe();
+					$('#find_username').bgiframe();
+				});
+			return false;
+		}
+		$('#find_user').click(function(){
+			return find_username('username');
+		});
+		$('#find_username').jqm({toTop: true});
+	});
+//]]>
+</script>
+<!-- END switch_mod_option -->

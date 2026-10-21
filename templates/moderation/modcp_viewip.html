@@ -1,0 +1,97 @@
+<div class="fx fx-meta">
+	<!-- BEGIN switch_user_logged_in -->
+	<p class="right rightside fx-meta__visit">{LAST_VISIT_DATE}</p>
+	<!-- END switch_user_logged_in -->
+	<p class="fx-meta__time">{CURRENT_TIME}</p>
+</div>
+
+<div class="panel row3 fx fx-ucp fx-mshell">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<div id="cp-main" class="mcp-main fx-mshell__main">
+	<h1 class="page-title fx fx-ptitle">{L_TITLE}</h1>
+	<div class="panel fx fx-category fx-groups fx-groups--slim fx-fpanel fx-mpanel">
+		<div class="inner"><span class="corners-top"><span></span></span>
+		<fieldset class="fx-mfields">
+		<dl class="fx-field">
+			<dt class="fx-field__label"><label>{L_SUBJECT} : </label></dt>
+			<dd class="fx-field__control">{SUBJECT}</dd>
+		</dl>
+		<dl class="fx-field">
+			<dt class="fx-field__label"><label>{L_POSTER} : </label></dt>
+			<dd class="fx-field__control">{POSTER}</dd>
+		</dl>
+		<dl class="fx-field">
+			<dt class="fx-field__label"><label>{L_IP} : </label></dt>
+			<dd class="fx-field__control fx-mod__ip">{IP1} [ {IP2} ]</dd>
+		</dl>
+		<dl class="fx-field">
+			<dt class="fx-field__label"><label>{L_POSTED} : </label></dt>
+			<dd class="fx-field__control">{POSTED}</dd>
+		</dl>
+		</fieldset>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+
+	<h1 class="page-title fx fx-ptitle">{L_IP_INFO}</h1>
+	<div class="panel fx fx-category fx-groups fx-groups--slim fx-fpanel fx-mpanel">
+		<div class="inner"><span class="corners-top"><span></span></span>
+		<table class="table1 fx-table fx-modtable fx-modtable--ip" cellspacing="1">
+			<thead>
+				<tr>
+					<th class="name">{L_THIS_POST_IP}</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="row1 fx-modtable__row">
+					<td>{IP} [ {POSTS} ]</td>
+					<td>[ <a href="{U_LOOKUP_IP}">{L_LOOKUP_IP}</a> ]</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table1 fx-table fx-modtable fx-modtable--ip" cellspacing="1">
+			<thead>
+				<tr>
+					<th class="name">{L_OTHER_USERS}</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>
+			<!-- BEGIN userrow -->
+				<tr class="{userrow.ROW_CLASS} fx-modtable__row">
+					<td><a href="{userrow.U_PROFILE}">{userrow.USERNAME}</a> [ {userrow.POSTS} ]</td>
+					<td><a title="{userrow.L_SEARCH_POSTS}" href="{userrow.U_SEARCHPOSTS}">{userrow.L_SEARCH}</a></td>
+				</tr>
+			<!-- END userrow -->
+			</tbody>
+		</table>
+		<table class="table1 fx-table fx-modtable fx-modtable--ip" cellspacing="1">
+			<thead>
+				<tr>
+					<th class="name">{L_OTHER_IPS}</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>
+			<!-- BEGIN iprow -->
+				<tr class="{iprow.ROW_CLASS} fx-modtable__row">
+					<td>{iprow.IP} [ {iprow.POSTS} ]</td>
+					<td>[ <a href="{iprow.U_LOOKUP_IP}">{L_LOOKUP_IP}</a> ]</td>
+				</tr>
+			<!-- END iprow -->
+			</tbody>
+		</table>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+
+	<h1 class="page-title fx fx-ptitle">{L_PREVIEW}</h1>
+	<div class="panel fx fx-category fx-groups fx-groups--slim fx-fpanel fx-mpanel">
+		<div class="inner"><span class="corners-top"><span></span></span>
+		<div class="fx-modip__preview">{PREVIEW_NEW}</div>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+	<br />
+	</div>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+<br />

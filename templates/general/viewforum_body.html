@@ -1,0 +1,124 @@
+<div class="fx fx-meta">
+	<!-- BEGIN switch_user_logged_in --><p class="right rightside fx-meta__visit">{LAST_VISIT_DATE}</p><!-- END switch_user_logged_in -->
+	<p class="fx-meta__time">{CURRENT_TIME}</p>
+</div>
+
+<h1 class="page-title fx fx-viewhead"><a href="{U_VIEW_FORUM}">{FORUM_NAME}</a></h1>
+
+{BOARD_INDEX}
+
+<div class="pagination fx fx-vf__tools">
+	<!-- BEGIN show_plus_menu -->
+	<br />
+	<span class="fx-vf__tool"><a href="{U_MARK_READ}">{L_MARK_TOPICS_READ}</a></span>&nbsp;&bull;&nbsp;
+	<script type="text/javascript">//<![CDATA[
+		var url_newposts = '{U_NEWPOSTS_JS_PLUS_MENU}';
+		var url_egosearch = '{U_EGOSEARCH_JS_PLUS_MENU}';
+		var url_unanswered = '{U_UNANSWERED_JS_PLUS_MENU}';
+		var url_watchsearch = '{U_WATCHSEARCH_JS_PLUS_MENU}';
+		insert_plus_menu_new('f{FORUM_ID}&amp;f={FORUM_ID}','{JS_SESSION_ID}', {JS_AUTH_FAVOURITES});
+	//]]>
+	</script>
+	<!-- END show_plus_menu -->
+	<span class="fx-vf__pages">{PAGINATION}</span>
+	<br /><br />
+</div>
+
+<div class="topic-actions fx fx-actions fx-vf__actions">
+<!-- BEGIN switch_user_authpost -->
+	<div class="buttons fx-actions__buttons fx-vf__new">
+		<div class="post-icon fx-pmbtn"><a href="{U_POST_NEW_TOPIC}" accesskey="n" rel="nofollow"><img src="{POST_IMG}" class="{POST_IMG_ID}" alt="{L_POST_NEW_TOPIC}" /></a></div>
+	</div>
+<!-- END switch_user_authpost -->
+	<div class="search-box fx-vf__search">
+		<form method="get" id="forum-search" action="{S_SEARCHBOX_ACTION}">
+		<fieldset>
+			<input class="inputbox search tiny fx-vf__q" type="text" name="search_keywords" id="search_keywords" size="20" value="{L_SEARCH}" onclick="if (this.value == '{L_SEARCH}') this.value = '';" onblur="if (this.value == '') this.value = '{L_SEARCH}';" />
+			<input class="button2 fx-vf__go" type="submit" value="{L_SEARCH}" />
+			<input type="hidden" value="{SEARCH_WHERE}" name="search_where" />
+		</fieldset>
+		</form>
+	</div>
+	<p class="nomargin path fx-actions__path fx-vf__path">
+		<a class="nav" href="{U_INDEX}"><span>{L_INDEX}</span></a>
+		{NAV_CAT_DESC}
+	</p>
+</div>
+
+{TOPICS_LIST_BOX}
+
+<div class="topic-actions fx fx-actions fx-vf__actions fx-vf__actions--foot">
+	<!-- BEGIN switch_user_authpost -->
+	<div class="buttons fx-actions__buttons fx-vf__new">
+		<div class="post-icon fx-pmbtn"><a href="{U_POST_NEW_TOPIC}" accesskey="n" rel="nofollow"><img src="{POST_IMG}" class="{POST_IMG_ID}" alt="{L_POST_NEW_TOPIC}" /></a></div>
+	</div>
+	<!-- END switch_user_authpost -->
+
+	<div class="pagination fx-actions__pages fx-vf__foot">
+		<span class="fx-vf__pages">{PAGINATION}</span><br />
+		<span class="fx-vf__links"><a href="{U_MARK_READ}">{L_MARK_TOPICS_READ}</a>&nbsp;&bull;&nbsp;{S_WATCH_FORUM}&nbsp;&bull;&nbsp;<a href="#top">{L_BACK_TO_TOP}</a></span><br /><br />
+	</div>
+</div>
+
+<div class="clear"></div>
+
+<div class="action-box fx fx-vf__boxes">
+	<!-- BEGIN switch_sort_options -->
+	<div id="sort-box" class="fx-vf__sortbox">
+		<form method="post" class="sort-form fx-vf__form">
+			<fieldset class="fx-vf__fs">
+				<label>{switch_sort_options.L_SORT_BY}:&nbsp;</label>
+				<select name="sort_method" class="fx-vf__sel">
+					{switch_sort_options.S_OPTIONS}
+				</select>
+				<input class="button2 fx-vf__btn" type="submit" value="{switch_sort_options.L_SORT}" />
+			</fieldset>
+		</form>
+	</div>
+	<!-- END switch_sort_options -->
+
+	<form action="{S_JUMPBOX_ACTION}" method="get" name="jumpbox" class="fx-vf__form fx-vf__jump" onsubmit="if(document.jumpbox.f.value == -1){return false;}">
+		<fieldset class="vf_jumpbox fx-vf__fs fx-vf__jumpfs">
+			<label>{L_JUMP_TO}:&nbsp;</label>
+			<span class="fx-vf__sel">{S_JUMPBOX_SELECT}</span>
+			<input class="button2 fx-vf__btn" type="submit" value="{L_GO}" />
+		</fieldset>
+	</form>
+</div>
+
+{LOGGED_IN_USER_LIST}
+
+<div class="fx fx-vf__more">
+<div id="info_open" style="display:block;clear:both" class="fx-vf__info">
+<div class="fx-vf__card fx-vf__card--mods">
+<div class="h3 fx-vf__cardtitle">{L_MODERATOR}</div>
+<p class="fx-vf__cardbody">{MODERATORS}</p>
+</div>
+
+<div class="fx-vf__card fx-vf__card--perms">
+<div class="h3 fx-vf__cardtitle">{L_TABS_PERMISSIONS}</div>
+<p class="fx-vf__cardbody fx-vf__perms">{S_AUTH_LIST}</p>
+</div>
+
+</div>
+<!-- BEGIN switch_legend -->
+<div class="h3 fx-sechead">{L_LEGEND}</div>
+	<div class="clearfix fx-vf__legend">
+		<ul class="ul-icons fx-vf__icons">
+			<li><img src="{FOLDER_NEW_IMG}" alt="{L_FOLDER_NEW_IMG}" loading="lazy" />&nbsp;{L_FOLDER_NEW_IMG}</li>
+			<li><img src="{FOLDER_HOT_NEW_IMG}" alt="{L_FOLDER_HOT_NEW_IMG}" loading="lazy" />&nbsp;{L_FOLDER_HOT_NEW_IMG}</li>
+			<li><img src="{FOLDER_LOCKED_NEW_IMG}" alt="{L_FOLDER_LOCKED_NEW_IMG}" loading="lazy" />&nbsp;{L_FOLDER_LOCKED_NEW_IMG}</li>
+		</ul>
+		<ul class="ul-icons fx-vf__icons">
+			<li><img src="{FOLDER_IMG}" alt="{L_FOLDER_IMG}" loading="lazy" />&nbsp;{L_FOLDER_IMG}</li>
+			<li><img src="{FOLDER_HOT_IMG}" alt="{L_FOLDER_HOT_IMG}" loading="lazy" />&nbsp;{L_FOLDER_HOT_IMG}</li>
+			<li><img src="{FOLDER_LOCKED_IMG}" alt="{L_FOLDER_LOCKED_IMG}" loading="lazy" />&nbsp;{L_FOLDER_LOCKED_IMG}</li>
+		</ul>
+		<ul class="ul-icons fx-vf__icons">
+			<li><img src="{FOLDER_ANNOUNCE_IMG}" alt="{L_FOLDER_ANNOUNCE_IMG}" loading="lazy" />&nbsp;{L_FOLDER_ANNOUNCE_IMG}</li>
+			<li><img src="{FOLDER_STICKY_IMG}" alt="{L_FOLDER_STICKY_IMG}" loading="lazy" />&nbsp;{L_FOLDER_STICKY_IMG}</li>
+			<li><img src="{FOLDER_GLOBAL_ANNOUNCE_IMG}" alt="{L_FOLDER_GLOBAL_ANNOUNCE_IMG}" loading="lazy" />&nbsp;{L_FOLDER_GLOBAL_ANNOUNCE_IMG}</li>
+		</ul>
+	</div>
+<!-- END switch_legend -->
+</div>

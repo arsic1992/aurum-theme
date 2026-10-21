@@ -1,0 +1,158 @@
+{JAVASCRIPT}
+<div class="fx fx-meta">
+	<!-- BEGIN switch_user_logged_in --><p class="right rightside fx-meta__visit">{LAST_VISIT_DATE}</p><!-- END switch_user_logged_in -->
+	<p class="fx-meta__time">{CURRENT_TIME}</p>
+</div>
+{CAT_NAME}
+<br class="clear" />
+
+<!-- BEGIN switch_user_login_form_header -->
+<div class="panel fx fx-category fx-groups fx-groups--slim fx-ilogin">
+	<div class="inner fx-ilogin__inner"><span class="corners-top"><span></span></span>
+		<form action="{S_LOGIN_ACTION}" method="post" name="form_login" class="fx-ilogin__form">
+			<div class="user_login_form center fx-ilogin__row">
+				<label class="fx-ilogin__field"><span class="fx-ilogin__label">{L_USERNAME}</span><input class="post fx-ilogin__input" type="text" size="10" name="username" /></label>
+				<label class="fx-ilogin__field"><span class="fx-ilogin__label">{L_PASSWORD}</span><input class="post fx-ilogin__input" type="password" size="10" name="password" /></label>
+				<label class="fx-ilogin__auto"><input class="radio fx-ilogin__check" type="checkbox" name="autologin" {AUTOLOGIN_CHECKED} /><span class="fx-ilogin__label">{L_AUTO_LOGIN}</span></label>
+				{S_HIDDEN_FIELDS}<input class="mainoption button1 fx-ilogin__btn" type="submit" name="login" value="{L_LOGIN}" />
+
+                <!-- BEGIN switch_social_login -->
+                <div class="social_btn fx-ilogin__social">
+                    <!-- BEGIN fb_connect -->
+                    <div class="fb-login-button"></div>
+                    <!-- END fb_connect -->
+                    <!-- BEGIN topicit_connect -->
+                    <div class="ti-connect"></div>
+                    <!-- END topicit_connect -->
+                </div>
+                <!-- END switch_social_login -->
+			</div>
+		</form>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+<!-- END switch_user_login_form_header -->
+
+<!-- BEGIN message_admin_index -->
+	<div class="panel introduction fx fx-intro">
+		<div class="inner fx-intro__inner"><span class="corners-top"><span></span></span>
+	<!-- BEGIN message_admin_titre -->
+		<div class="h3 fx-intro__title">{message_admin_index.message_admin_titre.MES_TITRE}</div>
+	<!-- END message_admin_titre -->
+
+	<!-- BEGIN message_admin_txt -->
+		<div class="mes-txt fx-intro__text">{message_admin_index.message_admin_txt.MES_TXT}</div>
+	<!-- END message_admin_txt -->
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+<!-- END message_admin_index -->
+
+{CHATBOX_TOP}
+{BOARD_INDEX}
+
+<!-- BEGIN disable_viewonline -->
+<div class="fx fx-idx">
+
+	<!-- BEGIN switch_viewonline_link -->
+	<div class="h3 fx-sechead"><a href="{U_VIEWONLINE}" rel="nofollow">{L_WHO_IS_ONLINE}</a></div>
+	<!-- END switch_viewonline_link -->
+
+	<!-- BEGIN switch_viewonline_nolink -->
+	<div class="h3 fx-sechead">{L_WHO_IS_ONLINE}</div>
+	<!-- END switch_viewonline_nolink -->
+
+<div class="fx-who">
+<img src="{L_ONLINE_IMG}" id="i_whosonline" alt="{L_WHO_IS_ONLINE}" class="img-whois fx-who__icon" loading="lazy" />
+<div class="fx-who__body">
+<span class="fx-who__total">{TOTAL_USERS_ONLINE}</span><br />
+<span class="fx-who__record">{RECORD_USERS}</span>
+
+<br />
+<span class="fx-who__list">{LOGGED_IN_USER_LIST}
+
+{L_ONLINE_USERS}
+{L_CONNECTED_MEMBERS}</span><br />
+<span class="fx-who__birthdays">{L_WHOSBIRTHDAY_TODAY}{L_WHOSBIRTHDAY_WEEK}</span>
+
+<br />
+<!-- BEGIN switch_group_legend -->
+<em class="fx-who__legend">{LEGEND}&nbsp;:&nbsp;{GROUP_LEGEND}</em>
+<!-- END switch_group_legend -->
+
+</div>
+</div>
+<div class="clear"></div>
+
+	<!-- BEGIN switch_statistics_link -->
+	<div class="h3 fx-sechead"><a href="{U_STATISTICS}" rel="nofollow">{L_STATISTICS}</a></div>
+	<!-- END switch_statistics_link -->
+
+	<!-- BEGIN switch_statistics_nolink -->
+	<div class="h3 fx-sechead">{L_STATISTICS}</div>
+	<!-- END switch_statistics_nolink -->
+
+<div class="fx-stats">
+<p class="page-bottom fx-stats__tile fx-stats__tile--posts">
+{TOTAL_POSTS}
+</p>
+<p class="page-bottom fx-stats__tile fx-stats__tile--users">
+{TOTAL_USERS}
+</p>
+<p class="page-bottom fx-stats__tile fx-stats__tile--newest">
+{NEWEST_USER}
+</p>
+</div>
+	<!-- BEGIN switch_chatbox_activate -->
+	<div class="h3 fx-sechead"><a href="{S_JOIN_CHAT}" target="ChatBox">{CHATBOX_NAME}</a></div>
+	<div class="page-bottom fx-chatters">
+	{TOTAL_CHATTERS_ONLINE}&nbsp;:&nbsp;
+	{CHATTERS_LIST}<br />
+	</div>
+		<!-- BEGIN switch_chatbox_popup -->
+		<div id="chatbox_popup"></div>
+		<script type="text/javascript">
+		insertChatBoxPopup('{disable_viewonline.switch_chatbox_activate.switch_chatbox_popup.U_FRAME_CHATBOX}', '{L_CLICK_TO_JOIN_CHAT}');
+		</script>
+		<!-- END switch_chatbox_popup -->
+	<!-- END switch_chatbox_activate -->
+</div>
+<!-- END disable_viewonline -->
+
+{CHATBOX_BOTTOM}
+
+<!-- BEGIN switch_user_login_form_footer -->
+<div class="panel fx fx-category fx-groups fx-groups--slim fx-ilogin fx-ilogin--foot">
+	<div class="inner fx-ilogin__inner"><span class="corners-top"><span></span></span>
+		<form action="{S_LOGIN_ACTION}" method="post" name="form_login" class="fx-ilogin__form">
+			<div class="user_login_form center fx-ilogin__row">
+				<label class="fx-ilogin__field"><span class="fx-ilogin__label">{L_USERNAME}</span><input class="post fx-ilogin__input" type="text" size="10" name="username" /></label>
+				<label class="fx-ilogin__field"><span class="fx-ilogin__label">{L_PASSWORD}</span><input class="post fx-ilogin__input" type="password" size="10" name="password" /></label>
+				<label class="fx-ilogin__auto"><input class="radio fx-ilogin__check" type="checkbox" name="autologin" {AUTOLOGIN_CHECKED} /><span class="fx-ilogin__label">{L_AUTO_LOGIN}</span></label>
+				{S_HIDDEN_FIELDS}<input class="mainoption button1 fx-ilogin__btn" type="submit" name="login" value="{L_LOGIN}" />
+
+                <!-- BEGIN switch_social_login -->
+                <div class="social_btn fx-ilogin__social">
+                    <!-- BEGIN fb_connect -->
+                    <div class="fb-login-button"></div>
+                    <!-- END fb_connect -->
+                    <!-- BEGIN topicit_connect -->
+                    <div class="ti-connect"></div>
+                    <!-- END topicit_connect -->
+                </div>
+                <!-- END switch_social_login -->
+			</div>
+		</form>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+<!-- END switch_user_login_form_footer -->
+
+<br style="clear:both" />
+
+<!-- BEGIN switch_legend -->
+<ul id="picture_legend" class="fx fx-ilegend">
+	<li class="fx-ilegend__item"><img src="{FORUM_NEW_IMG}" alt="{L_NEW_POSTS}" loading="lazy"/>{L_NEW_POSTS}</li>
+	<li class="fx-ilegend__item"><img src="{FORUM_IMG}" alt="{L_NO_NEW_POSTS}" loading="lazy"/>{L_NO_NEW_POSTS}</li>
+	<li class="fx-ilegend__item"><img src="{FORUM_LOCKED_IMG}" alt="{L_FORUM_LOCKED}" loading="lazy"/>{L_FORUM_LOCKED}</li>
+</ul>
+<!-- END switch_legend -->
+
+{AUTO_DST}

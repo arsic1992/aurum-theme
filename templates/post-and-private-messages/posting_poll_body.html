@@ -1,0 +1,104 @@
+<div class="h3 fx-sechead">{L_ADD_A_POLL}</div>
+<div class="panel row3 fx fx-category fx-groups fx-groups--slim fx-fpanel fx-poll">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<fieldset>
+	<dl class="fx-field">
+		<dt class="fx-field__label"><label>{L_POLL_QUESTION}</label></dt>
+		<dd class="fx-field__control"><input type="text" name="poll_title" maxlength="255" class="inputbox" value="{POLL_TITLE}" /></dd>
+	</dl>
+	<!-- BEGIN poll_option_textarea -->
+	<dl class="fx-field fx-field--stack">
+		<dt class="fx-field__label">
+			<label>{L_POLL_OPTION}</label><br />
+			<span class="italic">{L_POLL_QUESTION_EXPLAIN}</span>
+		</dt>
+		<dd class="fx-field__control"><textarea name="poll_option_text" rows="{POLL_OPTION_NUMBER}" cols="40" class="inputbox fx-poll__options">{POLL_OPTIONS}</textarea></dd>
+	</dl>
+	<!-- END poll_option_textarea -->
+	<hr class="dashed fx-sep" />
+	<!-- BEGIN poll_option_rows -->
+	<dl class="fx-field">
+		<dt class="fx-field__label"><label>{L_POLL_OPTION} n&deg;{poll_option_rows.S_POLL_OPTION_NUM_AFFICHE}</label></dt>
+		<dd class="fx-field__control fx-poll__row">
+			<input type="text" name="poll_option_text[{poll_option_rows.S_POLL_OPTION_NUM}]" class="inputbox" maxlength="255" value="{poll_option_rows.POLL_OPTION}" />
+			<input type="submit" name="del_poll_option[{poll_option_rows.S_POLL_OPTION_NUM}]" value="{L_DELETE_OPTION}" class="button2 fx-poll__del" />
+		</dd>
+	</dl>
+	<!-- END poll_option_rows -->
+	<!-- BEGIN poll_option_new -->
+	<dl class="fx-field">
+		<dt class="fx-field__label"><label>{L_POLL_OPTION} n&deg;1</label></dt>
+		<dd class="fx-field__control"><input type="text" name="poll_option_text[0]" class="inputbox" maxlength="255" value="" /></dd>
+	</dl>
+	<!-- END poll_option_new -->
+	<!-- BEGIN poll_option_more -->
+	<dl class="fx-field">
+		<dt class="fx-field__label"><label>{L_POLL_OPTION}</label></dt>
+		<dd class="fx-field__control fx-poll__row">
+			<input type="text" name="add_poll_option_text" maxlength="255" class="inputbox" value="{ADD_POLL_OPTION}" />
+			<input type="submit" name="add_poll_option" value="{L_ADD_OPTION}" class="button2 fx-poll__add" />
+		</dd>
+	</dl>
+	<!-- END poll_option_more -->
+	<dl class="fx-field">
+		<dt class="fx-field__label"><label>{L_POLL_LENGTH}</label></dt>
+		<dd class="fx-field__control">
+			<input type="text" name="poll_length" maxlength="3" class="tiny fx-poll__days" value="{POLL_LENGTH}" />
+				<span class="fx-poll__unit">{L_DAYS}</span>
+			<span class="italic">{L_POLL_LENGTH_EXPLAIN}</span>
+		</dd>
+	</dl>
+	<dl class="fx-field">
+		<dt class="fx-field__label"><label>{L_POLL_MULTIPLE}</label></dt>
+		<dd class="fx-field__control">
+			<label><input type="radio" name="poll_multiple" value="1" {POLL_MULTIPLE_CHECKED} /> {L_YES}</label>
+			<label><input type="radio" name="poll_multiple" value="0" {POLL_MULTIPLE_UNCHECKED} /> {L_NO}</label>
+		</dd>
+	</dl>
+
+	<dl class="fx-field">
+		<dt class="fx-field__label"><label>{L_POLL_CANCEL_VOTE}</label></dt>
+		<dd class="fx-field__control">
+			<label><input type="radio" name="poll_cancel_vote" value="1"{POLL_CANCEL_VOTE_AUTHORIZED_STATUS} /> {L_YES}</label>
+			<label><input type="radio" name="poll_cancel_vote" value="0"{POLL_CANCEL_VOTE_UNAUTHORIZED_STATUS} /> {L_NO}</label>
+		</dd>
+	</dl>
+
+	<!-- BEGIN switch_poll_public -->
+	<dl class="fx-field">
+		<dt class="fx-field__label"><label>{switch_poll_public.L_POLL_DISPLAY_MEMBERS}</label></dt>
+		<dd class="fx-field__control">
+			<label><input type="radio" name="poll_public_members" value="1"{switch_poll_public.POLL_DISPLAY_MEMBERS_CHECK} /> {L_YES}</label>
+			<label><input type="radio" name="poll_public_members" value="0"{switch_poll_public.POLL_DISPLAY_MEMBERS_UNCHECK} /> {L_NO}</label>
+		</dd>
+	</dl>
+	<!-- BEGIN switch_poll_whovoted -->
+	<dl class="fx-field">
+		<dt class="fx-field__label"><label>{switch_poll_public.switch_poll_whovoted.L_POLL_DISPLAY_WHOVOTED}</label></dt>
+		<dd class="fx-field__control">
+			<label><input type="radio" name="poll_public_whovoted" value="2"{switch_poll_public.switch_poll_whovoted.POLL_DISPLAY_WHOVOTED_CHECK_TIME} /> {switch_poll_public.switch_poll_whovoted.L_TIMED_REVEAL}</label>
+			<label><input type="radio" name="poll_public_whovoted" value="1"{switch_poll_public.switch_poll_whovoted.POLL_DISPLAY_WHOVOTED_CHECK} /> {L_YES}</label>
+			<label><input type="radio" name="poll_public_whovoted" value="0"{switch_poll_public.switch_poll_whovoted.POLL_DISPLAY_WHOVOTED_UNCHECK} /> {L_NO}</label>
+		</dd>
+	</dl>
+	<!-- END switch_poll_whovoted -->
+	<!-- END switch_poll_public -->
+	<!-- BEGIN switch_poll_hide_result -->
+	<dl class="fx-field">
+		<dt class="fx-field__label"><label>{L_POLL_HIDE_RESULT}</label></dt>
+		<dd class="fx-field__control">
+			<label><input type="radio" name="poll_hide_result" value="1"{POLL_HIDE_RESULT_CHECKED} /> {L_YES}</label>
+			<label><input type="radio" name="poll_hide_result" value="0"{POLL_HIDE_RESULT_UNCHECKED} /> {L_NO}</label>
+		</dd>
+	</dl>
+	<!-- END switch_poll_hide_result -->
+
+	<!-- BEGIN switch_poll_delete_toggle -->
+	<dl class="fx-field">
+		<dt class="fx-field__label"><label>{L_POLL_DELETE}</label></dt>
+		<dd class="fx-field__control"><input type="checkbox" name="poll_delete" /></dd>
+	</dl>
+	<!-- END switch_poll_delete_toggle -->
+	</fieldset>
+	<span class="corners-bottom"><span></span></span></div>
+</div>

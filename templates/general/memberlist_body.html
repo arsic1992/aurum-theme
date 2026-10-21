@@ -1,0 +1,84 @@
+<div class="fx fx-meta">
+	<p class="fx-meta__time">{CURRENT_TIME}</p>
+	<!-- BEGIN switch_user_logged_in -->
+	<p class="right rightside fx-meta__visit">{LAST_VISIT_DATE}</p>
+	<!-- END switch_user_logged_in -->
+</div>
+<h1 class="page-title solo fx fx-viewhead">{PAGE_TITLE}</h1>
+
+<form action="{S_MODE_ACTION}" method="get">
+<div class="panel fx fx-filter">
+	<div class="inner fx-filter__inner"><span class="corners-top"><span></span></span>
+	<h2 class="h3 fx-filter__title">{L_ORDER_OR_SELECT}</h2>
+	<div class="fx-filter__row">
+		<label class="fx-filter__field"><span>{L_USER_SELECT}</span><input type="text" class="inputbox tiny" name="username" maxlength="25" size="20" value="{L_USER_SELECT_VALUE}" /></label>
+		<label class="fx-filter__field"><span>{L_SELECT_SORT_METHOD}</span>{S_MODE_SELECT}</label>
+		<label class="fx-filter__field"><span>{L_ORDER}</span>{S_ORDER_SELECT}</label>
+		{S_HIDDEN_SID}
+		<input class="button2 fx-filter__submit" type="submit" name="submit" value="{L_SUBMIT}" />
+	</div>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+</form>
+
+<div class="forumbg forumbg-table fx fx-category fx-members">
+	<div class="inner fx-members__inner"><span class="corners-top"><span></span></span>
+
+	<!-- column labels are kept for the template engine; shown only to screen readers -->
+	<div class="fx-members__legend">
+		<span>#</span>
+		<span>{L_AVATAR} - {L_USERNAME}</span>
+		<!-- BEGIN switch_th_group -->
+			<span>{L_GROUPS}</span>
+		<!-- END switch_th_group -->
+		<!-- BEGIN switch_th_point -->
+			<span>{L_POINT}</span>
+		<!-- END switch_th_point -->
+		<span>{L_INTERESTS}</span>
+		<span>{L_JOINED}</span>
+		<span>{L_VISITED}</span>
+		<span>{L_POSTS}</span>
+		<!-- BEGIN switch_th_pm -->
+		<span>{L_PM}</span>
+		<!-- END switch_th_pm -->
+		<span>{L_WEBSITE}</span>
+	</div>
+
+	<div class="table1 fx-members__grid" id="memberlist">
+	<!-- BEGIN memberrow -->
+	<div class="{memberrow.ROW_CLASS} fx-member">
+		<span class="fx-member__no">{memberrow.ROW_NUMBER}</span>
+		<div class="avatar-mini fx-member__media">
+			<a class="fx-member__link" href="{memberrow.U_VIEWPROFILE}">{memberrow.AVATAR_IMG}</a>
+			<div class="fx-member__info">
+				<!-- BEGIN switch_td_group -->
+				<div class="fx-member__field"><span class="fx-member__label">{L_GROUPS}</span><span class="fx-member__value">{memberrow.GROUPS}</span></div>
+				<!-- END switch_td_group -->
+				<!-- BEGIN switch_td_point -->
+				<div class="fx-member__field"><span class="fx-member__label">{L_POINT}</span><span class="fx-member__value">{memberrow.POINTS}</span></div>
+				<!-- END switch_td_point -->
+				<div class="fx-member__field"><span class="fx-member__label">{L_POSTS}</span><span class="fx-member__value">{memberrow.POSTS}</span></div>
+				<div class="fx-member__field"><span class="fx-member__label">{L_JOINED}</span><span class="fx-member__value">{memberrow.JOINED}</span></div>
+				<div class="fx-member__field"><span class="fx-member__label">{L_VISITED}</span><span class="fx-member__value">{memberrow.LASTVISIT}</span></div>
+				<div class="fx-member__field fx-member__field--wide"><span class="fx-member__label">{L_INTERESTS}</span><span class="fx-member__value">{memberrow.INTERESTS}</span></div>
+				<div class="fx-member__actions"><!-- BEGIN switch_td_pm -->{memberrow.PM_IMG}<!-- END switch_td_pm -->{memberrow.WWW_IMG}</div>
+			</div>
+		</div>
+		<a class="fx-member__name" href="{memberrow.U_VIEWPROFILE}">{memberrow.USERNAME}</a>
+	</div>
+	<!-- END memberrow -->
+	<!-- BEGIN switch_no_user -->
+	<div class="row1 fx-member fx-member--empty" data-cols="{switch_no_user.COLSPAN_NUMBER}">
+		{switch_no_user.L_NO_USER}
+	</div>
+	<!-- END switch_no_user -->
+	</div>
+
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+
+<div class="pagination fx fx-pagination">
+	<!-- BEGIN switch_pagination -->
+	{PAGINATION}<br /><br />
+	<!-- END switch_pagination -->
+</div>

@@ -1,0 +1,31 @@
+<div class="forumbg forumbg-table fx fx-category fx-groups fx-gpanel fx-gpanel--pending">
+	<div class="inner"><span class="corners-top"><span></span></span>
+
+		<!-- column labels are kept for the template engine; shown only to screen readers -->
+		<div class="fx-sr">
+			<span>{L_PM}</span>
+			<span>{L_USERNAME}</span>
+			<span>{L_POSTS}</span>
+			<span>{L_FROM}</span>
+			<span>{L_EMAIL}</span>
+			<span>{L_WEBSITE}</span>
+			<span>{L_SELECT}</span>
+		</div>
+
+		<h2 class="fx-ptitle fx-ptitle--small">{L_PENDING_MEMBERS}</h2>
+		<!-- BEGIN pending_members_row -->
+		<div class="{pending_members_row.ROW_CLASS} fx-gmember">
+			<div class="fx-gmember__name"><a href="{pending_members_row.U_VIEWPROFILE}">{pending_members_row.USERNAME}</a></div>
+			<div class="fx-gmember__stat"><span class="fx-gmember__value">{pending_members_row.POSTS}</span><span class="fx-gmember__label">{L_POSTS}</span></div>
+			<div class="fx-gmember__stat"><span class="fx-gmember__value">{pending_members_row.FROM}</span><span class="fx-gmember__label">{L_FROM}</span></div>
+			<div class="fx-gmember__actions">{pending_members_row.PM_IMG}{pending_members_row.EMAIL_IMG}{pending_members_row.WWW_IMG}</div>
+			<label class="fx-gcheck"><input type="checkbox" name="pending_members[]" value="{pending_members_row.USER_ID}" checked="checked" /></label>
+		</div>
+		<!-- END pending_members_row -->
+
+		<div class="fx-gbar">
+			<p class="right-box fx-gbar__remove"><input class="button2" type="submit" name="approve" value="{L_APPROVE_SELECTED}" />&nbsp;<input class="button2" type="submit" name="deny" value="{L_DENY_SELECTED}" /></p>
+		</div>
+		<div class="clear"></div>
+		<span class="corners-bottom"><span></span></span></div>
+</div>

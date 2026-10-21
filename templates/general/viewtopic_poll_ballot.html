@@ -1,0 +1,39 @@
+<form method="post" action="{S_POLL_ACTION}" class="fx-vote__form">
+	<div class="panel fx fx-vote fx-vote--ballot">
+		<div class="inner fx-vote__inner">
+			<span class="corners-top"><span></span></span>
+			<div class="content fx-vote__content">
+				<div class="fx-vote__head">
+				<h2 class="left-box h3 fx-vote__q">{POLL_QUESTION}</h2>
+				<p class="right-box fx-vote__close">{CLOSE_POLL}</p>
+				</div>
+				<div class="clear"></div>
+				<fieldset class="polls fx-vote__list">
+					<!-- BEGIN poll_option -->
+					<dl class="fx-vote__opt">
+						<dt class="fx-vote__cap">{poll_option.POLL_OPTION_CAPTION}</dt>
+						<dd class="fx-vote__pick"><input class="fx-vote__input" type="{poll_option.POLL_TYPE_BUTTON}" name="vote_id[]" value="{poll_option.POLL_OPTION_ID}" />&nbsp;</dd>
+					</dl>
+					<!-- END poll_option -->
+					<dl class="fx-vote__foot">
+						<dt class="fx-vote__spacer">&nbsp;</dt>
+						<dd class="fx-vote__submit"><input type="submit" name="submit" value="{L_SUBMIT_VOTE}" class="button1 fx-vote__btn" /></dd>
+					</dl>
+					<dl class="fx-vote__foot fx-vote__foot--link">
+						<dt class="fx-vote__spacer">&nbsp;</dt>
+						<dd class="resultbar fx-vote__results"><strong><a href="{U_VIEW_RESULTS}">{L_VIEW_RESULTS}</a></strong></dd>
+					</dl>
+					<div class="fx-vote__notes">
+					<!-- BEGIN warning_public_votes -->
+					<span class="fx-vote__warn">{warning_public_votes.L_WARNING_PUBLIC_VOTES}</span>
+					<br/>
+					<!-- END warning_public_votes -->
+					<span class="fx-vote__expire">{L_VOTE_EXPIRE}</span>
+					</div>
+					{S_HIDDEN_FIELDS}
+				</fieldset>
+			</div>
+			<span class="corners-bottom"><span></span></span>
+		</div>
+	</div>
+</form>

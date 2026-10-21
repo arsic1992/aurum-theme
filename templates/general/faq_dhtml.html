@@ -1,0 +1,35 @@
+<div class="fx fx-meta">
+	<!-- BEGIN switch_user_logged_in --><p class="right rightside fx-meta__visit">{LAST_VISIT_DATE}</p><!-- END switch_user_logged_in -->
+	<p class="fx-meta__time">{CURRENT_TIME}</p>
+</div>
+
+<script src="{U_CFAQ_JSLIB}" type="text/javascript"></script>
+<noscript>
+<div class="panel fx fx-gnotice">
+	<div class="inner"><span class="corners-top"><span></span></span>
+		<p class="center">{L_CFAQ_NOSCRIPT}</p>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+</noscript>
+
+<h1 class="page-title fx fx-viewhead">{L_FAQ_TITLE}</h1>
+<div class="fx fx-faqs">
+<!-- BEGIN faq_block -->
+<div class="panel row1 fx fx-category fx-faq">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<dl class="faq fx-faq__list">
+		<dt class="fx-faq__title">{faq_block.BLOCK_TITLE}</dt>
+		<!-- BEGIN faq_row -->
+ 		<dd class="fx-faq__q" onclick="return CFAQ.display('faq_a_{faq_block.faq_row.U_FAQ_ID}', false);">
+			<a href="javascript:void(0)" onclick="return CFAQ.display('faq_a_{faq_block.faq_row.U_FAQ_ID}', true);" onfocus="this.blur();">{faq_block.faq_row.FAQ_QUESTION}</a>
+ 		</dd>
+		<dd class="fx-faq__a" style="display:none;" id="faq_a_{faq_block.faq_row.U_FAQ_ID}"><p>{faq_block.faq_row.FAQ_ANSWER}</p></dd>
+		<!-- END faq_row -->
+	</dl>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+<!-- END faq_block -->
+</div>
+<form action="{S_JUMPBOX_ACTION}" method="get" name="jumpbox" onsubmit="if(document.jumpbox.f.value == -1){return false;}">
+	<p class="right fx fx-jump">{L_JUMP_TO}:&nbsp;{S_JUMPBOX_SELECT}&nbsp;<input class="button2" type="submit" value="{L_GO}" /></p>
+</form>

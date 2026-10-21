@@ -1,0 +1,33 @@
+.tooltipster-base {
+    display: none;
+}
+#profile-advanced-left {
+margin-right:0!important;
+}
+.fx-side--id .fx-side__body > img {
+margin-top:0!important;
+}
+
+.fx-nav-spacer {
+display:none!important;
+}
+
+.fx-post .fx-post__likes .rep-button svg {
+display:none!important;
+}
+.fx-code code { max-height: none !important; overflow-y: visible !important; }
+.fx-post__content { max-width: 100% !important; }
+#smiley-box, .smile-status-box {background-color:transparent!important;}
+#textarea_content {
+width:90%!important;
+}
+.sceditor-container textarea {
+height:200px!important;
+}
+.avatar {
+background-color:transparent!important;
+border:none!important;
+}
+fieldset dl:hover dt label{
+color:#d6ac5b!important;
+}

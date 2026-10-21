@@ -1,0 +1,33 @@
+<div class="fx fx-meta">
+	<!-- BEGIN switch_user_logged_in -->
+	<p class="right rightside fx-meta__visit">{LAST_VISIT_DATE}</p>
+	<!-- END switch_user_logged_in -->
+	<p class="fx-meta__time">{CURRENT_TIME}</p>
+</div>
+
+<form action="{S_PROFILE_ACTION}" method="post">
+<h1 class="page-title fx fx-viewhead">{L_AVATAR_GALLERY}</h1>
+<div class="panel row3 fx fx-category fx-groups fx-groups--slim fx-fpanel">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<p class="center fx-gallery__bar">{L_CATEGORY}:{S_CATEGORY_SELECT}<input class="button2" type="submit" name="avatargallery" value="{L_GO}" /></p>
+	<div class="fx-gallery">
+	<!-- BEGIN avatar_row -->
+		<!-- BEGIN avatar_column -->
+		<div class="row1 left-box gallery-avatar fx-tile">
+			<!-- BEGIN avatar_option_column -->
+			<p class="row2 info-gallery fx-tile__pick"><input type="radio" name="avatarselect" value="{avatar_row.avatar_column.avatar_option_column.S_OPTIONS_AVATAR}" /></p>
+			<!-- END avatar_option_column -->
+			<img class="fx-tile__img" title="{avatar_row.avatar_column.AVATAR_NAME}" src="{avatar_row.avatar_column.AVATAR_IMAGE}" alt="{avatar_row.avatar_column.AVATAR_NAME}" />
+		</div>
+		<!-- END avatar_column -->
+	<!-- END avatar_row -->
+	</div>
+	<div class="clear"></div>
+	<fieldset class="submit-buttons fx fx-groups fx-fbar">
+		{S_HIDDEN_FIELDS}
+		<input class="button1" type="submit" name="submitavatar" value="{L_SELECT_AVATAR}" />
+		<input class="button2" type="submit" name="cancelavatar" value="{L_RETURN_PROFILE}" />
+	</fieldset>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+</form>

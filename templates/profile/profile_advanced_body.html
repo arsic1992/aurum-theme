@@ -1,0 +1,572 @@
+<div class="fx fx-meta">
+	<!-- BEGIN switch_user_logged_in -->
+	<p class="right rightside fx-meta__visit">{LAST_VISIT_DATE}</p>
+	<!-- END switch_user_logged_in -->
+	<p class="fx-meta__time">{CURRENT_TIME}</p>
+</div>
+
+<h1 class="page-title fx fx-viewhead">{L_VIEWING_PROFILE}</h1>
+
+<div class="fx fx-pview">
+<div id="profile-advanced-layout" class="fx-pview__main">
+	<div id="profile-advanced-left">
+
+		<div id="new-message" class="fx fx-ptabs">
+			<div id="tabs" class="fx-ptabs__bar">
+				<!-- BEGIN switch_messages_tab -->
+				<!-- BEGIN switch_new_message -->
+				<div id="new-message-link" class="fx-pnew">{NEW_MESSAGE_LINK}</div>
+				<!-- END switch_new_message -->
+				<!-- END switch_messages_tab -->
+				<ul class="fx-ptabs__list">
+					<!-- BEGIN tab -->
+					{tab.TAB}
+					<!-- END tab -->
+				</ul>
+			</div>
+		</div>
+
+		<div id="profile-advanced-details" class="panel row3 fx fx-ucp fx-pbody">
+			<div class="inner">
+				<span class="corners-top"><span></span></span>
+				<div id="cp-main" class="ucp-main">
+				<h1 class="fx fx-ptitle">{L_TAB_TITLE}</h1>
+					<div class="panel fx fx-category fx-groups fx-groups--slim fx-pbox">
+
+						<div class="inner"><span class="corners-top"><span></span></span>
+
+							<!-- BEGIN switch_unregistered -->
+							<div class="unregistered-block fx-ubar">
+								<span class="rep-button unregistered fx-badge">{switch_unregistered.L_UNREGISTERED}</span>
+								<!-- BEGIN switch_unregistered_management -->
+								<span class="rep-button fx-badge fx-badge--link"><a class="white-text" href="{switch_unregistered.switch_unregistered_management.U_VALIDATE_USER}">{switch_unregistered.switch_unregistered_management.L_VALIDATE_USER}</a></span>
+								<!-- END switch_unregistered_management -->
+							</div>
+							<br/>
+							<!-- END switch_unregistered -->
+
+							<!-- BEGIN switch_pagination -->
+							<div class="pagination top fx-pview__pages">{PAGINATION} {PAGE_NUMBER}</div>
+							<div class="clear"></div>
+							<!-- END switch_pagination -->
+
+							<!-- BEGIN switch_messages_tab -->
+							{L_NO_MESSAGE}
+
+							<!-- BEGIN switch_has_messages -->
+							<ol class="fx-plist">
+								<!-- BEGIN message_row -->
+								<li class="fx-pitem">
+									<div class="avatar fx-avatar"><a href="{switch_messages_tab.switch_has_messages.message_row.USER_URL}">{switch_messages_tab.switch_has_messages.message_row.AVATAR}</a></div>
+									<div class="message-block fx-pitem__body">
+										<div class="message-header fx-pitem__head">
+											<div class="message-date fx-pitem__date">{switch_messages_tab.switch_has_messages.message_row.DATE}</div>
+											{switch_messages_tab.switch_has_messages.message_row.MINI_MESSAGE_IMG}{L_MESSAGE_BY} <a href="{switch_messages_tab.switch_has_messages.message_row.USER_URL}">{switch_messages_tab.switch_has_messages.message_row.USER_NAME}</a>{switch_messages_tab.switch_has_messages.message_row.USER_ONLINE_ONLY}{switch_messages_tab.switch_has_messages.message_row.SUBJECT}
+										</div>
+										<div class="message-text fx-pitem__text">{switch_messages_tab.switch_has_messages.message_row.TEXT}</div>
+										<div class="clearfix"></div>
+										<ul class="message-footer fx-pitem__foot">
+											<!-- BEGIN user_action -->
+											{switch_messages_tab.switch_has_messages.message_row.user_action.ACTION}
+											<!-- END user_action -->
+										</ul>
+										<div class="clear"></div>
+									</div>
+								</li>
+								<!-- END message_row -->
+							</ol>
+							<div class="new-message bottom fx-pnew">{NEW_MESSAGE_LINK}</div>
+							<!-- END switch_has_messages -->
+							<!-- END switch_messages_tab -->
+
+							<!-- BEGIN switch_profile_tab -->
+							<div class="middleline fx-pfields">
+								{L_NO_FIELD}
+								<div id="profile-tab-field-profil" class="fx-pfields__list">
+								<!-- BEGIN profile_field -->
+								<dl id="{switch_profile_tab.profile_field.ID}" class="fx-pfld">
+									<dt class="fx-pfld__label">
+										{switch_profile_tab.profile_field.LABEL}
+									</dt>
+									<dd class="fx-pfld__value">
+										{switch_profile_tab.profile_field.CONTENT}
+									</dd>
+								</dl>
+								<div class="separator">&nbsp;</div>
+								<!-- END profile_field -->
+								</div>
+							</div>
+
+							<!-- BEGIN switch_auth_user -->
+								<p class="fx-padmin">{L_ADMINISTRATE_USER} : <strong>{ADMINISTRATE_USER}{BAN_USER}</strong></p>
+							<!-- END switch_auth_user -->
+							<!-- END switch_profile_tab -->
+
+							<!-- BEGIN switch_stats_tab -->
+							<!-- BEGIN points_fieldset -->
+							<fieldset class="stats-field genmed fx-sbox">
+								<legend class="fx-sbox__title">{switch_stats_tab.points_fieldset.L_POINTS_SYSTEM}</legend>
+								<ul class="fx-sbox__list">
+									<li><label>{switch_stats_tab.points_fieldset.L_POINTS} :</label> {switch_stats_tab.points_fieldset.POINTS}</li>
+									<!-- BEGIN points_per_post -->
+									<li><label>{switch_stats_tab.points_fieldset.points_per_post.L_POINTS_PER_POST} :</label> {switch_stats_tab.points_fieldset.points_per_post.POINTS_PER_POST}</li>
+									<!-- END points_per_post -->
+								</ul>
+							</fieldset>
+							<!-- END points_fieldset -->
+							<!-- BEGIN reputation_fieldset -->
+							<fieldset class="stats-field genmed fx-sbox">
+								<legend class="fx-sbox__title">{switch_stats_tab.reputation_fieldset.L_REPUTATION_SYSTEM}</legend>
+								<ul class="fx-sbox__list">
+									<li><label>{switch_stats_tab.reputation_fieldset.L_REPUTATION} :</label> {switch_stats_tab.reputation_fieldset.REPUTATION}</li>
+									<li><label>{switch_stats_tab.reputation_fieldset.L_VOTES_POSITIVE_RECEIVED} :</label> {switch_stats_tab.reputation_fieldset.VOTES_POSITIVE_RECEIVED}</li>
+									<li><label>{switch_stats_tab.reputation_fieldset.L_VOTES_NEGATIVE_RECEIVED} :</label> {switch_stats_tab.reputation_fieldset.VOTES_NEGATIVE_RECEIVED}</li>
+									<!-- BEGIN thanks -->
+									<li><label>{switch_stats_tab.reputation_fieldset.thanks.L_THANKS_RECEIVED} :</label> {switch_stats_tab.reputation_fieldset.thanks.THANKS_RECEIVED}</li>
+									<!-- END thanks -->
+									<li><label>{switch_stats_tab.reputation_fieldset.L_VOTES_POSITIVE_GIVEN} :</label> {switch_stats_tab.reputation_fieldset.VOTES_POSITIVE_GIVEN}</li>
+									<li><label>{switch_stats_tab.reputation_fieldset.L_VOTES_NEGATIVE_GIVEN} :</label> {switch_stats_tab.reputation_fieldset.VOTES_NEGATIVE_GIVEN}</li>
+									<!-- BEGIN thanks -->
+									<li><label>{switch_stats_tab.reputation_fieldset.thanks.L_THANKS_GIVEN} :</label> {switch_stats_tab.reputation_fieldset.thanks.THANKS_GIVEN}</li>
+									<!-- END thanks -->
+								</ul>
+							</fieldset>
+							<!-- END reputation_fieldset -->
+							<fieldset class="stats-field genmed fx-sbox">
+								<legend class="fx-sbox__title">{L_TOPICS}</legend>
+								<ul class="fx-sbox__list">
+									<li><label><a rel="nofollow" href="/st/{PUSERNAME}">{L_TOTAL_TOPICS}</a> :</label> {TOTAL_TOPICS} ({TOPIC_PERCENT_STATS})</li>
+									<li><label>{L_TOPICS_PER_DAY} :</label> {TOPICS_PER_DAY}</li>
+									<li><label>{L_LAST_TOPIC} :</label> {LAST_TOPIC}</li>
+									<li><label><a rel="nofollow" href="/sta/{PUSERNAME}">{L_SEARCH_USER_TOPICS}</a></label></li>
+								</ul>
+							</fieldset>
+							<fieldset class="stats-field genmed fx-sbox">
+								<legend class="fx-sbox__title">{L_POSTS}</legend>
+								<ul class="fx-sbox__list">
+									<li><label>{L_TOTAL_POSTS} :</label> {TOTAL_POSTS} ({POST_PERCENT_STATS})</li>
+									<li><label>{L_POSTS_PER_DAY} :</label> {POSTS_PER_DAY}</li>
+									<li><label>{L_LAST_POST} :</label> {LAST_POST}</li>
+									<li><label><a rel="nofollow" href="/spa/{PUSERNAME}">{L_SEARCH_USER_POSTS}</a></label></li>
+								</ul>
+							</fieldset>
+							<!-- BEGIN visitor_messages_fieldset -->
+							<fieldset class="stats-field genmed fx-sbox">
+								<legend class="fx-sbox__title">{switch_stats_tab.visitor_messages_fieldset.L_VISITOR_MESSAGES}</legend>
+								<ul class="fx-sbox__list">
+									<li><label>{switch_stats_tab.visitor_messages_fieldset.L_TOTAL_MESSAGES} :</label> {switch_stats_tab.visitor_messages_fieldset.TOTAL_MESSAGES}</li>
+									<li><label>{switch_stats_tab.visitor_messages_fieldset.L_LAST_MESSAGE} :</label> {switch_stats_tab.visitor_messages_fieldset.LAST_MESSAGE}</li>
+									<li><label><a rel="nofollow" href="{switch_stats_tab.visitor_messages_fieldset.U_SEARCH_USER_MESSAGES}">{switch_stats_tab.visitor_messages_fieldset.L_SEARCH_USER_MESSAGES}</a></label></li>
+									<li><label><a rel="nofollow" href="{switch_stats_tab.visitor_messages_fieldset.U_POST_MESSAGE}">{switch_stats_tab.visitor_messages_fieldset.L_POST_MESSAGE}</a></label></li>
+								</ul>
+							</fieldset>
+							<!-- END visitor_messages_fieldset -->
+							<fieldset class="stats-field genmed fx-sbox">
+								<legend class="fx-sbox__title">{L_INFORMATION}</legend>
+								<ul class="fx-sbox__list">
+									<!-- BEGIN friends -->
+									<li><label>{switch_stats_tab.friends.L_FRIENDS} :</label> {switch_stats_tab.friends.FRIENDS}</li>
+									<!-- END friends -->
+									<!-- BEGIN switch_dhow_mp -->
+									<li><label>{L_PRIVATE_MSG} :</label> {PRIVATE_MSG}</li>
+									<!-- END switch_dhow_mp -->
+
+									<!-- BEGIN attachments -->
+									<li><label>{switch_stats_tab.attachments.L_ATTACHMENTS} :</label> {switch_stats_tab.attachments.ATTACHMENTS}</li>
+									<!-- END attachments -->
+
+									<li><label>{L_JOINED} :</label> {JOINED}</li>
+									<li><label>{L_LAST_VISITED} :</label> {LAST_VISIT_TIME}</li>
+								</ul>
+							</fieldset>
+							<!-- END switch_stats_tab -->
+
+							<!-- BEGIN switch_friends_tab -->
+							{L_NO_FRIEND}
+							<!-- BEGIN switch_has_friends -->
+							<ol class="fx-plist">
+								<!-- BEGIN friend_row -->
+								<li class="fx-pitem">
+									<div class="avatar fx-avatar"><a href="{switch_friends_tab.switch_has_friends.friend_row.FRIEND_URL}">{switch_friends_tab.switch_has_friends.friend_row.AVATAR_IMG}</a></div>
+									<div class="message-block fx-pitem__body">
+										<div class="message-header fx-pitem__head">
+											<a href="{switch_friends_tab.switch_has_friends.friend_row.FRIEND_URL}">{switch_friends_tab.switch_has_friends.friend_row.FRIEND_NAME}</a>{switch_friends_tab.switch_has_friends.friend_row.FRIEND_ONLINE_ONLY}
+										</div>
+										<div class="message-text fx-pitem__text">
+											{switch_friends_tab.switch_has_friends.friend_row.FRIEND_INTERESTS}
+											{switch_friends_tab.switch_has_friends.friend_row.FRIEND_GROUPS}
+											{switch_friends_tab.switch_has_friends.friend_row.FRIEND_RANK}
+										</div>
+										<div class="clearfix"></div>
+										<ul class="message-footer fx-pitem__foot">
+											<!-- BEGIN user_action -->
+											{switch_friends_tab.switch_has_friends.friend_row.user_action.ACTION}
+											<!-- END user_action -->
+										</ul>
+										<div class="clear"></div>
+									</div>
+								</li>
+								<!-- END friend_row -->
+							</ol>
+							<!-- END switch_has_friends -->
+							<!-- END switch_friends_tab -->
+
+							<!-- BEGIN switch_followers_tab -->
+                            {L_FOLLOWED_MEMBERS}
+							<!-- BEGIN switch_followed -->
+							<div class="followers_block fx-fgrid">
+                                {L_NO_FOLLOWED}
+								<!-- BEGIN followed_row -->
+								<div class="follower-card fx-fcard">
+                                    {switch_followers_tab.switch_followed.followed_row.AVATAR}
+									<div class="details fx-fcard__details">
+										<a href="{switch_followers_tab.switch_followed.followed_row.PROFILE_URL}">
+											<p>{switch_followers_tab.switch_followed.followed_row.USERNAME}</p>
+										</a>
+										<!-- BEGIN switch_follow_btn -->
+										<button onclick="doFollowAction(this);" data-id="{switch_followers_tab.switch_followed.followed_row.UID}" class="followBtn {switch_followers_tab.switch_followed.followed_row.C_CLASS} button1">
+                                            {switch_followers_tab.switch_followed.followed_row.L_FOLLOW_TEXT}
+										</button>
+										<!-- END switch_follow_btn -->
+									</div>
+								</div>
+								<!-- END followed_row -->
+							</div>
+							<!-- END switch_followed -->
+							<!-- END switch_followers_tab -->
+
+							<!-- BEGIN switch_groups_tab -->
+                            {L_NO_GROUP}
+							<!-- BEGIN switch_has_groups -->
+							<ol class="fx-plist">
+								<!-- BEGIN group_row -->
+								<li class="fx-pitem">
+									<div id="group-{switch_groups_tab.switch_has_groups.group_row.GROUP_ID}" class="message-block fx-pitem__body">
+										<div class="message-header fx-pitem__head">
+											<div {switch_groups_tab.switch_has_groups.group_row.GROUP_STYLE}><strong>{switch_groups_tab.switch_has_groups.group_row.GROUP_NAME}</strong></div>
+										</div>
+										<div class="message-text fx-pitem__text">
+											<div>{switch_groups_tab.switch_has_groups.group_row.GROUP_DESC}</div>
+											<div><b>{switch_groups_tab.switch_has_groups.L_STATUT} : </b><i>{switch_groups_tab.switch_has_groups.group_row.GROUP_TYPE}</i></div>
+										</div>
+										<div class="clearfix"></div>
+										<ul class="message-footer fx-pitem__foot">
+											<li><a href="{switch_groups_tab.switch_has_groups.group_row.GROUP_URL}">{switch_groups_tab.switch_has_groups.L_GROUP_SEE}</a></li>
+										</ul>
+										<div class="clear"></div>
+									</div>
+								</li>
+								<!-- END group_row -->
+							</ol>
+							<!-- END switch_has_groups -->
+							<!-- END switch_groups_tab -->
+
+							<!-- BEGIN switch_awards_tab -->
+							<div id="profile_awards_full">
+								<!-- BEGIN switch_no_awards -->
+								<p>{switch_awards_tab.switch_no_awards.L_NO_AWARDS}</p>
+								<!-- END switch_no_awards -->
+								<!-- BEGIN switch_awards_owned -->
+								<div class="h3 fx-gsection"><span>{L_AWARDS_OWNED}</span></div>
+								<div class="awards_block owned fx-awards">
+									<!-- BEGIN award_row -->
+									<div class="award_row fx-award">
+										<div class="award_img">{switch_awards_tab.switch_awards_owned.award_row.IMAGE}</div>
+										<div class="award_desc">
+											<b>{switch_awards_tab.switch_awards_owned.award_row.TITLE}</b>
+											<p>{switch_awards_tab.switch_awards_owned.award_row.DESC}</p>
+											<i>{switch_awards_tab.switch_awards_owned.award_row.INFOS}</i>
+										</div>
+									</div>
+									<!-- END award_row -->
+								</div>
+								<!-- END switch_awards_owned -->
+								<!-- BEGIN switch_awards_unowned -->
+								<div class="h3 fx-gsection"><span>{L_AWARDS_UNOWNED}</span></div>
+								<div class="awards_block unowned fx-awards">
+									<!-- BEGIN award_row -->
+									<div class="award_row fx-award">
+										<div class="award_img">{switch_awards_tab.switch_awards_unowned.award_row.IMAGE}</div>
+										<div class="award_desc">
+											<b>{switch_awards_tab.switch_awards_unowned.award_row.TITLE}</b>
+											<p>{switch_awards_tab.switch_awards_unowned.award_row.DESC}</p>
+											<i>{switch_awards_tab.switch_awards_unowned.award_row.INFOS}</i>
+										</div>
+									</div>
+									<!-- END award_row -->
+								</div>
+								<!-- END switch_awards_unowned -->
+							</div>
+							<!-- END switch_awards_tab -->
+
+
+							<!-- BEGIN switch_rpg -->
+							<p class="fx-rpgimg">{RPG_IMAGE}</p>
+							<hr />
+
+							<!-- BEGIN rpg_fields_left -->
+							<div class="column1 fx-rpgcol">
+								<dl class="details fx-pfld">
+									<dt class="fx-pfld__label">{switch_rpg.rpg_fields_left.F_NAME} :</dt>
+									<dd class="fx-pfld__value">{switch_rpg.rpg_fields_left.F_VALUE_NEW}</dd>
+								</dl>
+							</div>
+							<!-- END rpg_fields_left -->
+
+							<!-- BEGIN rpg_fields -->
+							<div class="column2 fx-rpgcol">
+								<dl class="details fx-pfld">
+									<dt class="fx-pfld__label">{switch_rpg.rpg_fields.F_NAME} :</dt>
+									<dd class="fx-pfld__value">{switch_rpg.rpg_fields.F_VALUE_NEW}</dd>
+								</dl>
+							</div>
+							<!-- END rpg_fields -->
+							<div class="clear"></div>
+							<fieldset class="submit-buttons fx fx-groups fx-fbar">
+								{U_ADMIN_RPG_NEW}
+							</fieldset>
+							<!-- END switch_rpg -->
+
+							<!-- BEGIN switch_attachments -->
+							{switch_attachments.U_MODERATE_ATTACHMENTS}
+							<!-- END switch_attachments -->
+
+							<!-- BEGIN switch_attachments_list -->
+								<div class="panel row3 fx fx-ucp">
+									<div class="inner">
+										<span class="corners-top"></span>
+										<div id="cp-main" class="ucp-main">
+											<!-- BEGIN switch_storage -->
+											<h1 class="page-title">{L_STORAGE_USER} ({L_USED})</h1>
+											<!-- END switch_storage -->
+
+											<!-- BEGIN switch_storage_full -->
+											<h1 class="page-title">{L_USED_FULL}</h1>
+											<!-- END switch_storage_full -->
+											<div class="panel fx fx-ucp">
+												<div class="inner">
+													<span class="corners-top"><span></span></span>
+													<form method="post" name="manage" action="{S_CONFIRM_ACTION}">
+														<table class="table1 fx-table" cellspacing="1">
+															<thead>
+																<tr>
+																	<th>{L_FILENAME}</th>
+																	<th>{L_FILESIZE}</th>
+																	<th>{L_FILETYPE}</th>
+																	<th>{L_FILEDOWNLOADED}</th>
+																	<th width="10%">{L_ACTION}</th>
+																	<!-- BEGIN switch_attachments_management -->
+																	<th width="5%">X</th>
+																	<!-- END switch_attachments_management -->
+																</tr>
+															</thead>
+															<tbody>
+																<!-- BEGIN no_attachments -->
+																<tr align="center">
+																	<td class="row1" colspan="6" align="center" valign="middle">{switch_attachments_list.no_attachments.L_ATTACHMENTS_NONE}</td>
+																</tr>
+																<!-- END no_attachments -->
+																<!-- BEGIN row_attachments -->
+																<tr align="center">
+																	<td class="row1" align="center" valign="middle">{switch_attachments_list.row_attachments.FILENAME}</td>
+																	<td class="row2" align="center" valign="middle">{switch_attachments_list.row_attachments.FILESIZE}</td>
+																	<td class="row1" align="center" valign="middle">{switch_attachments_list.row_attachments.FILETYPE}</td>
+																	<td class="row2" align="center" valign="middle">{switch_attachments_list.row_attachments.FILEDOWNLOADED}</td>
+																	<td class="row1" align="center" valign="middle">{switch_attachments_list.row_attachments.ACTION}</td>
+																	<!-- BEGIN switch_attachments_management -->
+																	<td class="row1" align="center" valign="middle">{switch_attachments_list.row_attachments.S_SELECT_TABLE}</td>
+																	<!-- END switch_attachments_management -->
+																</tr>
+																<!-- END row_attachments -->
+															</tbody>
+														</table>
+
+														<!-- BEGIN switch_attachments_management -->
+														<p class="right-box"><input class="button2" type="submit" name="attachments_submit" value="{L_DELETE}" /><div class="clear"></div></p>
+														<p class="right-box"><a href="#" onclick="this.value=check('select','manage');return false;">{L_SELECT_ALL}</a>&nbsp;::&nbsp;<a href="#" onclick="this.value=check('unselect','manage');return false;">{L_USELECT_ALL}</a></p>
+														<!-- END switch_attachments_management -->
+													</form>
+
+													<!-- BEGIN switch_pagination -->
+													<br />
+													<div style="text-align:center;" >{PAGINATION}</div>
+													<!-- END switch_pagination -->
+
+													<div class="clear"></div>
+													<span class="corners-bottom"><span></span></span>
+												</div>
+											</div>
+										</div>
+										<span class="corners-bottom"><span></span></span>
+									</div>
+
+								</div>
+							<!-- END switch_attachments_list -->
+
+							<!-- BEGIN switch_pagination -->
+							<div class="pagination top fx-pview__pages">{PAGINATION} {PAGE_NUMBER}</div>
+							<!-- END switch_pagination -->
+
+						<span class="corners-bottom"><span></span></span></div>
+					</div>
+				</div>
+
+				<span class="corners-bottom"><span></span></span>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="profile-advanced-right" class="fx-pview__side">
+
+	<!-- BEGIN switch_add_friend -->
+	<div id="profile-advanced-add" class="fx-side__act">{FRIENDSFOES}</div>
+	<!-- END switch_add_friend -->
+
+	<div class="module fx fx-side fx-side--id">
+		<div class="inner">
+			<span class="corners-top"><span></span></span>
+			<div class="fx-side__body">
+				{AVATAR_IMG}
+				<div class="h3 fx-side__title">{USERNAME} {USER_ONLINE_ONLY}</div>
+				<div class="fx-side__rank">{POSTER_RANK_ONLY}</div>
+				<!-- BEGIN switch_follow_member -->
+				<div class="block-follow fx-follow">
+					<button onclick="doFollowAction(this);" data-id="{CUR_USER_ID}" class="followBtn {C_CLASS} button1">
+						{CUR_FOLLOW_TEXT}
+					</button>
+				</div>
+				<!-- END switch_follow_member -->
+			</div>
+			<span class="corners-bottom"><span></span></span>
+		</div>
+	</div>
+
+	<!-- BEGIN switch_awards -->
+	<div class="module awards_module fx fx-side">
+		<div class="inner">
+			<span class="corners-top"><span></span></span>
+			<div class="h3 fx-side__title">{switch_awards.L_AWARDS}</div>
+			<div class="awards_block fx-side__body">
+				{switch_awards.AWARDS_LIST}
+			</div>
+			<span class="corners-bottom"><span></span></span>
+		</div>
+	</div>
+	<!-- END switch_awards -->
+
+	<!-- BEGIN switch_dmx_ads -->
+	<div class="fx-side__ad">
+		{switch_dmx_ads.DMX_ADS}
+	</div>
+	<!-- END switch_dmx_ads -->
+
+	<!-- BEGIN switch_allow_friendsfoes -->
+	<div class="module fx fx-side fx-side--friends">
+		<div class="inner">
+			<span class="corners-top"><span></span></span>
+			<div class="h3 fx-side__title">{L_FRIENDS_TITLE}</div>
+			<div class="fx-side__body">
+				<!-- BEGIN friend -->
+				<div class="friend-block fx-friend">
+					<a href="{switch_allow_friendsfoes.friend.U_PROFILE}" title="{switch_allow_friendsfoes.friend.USERNAME_NO_COLOR} ( {switch_allow_friendsfoes.friend.L_ONLINE_ONLY} )">
+						<div class="avatar fx-avatar">{switch_allow_friendsfoes.friend.AVATAR_IMG}</div>
+						{switch_allow_friendsfoes.friend.USERNAME}
+					</a><br />
+					<div class="friend_list_online_status">{switch_allow_friendsfoes.friend.L_ONLINE_IMG} {switch_allow_friendsfoes.friend.L_ONLINE_ONLY}</div>
+				</div>
+				{switch_allow_friendsfoes.friend.DIV_CLEAR}
+				<!-- END friend -->
+				<div class="clear">&nbsp;</div>
+				<p class="fx-side__note">{L_FRIENDS_INFO}</p>
+			</div>
+			<span class="corners-bottom"><span></span></span>
+		</div>
+	</div>
+	<!-- END switch_allow_friendsfoes -->
+
+</div>
+</div>
+<script src="{JQUERY_ROOT}json/jquery.json-1.3.min.js" type="text/javascript"></script>
+<script type="text/javascript" charset="{S_CONTENT_ENCODING}">
+//<![CDATA[
+	$(document).ready(function(){
+		$('[id^=field_id]').each(function(){
+			if ( $(this).find('.field_editable').is('span, div') )
+			{
+				$(this).hover(function()
+				{
+					if( $(this).find('.field_editable.invisible').is('span, div') )
+					{
+						$(this).find('.field_editable').prev().addClass('ajax-profil_hover').parent().addClass('ajax-profil_parent').append('<div class="ajax-profil_edit"><img src="{AJAX_EDIT_IMG}" /></div>');
+						$(this).find('.ajax-profil_edit').attr({
+								alt: "{L_FIELD_EDIT_VALUE}",
+								title: "{L_FIELD_EDIT_VALUE}"
+							}).click(function(){
+							$(this).prev().prev().removeClass('ajax-profil_hover').addClass('invisible').next().removeClass('invisible').append('<img src="{AJAX_VALID_IMG}" class="ajax-profil_valid" />').find('input,select');
+							$(this).prev().find('.ajax-profil_valid').attr({
+								alt: "{L_VALIDATE}",
+								title: "{L_VALIDATE}"
+							}).click(function(){
+								var content = new Array();
+								$(this).parent().find('[name]').each(function(){
+									var type_special = $(this).is('input[type=radio],input[type=checkbox]');
+									if ( (type_special && $(this).is(':checked')) || !type_special )
+									{
+										content.push(new Array($(this).attr('name'), $(this).attr('value')));
+									}
+								});
+								var id_name = $(this).parents('[id^=field_id]').attr('id');
+								var id = id_name.substring(8, id_name.length);
+								$.post(
+									"{U_AJAX_PROFILE}",
+									{id:id,user:"{CUR_USER_ID}",active:"{CUR_USER_ACTIVE}",content:$.toJSON(content),tid:"{TID}"},
+									function(data){
+										$.each(data, function (i, item) {
+											if (item.startsWith('error : ')){
+												let present_err=document.getElementById('field_id' + i + "_err");
+												if(!present_err){
+													let err = document.createElement('div');
+													err.id = 'field_id' + i + "_err";
+													err.classList.add("form-error");
+													err.textContent = item.substring(8);
+													document.getElementById('field_id' + i).querySelector('.field_editable input').after(err);
+												}else{
+													present_err.innerText=item.substring(8);
+												}
+											}else {
+												let err=document.getElementById('field_id' + i + "_err");
+												if(err){
+													err.remove();
+												}
+												$('[id=field_id' + i + ']').find('.field_uneditable').html(item).end().find('.ajax-profil_valid').remove().end().find('.field_editable').addClass('invisible').end().find('.field_uneditable').removeClass('invisible');
+											}
+										});
+									},
+									"json"
+								);
+							});
+							$(this).remove();
+						});
+					}
+				},function()
+				{
+					if( $(this).find('.field_editable.invisible').is('span, div') )
+					{
+						$(this).find('.field_editable').prev().removeClass('ajax-profil_hover');
+						$(this).find('.ajax-profil_edit').remove();
+					}
+				});
+			}
+		});
+	});
+//]]>
+</script>
+
+<!-- BEGIN switch_image_resize -->
+<script type="text/javascript">
+//<![CDATA[
+$(resize_images({ 'selector' : '.message-text', 'max_width' : {switch_image_resize.IMG_RESIZE_WIDTH}, 'max_height' : {switch_image_resize.IMG_RESIZE_HEIGHT} }));
+//]]>
+</script>
+<!-- END switch_image_resize -->

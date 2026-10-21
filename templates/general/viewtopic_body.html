@@ -1,0 +1,473 @@
+<!-- BEGIN switch_plus_menu -->
+<script type="text/javascript">
+	//<![CDATA[
+	var multiquote_img_off = '{JS_MULTIQUOTE_IMG_OFF}', multiquote_img_on = '{JS_MULTIQUOTE_IMG_ON}';
+</script>
+<!-- END switch_plus_menu -->
+<script type="text/javascript">
+var hiddenMsgLabel = { visible:'{JS_HIDE_HIDDEN_MESSAGE}', hidden:'{JS_SHOW_HIDDEN_MESSAGE}' };
+showHiddenMessage = function(id)
+{
+    try
+    {
+        var regId = parseInt(id, 10);
+        if( isNaN(regId) ) { regId = 0; }
+
+        if( regId > 0)
+        {
+            $('.post--' + id).toggle(0, function()
+			{
+				if( $(this).is(":visible") )
+				{
+					$('#hidden-title--' + id).html(hiddenMsgLabel.visible);
+				}
+				else
+				{
+					$('#hidden-title--' + id).html(hiddenMsgLabel.hidden);
+				}
+			});
+        }
+    }
+    catch(e) { }
+
+	return false;
+};
+//]]>
+</script>
+<!-- BEGIN switch_push_direct_send -->
+<div id="push-answer" class="jqmWindow"></div>
+<script src="{JQUERY_DIR}jqmodal/jqmodal.js" type="text/javascript"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#push-answer').jqm({toTop: true});
+
+		$('#push-bell').click(function () {
+			return sendWebPush({TOPIC_ID});
+		});
+		function sendWebPush(tId){
+			$.get("/ajax_push.php?topicID=" + tId ).done(showPushAnswer);
+		}
+
+		function showPushAnswer(data) {
+			$('#push-answer').html(data).jqmShow();
+			$('.jqmOverlay').bgiframe();
+			$('#push-answer').bgiframe();
+		}
+	});
+	//]]>
+</script>
+<!-- END switch_push_direct_send -->
+
+<h1 class="page-title fx fx-viewhead">
+	<a href="{TOPIC_URL}">{TOPIC_TITLE}</a>
+	<!-- BEGIN switch_push_direct_send -->&nbsp;<span id="push-bell" title="{switch_push_direct_send.L_PUSH_SEND}"></span><!-- END switch_push_direct_send -->
+</h1>
+{POSTERS_LIST}
+<div class="topic-actions fx fx-actions">
+	<div class="buttons fx-actions__buttons">
+
+		<!-- BEGIN switch_user_authpost -->
+		<a href="{U_POST_NEW_TOPIC}" rel="nofollow"><img src="{POST_IMG}" class="{POST_IMG_CLASS}" alt="{L_POST_NEW_TOPIC}" /></a>&nbsp;&nbsp;&nbsp;
+		<!-- END switch_user_authpost -->
+
+		<!-- BEGIN switch_user_authreply -->
+		<a href="{U_POST_REPLY_TOPIC}"><img src="{REPLY_IMG}" class="i_reply" alt="{L_POST_REPLY_TOPIC}" /></a>
+		<!-- END switch_user_authreply -->
+	</div>
+
+	<div class="pathname-box fx-actions__path">
+		<p>
+            <a class="nav" href="{U_INDEX}"><span>{L_INDEX}</span></a>
+            <!--{NAV_SEP}<a class="nav" href="{U_ALBUM}"><span>{L_ALBUM}</span></a>-->
+            {NAV_CAT_DESC}
+        </p>
+	</div>
+
+	<p class="right"></p>
+
+	<div class="pagination fx-actions__pages">
+		{PAGE_NUMBER}
+		<!-- BEGIN switch_plus_menu -->
+		&nbsp;&bull;&nbsp;
+		<div id="addthis-toolbar" style="display: inline-block; margin-right:5px;">
+			<div class="btn-floating-left" tabindex="100">
+                {L_SHARE}
+			</div>
+			<div class="addthis-toolbar-btn" style="display:none;">
+                {switch_plus_menu.SOCIAL_BUTTONS}
+			</div>
+		</div>
+		&nbsp;&bull;&nbsp;
+		<script type="text/javascript">//<![CDATA[
+			var url_favourite = '{U_FAVOURITE_JS_PLUS_MENU}';
+			var url_newposts = '{U_NEWPOSTS_JS_PLUS_MENU}';
+			var url_egosearch = '{U_EGOSEARCH_JS_PLUS_MENU}';
+			var url_unanswered = '{U_UNANSWERED_JS_PLUS_MENU}';
+			var url_watchsearch = '{U_WATCHSEARCH_JS_PLUS_MENU}';
+			insert_plus_menu_new('f{FORUM_ID}&amp;t={TOPIC_ID}','{JS_SESSION_ID}', {JS_AUTH_FAVOURITES});
+		//]]>
+		</script>
+		<script type="text/javascript">//<![CDATA[
+			/* FX ACTIONS MENU - start (delete this whole <script> to go back to the forum's own placement) */
+			(function () {
+				function norm(s) { return s.replace(/\s+/g, ' ').trim().toLowerCase(); }
+				function findTrigger(menu) {
+					var box = document.querySelector('.fx-actions__pages'), title = menu.querySelector('.title-overview');
+					if (!box || !title) { return null; }
+					var label = norm(title.textContent), all = box.querySelectorAll('*'), best = null;
+					for (var i = 0; i < all.length; i++) {
+						var el = all[i];
+						if (menu === el || menu.contains(el) || el.children.length > 1 || !el.offsetWidth) { continue; }
+						if (norm(el.textContent) === label) { best = el; }
+					}
+					return best;
+				}
+				var busy = false;
+				function place() {
+					var menu = document.getElementById('plus_menu');
+					if (busy || !menu || !menu.offsetWidth || window.innerWidth <= 600) { return; }
+					var trig = findTrigger(menu);
+					if (!trig) { return; }
+					busy = true;
+					var t = trig.getBoundingClientRect(), m = menu.getBoundingClientRect(), cs = window.getComputedStyle(menu);
+					var dx = t.right - m.right, dy = (t.bottom + 8) - m.top;
+					if (Math.abs(dx) > 0.5) { menu.style.left = ((parseFloat(cs.left) || 0) + dx) + 'px'; }
+					if (Math.abs(dy) > 0.5) { menu.style.top = ((parseFloat(cs.top) || 0) + dy) + 'px'; }
+					busy = false;
+				}
+				function watch() {
+					var menu = document.getElementById('plus_menu');
+					if (!menu || menu.getAttribute('data-fx-watch')) { return; }
+					menu.setAttribute('data-fx-watch', '1');
+					if (window.MutationObserver) { new MutationObserver(place).observe(menu, { attributes: true, attributeFilter: ['style'] }); }
+				}
+				document.addEventListener('click', function () { watch(); setTimeout(place, 0); setTimeout(place, 120); }, true);
+				window.addEventListener('resize', place);
+			})();
+			/* FX ACTIONS MENU - end */
+		//]]>
+		</script>
+        {switch_plus_menu.JS_SOCIAL_BUTTONS}
+		<!-- END switch_plus_menu -->
+	</div>
+	<div class="clear"></div>
+</div>
+
+<!-- BEGIN topicpagination -->
+<p class="pagination">{PAGINATION}</p>
+<!-- END topicpagination -->
+<p class="left-box fx fx-subnav">
+    <!-- BEGIN switch_isconnect -->
+    <a href="{U_VIEW_OLDER_TOPIC}">{L_VIEW_PREVIOUS_TOPIC}</a>&nbsp;<a href="{U_VIEW_NEWER_TOPIC}">{L_VIEW_NEXT_TOPIC}</a>&nbsp;
+    <!-- END switch_isconnect -->
+    <a href="#bottom">{L_GOTO_DOWN}</a>
+</p>
+<div class="clear"></div>
+{POLL_DISPLAY}
+
+<div class="fx fx-thread">
+<!-- BEGIN postrow -->
+	<!-- BEGIN hidden -->
+		<div class="post {postrow.hidden.ROW_COUNT} fx-post fx-post--hidden">
+			<div class="inner fx-post__inner">
+				<span class="corners-top"><span></span></span>
+				<p class="fx-post__hiddentext">{postrow.hidden.MESSAGE}</p>
+				<div class="clear"></div>
+				<span class="corners-bottom"><span></span></span>
+			</div>
+		</div>
+	<!-- END hidden -->
+	<!-- BEGIN displayed -->
+		<div id="p{postrow.displayed.U_POST_ID}" class="post {postrow.displayed.ROW_COUNT}{postrow.displayed.ONLINE_IMG_NEW} post--{postrow.displayed.U_POST_ID} {postrow.displayed.GROUP} fx-post"{postrow.displayed.THANK_BGCOLOR} style="{postrow.displayed.DISPLAYABLE_STATE}">
+			<div class="inner fx-post__inner"><span class="corners-top"><span></span></span>
+            <div class="fx-post__anchor" id="{postrow.displayed.U_POST_ID}"></div>
+			<div class="postprofile fx-post__profile fx-profile" id="profile{postrow.displayed.U_POST_ID}">
+				<!-- div class="online2"></div-->
+				<dl>
+					<dt>
+						{postrow.displayed.POSTER_AVATAR}
+						<div class="fx-profile__who">
+							<strong class="fx-profile__name">{postrow.displayed.POSTER_NAME}</strong>
+							<span class="fx-profile__rank">{postrow.displayed.POSTER_RANK_NEW}{postrow.displayed.RANK_IMAGE}</span>
+						</div>
+					</dt>
+					<dd {postrow.displayed.AWARDS_SHOW} class="dd_award {postrow.displayed.PROFILE_POSITION}">
+                        {postrow.displayed.AWARDS}
+					</dd>
+					<dd class="award_more"></dd>
+					<dd><br /></dd>
+					<dd>
+						<!-- BEGIN profile_field -->
+						{postrow.displayed.profile_field.LABEL} {postrow.displayed.profile_field.CONTENT}{postrow.displayed.profile_field.SEPARATOR}
+						<!-- END profile_field -->
+						{postrow.displayed.POSTER_RPG}
+					</dd>
+					<dd><br /></dd>
+					<dd class="fx-profile__contact">
+						{postrow.displayed.PROFILE_IMG} {postrow.displayed.PM_IMG} {postrow.displayed.EMAIL_IMG}<!-- BEGIN contact_field --> {postrow.displayed.contact_field.CONTENT}<!-- END contact_field -->
+					</dd>
+				</dl>
+			</div>
+
+			<div class="postbody fx-post__body">
+
+				<ul class="profile-icons fx-post__tools">
+					<li>{postrow.displayed.THANK_IMG}</li>
+					<li>{postrow.displayed.MULTIQUOTE_IMG}</li>
+					<li>{postrow.displayed.QUOTE_IMG}</li>
+					<li>{postrow.displayed.EDIT_IMG}</li>
+					<li>{postrow.displayed.DELETE_IMG}</li>
+					<li>{postrow.displayed.IP_IMG}</li>
+					<li>{postrow.displayed.REPORT_IMG_NEW}</li>
+				</ul>
+
+				<h2 class="topic-title fx-post__title">{postrow.displayed.ICON} <a href="{postrow.displayed.POST_URL}">{postrow.displayed.POST_SUBJECT}</a></h2>
+				<p class="author fx-post__meta"><img class="fx-post__mini" src="{postrow.displayed.MINI_POST_IMG}" alt="{postrow.displayed.L_MINI_POST_ALT}" title="{postrow.displayed.L_MINI_POST_ALT}" />&nbsp;{L_TOPIC_BY}&nbsp;{postrow.displayed.POSTER_NAME} {postrow.displayed.POST_DATE_NEW}</p>
+				<div class="clearfix"></div>
+
+				<!-- BEGIN switch_vote_active -->
+				<div class="vote gensmall">
+					<!-- BEGIN switch_vote -->
+					<div class="vote-button"><a href="{postrow.displayed.switch_vote_active.switch_vote.U_VOTE_PLUS}">+</a></div>
+					<!-- END switch_vote -->
+
+					<!-- BEGIN switch_bar -->
+					<div class="vote-bar" title="{postrow.displayed.switch_vote_active.L_VOTE_TITLE}">
+						<!-- BEGIN switch_vote_plus -->
+						<div class="vote-bar-plus" style="height:{postrow.displayed.switch_vote_active.switch_bar.switch_vote_plus.HEIGHT_PLUS}px;"></div>
+						<!-- END switch_vote_plus -->
+
+						<!-- BEGIN switch_vote_minus -->
+						<div class="vote-bar-minus" style="height:{postrow.displayed.switch_vote_active.switch_bar.switch_vote_minus.HEIGHT_MINUS}px;"></div>
+						<!-- END switch_vote_minus -->
+					</div>
+					<!-- END switch_bar -->
+
+					<!-- BEGIN switch_no_bar -->
+					<div title="{postrow.displayed.switch_vote_active.L_VOTE_TITLE}" class="vote-no-bar">----</div>
+					<!-- END switch_no_bar -->
+
+					<!-- BEGIN switch_vote -->
+					<div class="vote-button"><a href="{postrow.displayed.switch_vote_active.switch_vote.U_VOTE_MINUS}">-</a></div>
+					<!-- END switch_vote -->
+				</div>
+				<!-- END switch_vote_active -->
+
+				<div style="display:none"></div>
+				<div class="content clearfix fx-post__content">
+					<div>{postrow.displayed.MESSAGE}</div>
+						<!-- BEGIN switch_attachments -->
+						<dl class="attachbox">
+							<dt>{postrow.displayed.switch_attachments.L_ATTACHMENTS}</dt>
+							<dd class="attachments">
+								<!-- BEGIN switch_post_attachments -->
+								<dl class="file clearfix">
+									<dt>
+										<img src="{postrow.displayed.switch_attachments.switch_post_attachments.U_IMG}" alt=""/>
+									</dt>
+									<dd>
+										<!-- BEGIN switch_dl_att -->
+										<span><a class="postlink" href="{postrow.displayed.switch_attachments.switch_post_attachments.switch_dl_att.U_ATTACHMENT}">{postrow.displayed.switch_attachments.switch_post_attachments.switch_dl_att.ATTACHMENT}</a> {postrow.displayed.switch_attachments.switch_post_attachments.switch_dl_att.ATTACHMENT_DEL}</span>
+										<!-- END switch_dl_att -->
+
+										<!-- BEGIN switch_no_dl_att -->
+										<span>{postrow.displayed.switch_attachments.switch_post_attachments.switch_no_dl_att.ATTACHMENT} {postrow.displayed.switch_attachments.switch_post_attachments.switch_no_dl_att.ATTACHMENT_DEL}</span>
+										<!-- END switch_no_dl_att -->
+
+										<!-- BEGIN switch_no_comment -->
+										<span>{postrow.displayed.switch_attachments.switch_post_attachments.switch_no_comment.ATTACHMENT_COMMENT}</span>
+										<!-- END switch_no_comment -->
+
+										<!-- BEGIN switch_no_dl_att -->
+										<span><strong>{postrow.displayed.switch_attachments.switch_post_attachments.switch_no_dl_att.TEXT_NO_DL}</strong></span>
+										<!-- END switch_no_dl_att -->
+
+										<span>({postrow.displayed.switch_attachments.switch_post_attachments.FILE_SIZE}) {postrow.displayed.switch_attachments.switch_post_attachments.NB_DL}</span>
+									</dd>
+								</dl>
+								<!-- END switch_post_attachments -->
+							</dd>
+						</dl>
+						<!-- END switch_attachments -->
+				</div>
+				{postrow.displayed.EDITED_MESSAGE}
+				<!-- BEGIN switch_signature -->
+				<div class="signature_div fx-post__sig" id="sig{postrow.displayed.U_POST_ID}">{postrow.displayed.SIGNATURE_NEW}</div>
+				<!-- END switch_signature -->
+			</div>
+
+			<div class="clear"></div>
+
+			<!-- BEGIN switch_likes_active -->
+			<div class="fa_like_div fx-post__likes">
+				<!-- BEGIN switch_like_list -->
+				{postrow.displayed.switch_likes_active.switch_like_list.D_LIKE_LIST}
+				<!-- END switch_like_list -->
+				<!-- BEGIN switch_dislike_list -->
+				{postrow.displayed.switch_likes_active.switch_dislike_list.D_DISLIKE_LIST}
+				<!-- END switch_dislike_list -->
+				<button class="rep-button {postrow.displayed.switch_likes_active.C_VOTE_LIKE}"  data-href="{postrow.displayed.switch_likes_active.U_VOTE_LIKE}" data-href-rm="{postrow.displayed.switch_likes_active.U_VOTE_RM_LIKE}">
+					<svg width="13px" height="13px" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M320 1344q0-26-19-45t-45-19q-27 0-45.5 19t-18.5 45q0 27 18.5 45.5t45.5 18.5q26 0 45-18.5t19-45.5zm160-512v640q0 26-19 45t-45 19h-288q-26 0-45-19t-19-45v-640q0-26 19-45t45-19h288q26 0 45 19t19 45zm1184 0q0 86-55 149 15 44 15 76 3 76-43 137 17 56 0 117-15 57-54 94 9 112-49 181-64 76-197 78h-129q-66 0-144-15.5t-121.5-29-120.5-39.5q-123-43-158-44-26-1-45-19.5t-19-44.5v-641q0-25 18-43.5t43-20.5q24-2 76-59t101-121q68-87 101-120 18-18 31-48t17.5-48.5 13.5-60.5q7-39 12.5-61t19.5-52 34-50q19-19 45-19 46 0 82.5 10.5t60 26 40 40.5 24 45 12 50 5 45 .5 39q0 38-9.5 76t-19 60-27.5 56q-3 6-10 18t-11 22-8 24h277q78 0 135 57t57 135z" fill="#666"/></svg>
+					<span>{postrow.displayed.switch_likes_active.L_LIKE}</span>{postrow.displayed.switch_likes_active.COUNT_VOTE_LIKE}
+				</button>
+				<!-- BEGIN switch_dislike_button -->
+				<button class="rep-button {postrow.displayed.switch_likes_active.switch_dislike_button.C_VOTE_DISLIKE}" data-href="{postrow.displayed.switch_likes_active.switch_dislike_button.U_VOTE_DISLIKE}" data-href-rm="{postrow.displayed.switch_likes_active.switch_dislike_button.U_VOTE_RM_LIKE}">
+					<svg width="13px" height="13px" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M320 576q0 26-19 45t-45 19q-27 0-45.5-19t-18.5-45q0-27 18.5-45.5t45.5-18.5q26 0 45 18.5t19 45.5zm160 512v-640q0-26-19-45t-45-19h-288q-26 0-45 19t-19 45v640q0 26 19 45t45 19h288q26 0 45-19t19-45zm1129-149q55 61 55 149-1 78-57.5 135t-134.5 57h-277q4 14 8 24t11 22 10 18q18 37 27 57t19 58.5 10 76.5q0 24-.5 39t-5 45-12 50-24 45-40 40.5-60 26-82.5 10.5q-26 0-45-19-20-20-34-50t-19.5-52-12.5-61q-9-42-13.5-60.5t-17.5-48.5-31-48q-33-33-101-120-49-64-101-121t-76-59q-25-2-43-20.5t-18-43.5v-641q0-26 19-44.5t45-19.5q35-1 158-44 77-26 120.5-39.5t121.5-29 144-15.5h129q133 2 197 78 58 69 49 181 39 37 54 94 17 61 0 117 46 61 43 137 0 32-15 76z" fill="#666"/></svg>
+					<span>{postrow.displayed.switch_likes_active.switch_dislike_button.L_DISLIKE}</span>{postrow.displayed.switch_likes_active.switch_dislike_button.COUNT_VOTE_DISLIKE}
+				</button>
+				<!-- END switch_dislike_button -->
+			</div>
+			<!-- END switch_likes_active -->
+
+			<p class="right fx-post__nav"><a href="#top">{L_BACK_TO_TOP}</a>&nbsp;<a href="#bottom">{L_GOTO_DOWN}</a></p>
+
+			<span class="corners-bottom"><span></span></span></div>
+		</div>
+		<!-- BEGIN first_post_br -->
+		<hr id="first-post-br" />
+		<!-- END first_post_br -->
+	<!-- END displayed -->
+<!-- END postrow -->
+</div>
+
+<a name="bottomtitle"></a>
+
+<!-- BEGIN topicpagination -->
+<p class="pagination">{PAGINATION}</p>
+<!-- END topicpagination -->
+
+<p class="left-box fx fx-subnav">
+    <!-- BEGIN switch_isconnect -->
+    <a href="{U_VIEW_OLDER_TOPIC}">{L_VIEW_PREVIOUS_TOPIC}</a>&nbsp;<a href="{U_VIEW_NEWER_TOPIC}">{L_VIEW_NEXT_TOPIC}</a>&nbsp;
+    <!-- END switch_isconnect -->
+    <a href="#top">{L_BACK_TO_TOP}</a>
+</p>
+
+<div class="clear"></div>
+
+<div class="noprint">
+<!-- BEGIN switch_user_logged_in -->
+<!-- BEGIN watchtopic -->
+<p class="right fx fx-watch">{S_WATCH_TOPIC}</p>
+<!-- END watchtopic -->
+<!-- END switch_user_logged_in -->
+</div>
+
+<!-- BEGIN promot_trafic -->
+<div class="post row2 fx fx-similar fx-similar--closed" id="ptrafic_close" style="display:none;font-size:1.3em;line-height:1.4em">
+	<span class="corners-top"><span></span></span>
+	<div class="fx-similar__head">
+		<span class="gensmall fx-similar__toggle"><a href="javascript:ShowHideLayer('ptrafic_open','ptrafic_close');"><img src="{TABS_MORE_IMG}" alt="+" align="" border="0" /></a></span>
+		<span class="ptrafic fx-similar__title">&nbsp;{PROMOT_TRAFIC_TITLE}</span>
+	</div>
+	<span class="corners-bottom"><span></span></span>
+</div>
+<div class="post row2 fx fx-similar fx-similar--open" id="ptrafic_open" style="display:'';font-size:1.3em;line-height:1.4em">
+	<span class="corners-top"><span></span></span>
+	<div class="fx-similar__head">
+		<span class="gensmall fx-similar__toggle"><a href="javascript:ShowHideLayer('ptrafic_open','ptrafic_close');"><img src="{TABS_LESS_IMG}" alt="-" align="" border="0" /></a></span>
+		<span class="ptrafic fx-similar__title">&nbsp;{PROMOT_TRAFIC_TITLE}</span>
+	</div>
+	<div class="clear"></div>
+	<div class="fx-similar__list">
+		<!-- BEGIN link -->
+		<span class="fx-similar__item"><span class="fx-similar__mark">&raquo;&nbsp;</span><a href="{promot_trafic.link.U_HREF}" title="{promot_trafic.link.TITLE}" >{promot_trafic.link.TITLE}</a></span>
+		<!-- END link -->
+	</div>
+	<span class="corners-bottom"><span></span></span>
+</div>
+<!-- END promot_trafic -->
+
+<!-- BEGIN switch_forum_rules -->
+<div class="post row1" id="forum_rules">
+	<span class="corners-top"><span></span></span>
+	<div class="h3">&nbsp;{L_FORUM_RULES}</div>
+	<div class="clear"></div>
+	<table class="postbody">
+		<tr>
+			<!-- BEGIN switch_forum_rule_image -->
+			<td class="logo">
+				<img src="{RULE_IMG_URL}" alt="" />
+			</td>
+			<!-- END switch_forum_rule_image -->
+			<td class="rules content">
+				{RULE_MSG}
+			</td>
+		</tr>
+	</table>
+	<span class="corners-bottom"><span></span></span>
+</div>
+<!-- END switch_forum_rules -->
+
+<!-- BEGIN switch_user_logged_in -->
+<a name="quickreply"></a>
+{QUICK_REPLY_FORM}
+<!-- END switch_user_logged_in -->
+
+<hr />
+
+<div class="topic-actions fx fx-actions">
+	<div class="buttons fx-actions__buttons">
+		<!-- BEGIN switch_user_authpost -->
+		<a href="{U_POST_NEW_TOPIC}" rel="nofollow"><img src="{POST_IMG}" class="{POST_IMG_CLASS}" alt="{L_POST_NEW_TOPIC}" /></a>&nbsp;&nbsp;&nbsp;
+		<!-- END switch_user_authpost -->
+
+		<!-- BEGIN switch_user_authreply -->
+		<a href="{U_POST_REPLY_TOPIC}"><img src="{REPLY_IMG}" class="i_reply" alt="{L_POST_REPLY_TOPIC}" /></a>
+		<!-- END switch_user_authreply -->
+	</div>
+
+	<div class="pathname-box fx-actions__path">
+		<p>
+            <a class="nav" href="{U_INDEX}"><span>{L_INDEX}</span></a>
+            <!--{NAV_SEP}<a class="nav" href="{U_ALBUM}"><span>{L_ALBUM}</span></a>-->
+            {NAV_CAT_DESC}
+        </p>
+	</div>
+
+	<div class="pagination fx-actions__pages">
+		{PAGE_NUMBER}
+	</div>
+</div>
+<div class="clear"></div>
+
+<div class="fx fx-dock">
+<form action="{S_JUMPBOX_ACTION}" method="get" class="fx-dock__form" onsubmit="if(document.jumpbox.f.value == -1){return false;}">
+<fieldset class="jumpbox fx-dock__box">
+	<label class="fx-dock__label">{L_JUMP_TO}:&nbsp;</label>
+	{S_JUMPBOX_SELECT}&nbsp;
+	<input class="button2 fx-dock__go" type="submit" value="{L_GO}" />
+</fieldset>
+</form>
+
+<!-- BEGIN viewtopic_bottom -->
+<form method="get" action="{S_FORM_MOD_ACTION}" class="fx-dock__form">
+<fieldset class="quickmod fx-dock__box">
+	<input type="hidden" name="t" value="{TOPIC_ID}" />
+
+	<!-- <input type="hidden" name="sid" value="{S_SID}" /> -->
+	<input type="hidden" name="{SECURE_ID_NAME}" value="{SECURE_ID_VALUE}" />
+	<label class="fx-dock__label">{L_MOD_TOOLS}:&nbsp;</label>
+	{S_SELECT_MOD}&nbsp;
+	<input class="button2 fx-dock__go" type="submit" value="{L_GO}" />
+</fieldset>
+</form>
+<div class="clear"></div>
+<p class="right fx-dock__admin">{S_TOPIC_ADMIN}</p>
+<!-- END viewtopic_bottom -->
+</div>
+
+<!-- BEGIN show_permissions -->
+	<div class="fx fx-perms">
+		<div class="h3 fx-perms__title">{L_TABS_PERMISSIONS}</div>
+		<div class="fx-perms__list">{S_AUTH_LIST}</div>
+	</div>
+<!-- END show_permissions -->
+
+<!-- BEGIN switch_image_resize -->
+<script type="text/javascript">
+//<![CDATA[
+$(resize_images({ 'selector' : '.postbody .content', 'max_width' : {switch_image_resize.IMG_RESIZE_WIDTH}, 'max_height' : {switch_image_resize.IMG_RESIZE_HEIGHT} }));
+//]]>
+</script>
+<!-- END switch_image_resize -->

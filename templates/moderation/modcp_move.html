@@ -1,0 +1,36 @@
+<div class="fx fx-meta">
+	<!-- BEGIN switch_user_logged_in -->
+	<p class="right rightside fx-meta__visit">{LAST_VISIT_DATE}</p>
+	<!-- END switch_user_logged_in -->
+	<p class="fx-meta__time">{CURRENT_TIME}</p>
+</div>
+
+<form action="{S_MODCP_ACTION}" method="post" class="fx-mod__form">
+<div class="topic-actions fx fx-actions">
+	<p class="fx-actions__path"><a href="{U_INDEX}"><span>{L_INDEX}</span></a>{NAV_CAT_DESC}</p>
+</div>
+
+<div class="panel fx fx-category fx-groups fx-groups--slim fx-fpanel fx-fpanel--narrow fx-mpanel">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<h1 class="page-title fx fx-ptitle">{MESSAGE_TITLE}</h1>
+	<fieldset class="fields1">
+	<dl class="fx-field">
+		<dt class="fx-field__label"><label>{L_MOVE_TO_FORUM}</label></dt>
+		<dd class="fx-field__control">{S_FORUM_SELECT}</dd>
+	</dl>
+	<!-- BEGIN switch_leave_shadow -->
+	<dl class="fx-field">
+		<dt class="fx-field__label">&nbsp;</dt>
+		<dd class="fx-field__control"><label><input name="move_leave_shadow" type="checkbox" />{L_LEAVESHADOW}</label></dd>
+	</dl>
+	<!-- END switch_leave_shadow -->
+	<p class="center fx-mod__confirm">
+		<span class="fx-mod__msg">{MESSAGE_TEXT}</span><br />
+		{S_HIDDEN_FIELDS}
+		<input class="button2 fx-mbtn fx-mbtn--ok" type="submit" name="confirm" value="{L_YES}" />&nbsp;
+		<input class="button2 fx-mbtn" type="submit" name="cancel" value="{L_NO}" />
+	</p>
+	</fieldset>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+</form>

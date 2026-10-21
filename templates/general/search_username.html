@@ -1,0 +1,31 @@
+<!-- BEGIN html_validation -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<!-- END html_validation -->
+<div id="simple-wrap" class="fx fx-uspop">
+	<a name="top"></a>
+	<form action="{S_SEARCH_ACTION}" method="post" name="search" class="fx-uspop__form">
+		<h1 class="page-title fx-uspop__title">{L_SEARCH_USERNAME}</h1>
+		<div class="panel fx-uspop__card">
+			<div class="inner fx-uspop__inner"><span class="corners-top"><span></span></span>
+				<br />
+				<p class="fx-uspop__row">
+					<input class="inputbox tiny fx-uspop__input" type="text" name="search_username" value="{USERNAME}" /> <input class="button1 fx-uspop__btn" type="submit" name="search" value="{L_SEARCH}" />
+				</p>
+				<p class="fx-uspop__hint"><span class="italic">{L_SEARCH_EXPLAIN}</span></p>
+				<!-- BEGIN switch_select_name -->
+					<div class="fx-uspop__pick">
+						<select name="username_list">
+						{S_USERNAME_OPTIONS}
+					</select>
+					<input class="button2 fx-uspop__use" type="button" name="use" value="{L_SELECT}" onclick="refresh_username(this.form.username_list.options[this.form.username_list.selectedIndex].value);" />
+						</div>
+				<!-- END switch_select_name -->
+				<p class="right-box fx-uspop__close"><a href="javascript:window.close();">{L_CLOSE_WINDOW}</a></p>
+			<span class="corners-bottom"><span></span></span></div>
+		</div>
+	</form>
+</div>
+</body>
+</html>

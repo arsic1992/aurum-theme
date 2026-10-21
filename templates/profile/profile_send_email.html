@@ -1,0 +1,76 @@
+<div class="fx fx-meta">
+	<!-- BEGIN switch_user_logged_in -->
+	<p class="right rightside fx-meta__visit">{LAST_VISIT_DATE}</p>
+	<!-- END switch_user_logged_in -->
+	<p class="fx-meta__time">{CURRENT_TIME}</p>
+</div>
+
+<form action="{S_POST_ACTION}" method="post" name="post" onsubmit="return checkForm(this)">
+{ERROR_BOX}
+<h1 class="page-title fx fx-viewhead">{L_SEND_EMAIL_MSG}</h1>
+<div class="panel fx fx-category fx-groups fx-groups--slim fx-fpanel">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<fieldset class="fields2">
+    <!-- BEGIN switch_profile_email -->
+	<dl class="fx-field">
+		<dt class="fx-field__label"><label>{L_RECIPIENT}</label></dt>
+		<dd class="fx-field__control"><input type="text" name="friendname" value="{USERNAME}" class="inputbox narrow" /></dd>
+	</dl>
+    <!-- END switch_profile_email -->
+    <!-- BEGIN switch_ad_email -->
+    <dl class="fx-field">
+        <dt class="fx-field__label"><label>{switch_ad_email.L_YOUR_EMAIL}</label></dt>
+        <dd class="fx-field__control"><input type="text" name="email" value="{switch_ad_email.V_YOUR_EMAIL}" {switch_ad_email.DISABLE_YOUR_EMAIL} class="inputbox narrow" /></dd>
+    </dl>
+    <dl class="fx-field">
+        <dt class="fx-field__label"><label>{switch_ad_email.L_YOUR_NAME}</label></dt>
+        <dd class="fx-field__control"><input type="text" name="username" value="{switch_ad_email.V_YOUR_NAME}" {switch_ad_email.DISABLE_YOUR_NAME} class="inputbox narrow" /></dd>
+    </dl>
+    <!-- END switch_ad_email -->
+	<!-- BEGIN switch_tell_friend -->
+	<dl class="fx-field">
+		<dt class="fx-field__label"><label>{L_TELL_FRIEND_RECIEVER_EMAIL}</label></dt>
+		<dd class="fx-field__control"><input type="text" name="friendemail" value="" class="inputbox narrow" /></dd>
+	</dl>
+	<!-- END switch_tell_friend -->
+	<dl class="fx-field">
+		<dt class="fx-field__label"><label>{L_SUBJECT}</label></dt>
+		<dd class="fx-field__control"><input class="inputbox narrow" type="text" name="subject" value="{SUBJECT}" {SUBJECT_READ_ONLY} maxlength="100" /></dd>
+	</dl>
+	<dl class="fx-field fx-field--stack">
+		<dt class="fx-field__label">
+			<label>{L_MESSAGE_BODY}</label><br />
+			<span class="italic">{L_MESSAGE_BODY_DESC}</span>
+		</dt>
+		<dd class="fx-field__control">
+			<textarea class="inputbox" name="message" rows="25" cols="40" tabindex="3">{MESSAGE}</textarea>
+			<!-- BEGIN switch_tell_friend -->
+			<input type="text" class="inputbox" value="{MAIL_LINK}" disabled="disabled" />
+			<!-- END switch_tell_friend -->
+		</dd>
+	</dl>
+	<!-- BEGIN switch_cc_email -->
+	<dl class="fx-field">
+		<dt class="fx-field__label"></dt>
+		<dd class="fx-field__control"><label><input type="checkbox" name="cc_email" value="1" checked="checked" />{L_CC_EMAIL}</label></dd>
+	</dl>
+	<!-- END switch_cc_email -->
+	<!-- BEGIN switch_custom_question -->
+	<dl class="fx-field">
+		<dt class="fx-field__label"><label for="custom_question">{L_CUSTOM_QUESTION}<span class="obligatory">*</span> :</label></dt>
+		<dd class="fx-field__control"><input type="text" name="custom_question" id="custom_question" class="inputbox"/></dd>
+	</dl>
+	<!-- END switch_custom_question -->
+	</fieldset>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+
+<div class="panel fx fx-ucp">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<fieldset class="submit-buttons fx fx-groups fx-fbar">
+		{S_HIDDEN_FIELDS}
+		<input class="button1" type="submit" name="submit" value="{L_SEND_EMAIL}" />
+	</fieldset>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+</form>

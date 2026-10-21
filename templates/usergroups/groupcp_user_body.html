@@ -1,0 +1,79 @@
+<div class="fx fx-meta">
+	<p class="fx-meta__time">{CURRENT_TIME}</p>
+	<!-- BEGIN switch_user_logged_in -->
+	<p class="right rightside fx-meta__visit">{LAST_VISIT_DATE}</p>
+	<!-- END switch_user_logged_in -->
+</div>
+
+<!-- BEGIN switch_groups_joined -->
+<h1 class="page-title solo fx fx-viewhead">{L_USERGROUPS}</h1>
+	<!-- BEGIN switch_groups_member -->
+	<div class="panel fx fx-category fx-groups fx-groups--slim">
+		<div class="inner"><span class="corners-top"><span></span></span>
+		<h2 class="h3 fx-ptitle">{L_GROUP_MEMBERSHIP_DETAILS}</h2>
+		<fieldset class="fx-pfield">
+			<dl class="fx-pfield__row">
+				<dt class="fx-pfield__label"><label>{L_YOU_BELONG_GROUPS}</label></dt>
+				<dd class="fx-pfield__value fx-chips">{GROUP_MEMBER_SELECT_NEW}</dd>
+			</dl>
+		</fieldset>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+	<!-- END switch_groups_member -->
+
+	<!-- BEGIN switch_groups_pending -->
+	<div class="panel row2 fx fx-category fx-groups fx-groups--slim fx-groups--pending">
+		<div class="inner"><span class="corners-top"><span></span></span>
+		<fieldset class="fx-pfield">
+			<dl class="fx-pfield__row">
+				<dt class="fx-pfield__label"><label>{L_PENDING_GROUPS}</label></dt>
+				<dd class="fx-pfield__value fx-chips">{GROUP_PENDING_SELECT_NEW}</dd>
+			</dl>
+		</fieldset>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+	<!-- END switch_groups_pending -->
+<!-- END switch_groups_joined -->
+
+<!-- BEGIN switch_groups_remaining -->
+<div class="panel row2 fx fx-category fx-groups fx-groups--slim">
+	<div class="inner"><span class="corners-top"><span></span></span>
+	<h2 class="h3 fx-ptitle">{L_JOIN_A_GROUP}</h2>
+	<form action="{U_USERGROUP_ACTION}" method="get">
+	<fieldset class="fx-pfield">
+		<dl class="fx-pfield__row">
+			<dt class="fx-pfield__label"><label>{L_SELECT_A_GROUP}</label></dt>
+			<dd class="fx-pfield__value fx-join">{GROUP_LIST_SELECT}<input class="button2" type="submit" value="{L_VIEW_INFORMATION}" />{S_HIDDEN_FIELDS}</dd>
+		</dl>
+	</fieldset>
+	</form>
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+<!-- END switch_groups_remaining -->
+
+<!-- BEGIN switch_display_groups_all -->
+<div class="panel fx fx-category fx-groups">
+	<div class="inner"><span class="corners-top"><span></span></span>
+		<h2 class="h3 fx-ptitle">{switch_display_groups_all.L_ALL_GROUPS}</h2>
+		<fieldset class="fx-pfield">
+			<dl class="fx-pfield__row">
+				<dt class="fx-pfield__label"><label>{switch_display_groups_all.L_LIST_ALL_GROUPS}</label></dt>
+				<dd class="fx-pfield__value">
+					<ul class="group_list noList fx-glist">
+						<!-- BEGIN group_details -->
+						<li class="fx-group" {switch_display_groups_all.group_details.GROUP_STYLE}>
+							<a class="usr_grp_clr fx-group__name" href="{switch_display_groups_all.group_details.U_GROUP}" {switch_display_groups_all.group_details.GROUP_STYLE}>{switch_display_groups_all.group_details.GROUP_NAME}{switch_display_groups_all.group_details.GROUP_ICON}</a><div class="fx-group__meta">{switch_display_groups_all.group_details.GROUP_STATUS} {switch_display_groups_all.group_details.NB_GROUP_MEMBERS} </div>
+							<hr class="fx-group__rule">
+						</li>
+						<!-- END group_details -->
+					</ul>
+				</dd>
+			</dl>
+		</fieldset>
+	</div>
+</div>
+<!-- END switch_display_groups_all -->
+
+<form action="{S_JUMPBOX_ACTION}" method="get" name="jumpbox" onsubmit="if(document.jumpbox.f.value == -1){return false;}">
+	<p class="right fx fx-jump">{L_JUMP_TO}:&nbsp;{S_JUMPBOX_SELECT}&nbsp;<input class="button2" type="submit" value="{L_GO}" /></p>
+</form>
