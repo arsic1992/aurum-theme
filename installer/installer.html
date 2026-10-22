@@ -1,17 +1,24 @@
-<div id="aurum-installer" style="min-height:120px;padding:20px;text-align:center;color:#999">Loading the Aurum installer…</div>
+<div id="theme-installer" style="min-height:120px;padding:20px;text-align:center;color:#999">Loading the theme installer…</div>
 <script>
 (function () {
-  // ---- the only thing you ever change -------------------------------------
-  // Use a release tag (e.g. 'v1.0.0') or a full commit SHA instead of 'main'
-  // so the code people run can never change underneath them.
-  var owner = 'arsic1992';
-  var repo = 'aurum-theme';
-  var ref = 'main';
-  var theme = 'light';   // 'light', 'dark' or 'auto' (follows the visitor's device); the header button overrides it
+  // 1) WHERE THE INSTALLER CODE LIVES (one shared repo for every theme).
+  //    It must contain installer/install.js and installer/catalog.json.
+  //    Use a release tag or full commit SHA instead of 'main' so it can never change underneath people.
+  var core = { owner: 'arsic1992', repo: 'aurum-theme', ref: 'main' };
+
+  // 2) WHICH THEME REPOS CAN BE INSTALLED. Each needs a manifest.json in its root.
+  //    One entry = the installer opens straight to that theme.
+  //    Several entries = people pick one first (or link to the page with #id, e.g. #aurum).
+  var themes = [
+    { id: 'aurum', name: 'Aurum', description: 'Aurum theme for Forumotion', owner: 'arsic1992', repo: 'aurum-theme', ref: 'main' }
+    // , { id: 'other', name: 'Other theme', description: 'Another look', owner: 'someone', repo: 'other-theme', ref: 'v1.0.0' }
+  ];
+
+  var theme = 'light';   // 'light', 'dark' or 'auto'; the header button overrides it
   // ---------------------------------------------------------------------------
 
-  window.AURUM_INSTALLER = { owner: owner, repo: repo, ref: ref, theme: theme };
-  var url = 'https://raw.githubusercontent.com/' + owner + '/' + repo + '/' + ref + '/installer/install.js';
+  window.UNIVERSAL_INSTALLER = { core: core, themes: themes, theme: theme };
+  var url = 'https://raw.githubusercontent.com/' + core.owner + '/' + core.repo + '/' + core.ref + '/installer/install.js';
 
   fetch(url).then(function (r) {
     if (!r.ok) { throw new Error('HTTP ' + r.status); }
@@ -21,7 +28,7 @@
     s.text = code;
     document.head.appendChild(s);
   }).catch(function (e) {
-    document.getElementById('aurum-installer').textContent = 'Could not load the installer (' + e.message + '). Check that the repository is public and the ref exists.';
+    document.getElementById('theme-installer').textContent = 'Could not load the installer (' + e.message + '). Check that the repository is public and the ref exists.';
   });
 })();
 </script>
