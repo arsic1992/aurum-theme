@@ -1,0 +1,26 @@
+<div id="aurum-installer" style="min-height:120px;padding:20px;text-align:center;color:#999">Loading the Aurum installer…</div>
+<script>
+(function () {
+  // ---- the only thing you ever change -------------------------------------
+  // Use a release tag (e.g. 'v1.0.0') or a full commit SHA instead of 'main'
+  // so the code people run can never change underneath them.
+  var owner = 'arsic1992';
+  var repo = 'aurum-theme';
+  var ref = 'main';
+  // ---------------------------------------------------------------------------
+
+  window.AURUM_INSTALLER = { owner: owner, repo: repo, ref: ref };
+  var url = 'https://raw.githubusercontent.com/' + owner + '/' + repo + '/' + ref + '/installer/install.js';
+
+  fetch(url).then(function (r) {
+    if (!r.ok) { throw new Error('HTTP ' + r.status); }
+    return r.text();
+  }).then(function (code) {
+    var s = document.createElement('script');
+    s.text = code;
+    document.head.appendChild(s);
+  }).catch(function (e) {
+    document.getElementById('aurum-installer').textContent = 'Could not load the installer (' + e.message + '). Check that the repository is public and the ref exists.';
+  });
+})();
+</script>
