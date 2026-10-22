@@ -1,1 +1,145 @@
-
+{
+  "_about": "Shared catalog of Forumotion (phpBB3 version) templates: name -> template ID, grouped. Themes pick from this in their manifest.json. Add any template that is missing: the ID is the t= number in its edit URL in the admin panel.",
+  "groups": [
+    {
+      "name": "General",
+      "templates": {
+        "agreement": 101,
+        "confirm_body": 103,
+        "buy_credits": 105,
+        "error_body": 106,
+        "faq_body": 107,
+        "faq_dhtml": 108,
+        "greeting_popup": 109,
+        "index_body": 110,
+        "index_box": 111,
+        "jumpbox": 112,
+        "memberlist_body": 113,
+        "message_body": 114,
+        "overall_footer_begin": 115,
+        "overall_header": 116,
+        "search_body": 118,
+        "search_results_posts": 119,
+        "search_results_topics": 120,
+        "topics_list_box": 124,
+        "viewforum_body": 125,
+        "viewonline_body": 126,
+        "viewtopic_body": 127,
+        "viewtopic_poll_ballot": 128,
+        "viewtopic_poll_result": 129,
+        "topics_blog_box": 130,
+        "viewcomments_body": 131,
+        "overall_footer_end": 133
+      }
+    },
+    {
+      "name": "Portal",
+      "templates": {
+        "mod_chatbox": 901,
+        "mod_news": 902,
+        "mod_poll": 903,
+        "mod_recent_topics": 904,
+        "mod_search": 905,
+        "mod_statistics": 906,
+        "mod_whoisonline": 907,
+        "standard": 911,
+        "mod_top_posters": 912,
+        "mod_keywords": 913,
+        "mod_social_bookmarking": 914,
+        "mod_rss_feeds": 915,
+        "mod_login": 916,
+        "mod_most_active_topics": 917,
+        "mod_most_viewed_topics": 918,
+        "mod_most_active_starters": 919,
+        "mod_top_post_users_week": 920,
+        "mod_top_post_users_month": 921
+      }
+    },
+    {
+      "name": "Gallery",
+      "templates": {
+        "album_cat_body": 201,
+        "album_cat_top10": 202,
+        "album_edit_body": 203,
+        "album_formsearch_body": 204,
+        "album_index_body": 205,
+        "album_modcp_body": 206,
+        "album_moderate_body": 207,
+        "album_nuffimage_box": 208,
+        "album_search_body": 210,
+        "album_showpage_body": 211,
+        "album_slideshow_body": 212,
+        "album_upload_body": 213
+      }
+    },
+    {
+      "name": "Calendar",
+      "templates": {
+        "birthday_list_box": 401,
+        "calendar_body": 402,
+        "calendar_box": 403,
+        "calendar_overview_profil": 404,
+        "calendar_overview_topic": 405,
+        "calendar_scheduler_body": 406
+      }
+    },
+    {
+      "name": "Usergroups",
+      "templates": {
+        "groupcp_info_body": 801,
+        "groupcp_pending_info": 802,
+        "groupcp_user_body": 803
+      }
+    },
+    {
+      "name": "Post and Private messages",
+      "templates": {
+        "posting_body": 501,
+        "posting_confirm_code": 503,
+        "posting_poll_body": 504,
+        "posting_preview": 505,
+        "posting_topic_review": 509,
+        "privmsg_topic_review": 510,
+        "privmsgs_body": 511,
+        "privmsgs_popup": 512,
+        "privmsgs_preview": 513,
+        "privmsgs_read_body": 514
+      }
+    },
+    {
+      "name": "Moderation",
+      "templates": {
+        "merge_body": 601,
+        "merge_select_body": 602,
+        "modcp_body": 603,
+        "modcp_move": 604,
+        "modcp_split": 605,
+        "modcp_viewip": 606,
+        "report_list_body": 607,
+        "report_popup_body": 608,
+        "report_view_body": 609
+      }
+    },
+    {
+      "name": "Profile",
+      "templates": {
+        "profile_add_body": 701,
+        "profile_advanced_body": 1139,
+        "profile_avatar_gallery": 702,
+        "profile_edit_signature": 704,
+        "profile_send_email": 705,
+        "profile_send_pass": 706,
+        "profile_view_body": 708,
+        "rpg_sheet": 710,
+        "rpg_sheet_edit": 711
+      }
+    },
+    {
+      "name": "Mobile",
+      "lang": "mobile",
+      "templates": {
+        "overall_header": 1010
+      }
+    }
+  ]
+}
