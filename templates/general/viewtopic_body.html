@@ -464,6 +464,27 @@ showHiddenMessage = function(id)
 	</div>
 <!-- END show_permissions -->
 
+<script type="text/javascript">
+//<![CDATA[
+/* FX VOTE - start: reads the forum's own reputation title ("... : 100% (1 vote)") and passes the net score and a tone to the CSS.
+   Delete this whole <script> and the vote simply shows 0 in grey. */
+(function () {
+	var list = document.querySelectorAll('.fx-post__body > .vote');
+	for (var i = 0; i < list.length; i++) {
+		var v = list[i], t = v.querySelector('[title]'), s = t ? t.getAttribute('title') : '';
+		var m = /(\d+(?:[.,]\d+)?)\s*%[^\d]*(\d+)/.exec(s || '');
+		if (s) { v.setAttribute('title', s); }
+		if (!m) { v.setAttribute('data-fx-tone', 'none'); v.setAttribute('data-fx-n', '0'); continue; }
+		var pct = parseFloat(m[1].replace(',', '.')), n = parseInt(m[2], 10);
+		var net = 2 * Math.round(n * pct / 100) - n;
+		v.setAttribute('data-fx-n', (net < 0 ? '\u2212' : (net > 0 ? '+' : '')) + Math.abs(net));
+		v.setAttribute('data-fx-tone', pct >= 60 ? 'good' : (pct >= 40 ? 'mid' : 'bad'));
+	}
+})();
+/* FX VOTE - end */
+//]]>
+</script>
+
 <!-- BEGIN switch_image_resize -->
 <script type="text/javascript">
 //<![CDATA[
