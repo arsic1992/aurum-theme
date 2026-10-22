@@ -7,9 +7,10 @@
   var owner = 'arsic1992';
   var repo = 'aurum-theme';
   var ref = 'main';
+  var theme = 'light';   // 'light', 'dark' or 'auto' (follows the visitor's device); the header button overrides it
   // ---------------------------------------------------------------------------
 
-  window.AURUM_INSTALLER = { owner: owner, repo: repo, ref: ref };
+  window.AURUM_INSTALLER = { owner: owner, repo: repo, ref: ref, theme: theme };
   var url = 'https://raw.githubusercontent.com/' + owner + '/' + repo + '/' + ref + '/installer/install.js';
 
   fetch(url).then(function (r) {
