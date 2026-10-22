@@ -139,7 +139,7 @@
       }
     },
     {
-      "1ame": "Publications",
+      "name": "Publications",
       "templates": {
         "view_publication": 1500,
         "list_publication": 1501
