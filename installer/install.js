@@ -23,46 +23,38 @@
   };
 
   /* ------------------------------------------------------------------ *
-   * Forumotion (phpBB3 version) template IDs, keyed by template name.
-   * Taken from the Forumactif Edge installer. Templates not listed here
-   * can be added in manifest.json: { "ids": { "login_body": 117 } }
+   * The Aurum template list: group -> { template name: template ID }.
+   * Only these templates are ever installed. Anything else in the repo is ignored.
+   * (Extra templates can be added without editing this file via manifest.json:
+   *  { "ids": { "some_template": 123 } }  -> they show up under "Other".)
    * ------------------------------------------------------------------ */
-  var IDS = {
-    // general
-    agreement: 101, confirm_body: 103, buy_credits: 105, error_body: 106, faq_body: 107, faq_dhtml: 108,
-    greeting_popup: 109, index_body: 110, index_box: 111, jumpbox: 112, memberlist_body: 113,
-    message_body: 114, overall_footer_begin: 115, overall_header: 116, search_body: 118,
-    search_results_posts: 119, search_results_topics: 120, topics_list_box: 124, viewforum_body: 125,
-    viewonline_body: 126, viewtopic_body: 127, topics_blog_box: 130, viewcomments_body: 131,
-    overall_footer_end: 133,
-    // portal
-    mod_chatbox: 901, mod_news: 902, mod_poll: 903, mod_recent_topics: 904, mod_search: 905,
-    mod_statistics: 906, mod_whoisonline: 907, standard: 911, mod_top_posters: 912, mod_keywords: 913,
-    mod_social_bookmarking: 914, mod_rss_feeds: 915, mod_login: 916, mod_most_active_topics: 917,
-    mod_most_viewed_topics: 918, mod_most_active_starters: 919, mod_top_post_users_week: 920,
-    mod_top_post_users_month: 921,
-    // gallery
-    album_cat_body: 201, album_cat_top10: 202, album_edit_body: 203, album_formsearch_body: 204,
-    album_index_body: 205, album_modcp_body: 206, album_moderate_body: 207, album_nuffimage_box: 208,
-    album_search_body: 210, album_showpage_body: 211, album_slideshow_body: 212, album_upload_body: 213,
-    // calendar
-    birthday_list_box: 401, calendar_body: 402, calendar_box: 403, calendar_overview_profil: 404,
-    calendar_overview_topic: 405, calendar_scheduler_body: 406,
-    // user groups
-    groupcp_info_body: 801, groupcp_pending_info: 802, groupcp_user_body: 803,
-    // posting + private messages
-    posting_body: 501, posting_poll_body: 504, posting_preview: 505, posting_topic_review: 509,
-    privmsg_topic_review: 510, privmsgs_body: 511, privmsgs_popup: 512, privmsgs_preview: 513,
-    privmsgs_read_body: 514,
-    // moderation
-    merge_body: 601, merge_select_body: 602, modcp_body: 603, modcp_move: 604, modcp_split: 605,
-    modcp_viewip: 606, report_list_body: 607, report_popup_body: 608, report_view_body: 609,
-    // profile
-    profile_add_body: 701, profile_avatar_gallery: 702, profile_edit_signature: 704,
-    profile_send_email: 705, profile_send_pass: 706, profile_view_body: 708, rpg_sheet: 710,
-    rpg_sheet_edit: 711
-  };
-  var MOBILE_IDS = { overall_header: 1010 };
+  var GROUPS = [
+    ['General', {
+      faq_dhtml: 108, index_body: 110, index_box: 111, memberlist_body: 113, overall_footer_begin: 115,
+      overall_footer_end: 133, overall_header: 116, search_body: 118, topics_list_box: 124,
+      viewforum_body: 125, viewtopic_body: 127, viewtopic_poll_ballot: 128, viewtopic_poll_result: 129
+    }],
+    ['Usergroups', { groupcp_info_body: 801, groupcp_pending_info: 802, groupcp_user_body: 803 }],
+    ['Post and Private messages', {
+      posting_body: 501, posting_confirm_code: 503, posting_poll_body: 504, posting_preview: 505,
+      posting_topic_review: 509, privmsg_topic_review: 510, privmsgs_body: 511, privmsgs_popup: 512,
+      privmsgs_preview: 513, privmsgs_read_body: 514
+    }],
+    ['Moderation', {
+      merge_body: 601, merge_select_body: 602, modcp_body: 603, modcp_move: 604, modcp_split: 605,
+      modcp_viewip: 606, report_list_body: 607, report_popup_body: 608, report_view_body: 609
+    }],
+    ['Profile', {
+      profile_add_body: 701, profile_advanced_body: 1139, profile_avatar_gallery: 702,
+      profile_edit_signature: 704, profile_send_email: 705, profile_send_pass: 706,
+      profile_view_body: 708, rpg_sheet: 710, rpg_sheet_edit: 711
+    }]
+  ];
+  var GROUP_ORDER = ['Stylesheet'].concat(GROUPS.map(function (g) { return g[0]; }), ['Other']);
+  var IDS = {}, GROUP_OF = {}, ORDER_OF = {}, ORD = 0;
+  GROUPS.forEach(function (g) {
+    Object.keys(g[1]).forEach(function (n) { IDS[n] = g[1][n]; GROUP_OF[n] = g[0]; ORDER_OF[n] = ORD++; });
+  });
 
   /* ------------------------------------------------------------------ *
    * Pure helpers (unit-testable without a browser)
@@ -147,26 +139,39 @@
     return res;
   }
 
+  // Turns the repo's file list into install items: only templates on the Aurum list (plus any
+  // IDs given in manifest.json). Listed templates with no file in the repo come back as
+  // {missing:true} so the review screen can flag them. Skipped files are in result.ignored.
   function planFromPaths(paths, manifest) {
-    var ids = (manifest && manifest.ids) || {}, items = [], seen = {};
+    var ids = (manifest && manifest.ids) || {}, items = [], seen = {}, ignored = [], hasCss = false;
     paths.forEach(function (p) {
       if (p === CFG.cssPath) {
-        items.push({ kind: 'css', name: 'style.css', path: p, id: null, lang: null });
+        hasCss = true;
+        items.push({ kind: 'css', name: 'style.css', path: p, id: null, lang: null, group: 'Stylesheet', ord: -1 });
       } else if (p.indexOf(CFG.templatesPath) === 0 && /\.html?$/i.test(p)) {
         var base = p.split('/').pop().replace(/\.html?$/i, '');
         if (base.charAt(0) === '.') { return; }
         var mobile = /(^|\/)mobile/i.test(p.slice(CFG.templatesPath.length));
         var key = (mobile ? 'mobile:' : '') + base;
         if (seen[key]) { return; }
+        var id = ids[(mobile ? 'mobile/' : '') + base] || (mobile ? null : IDS[base]) || null;
+        if (!id) { ignored.push(p.slice(CFG.templatesPath.length)); return; }
         seen[key] = 1;
-        var id = ids[(mobile ? 'mobile/' : '') + base] || (mobile ? MOBILE_IDS[base] : IDS[base]) || null;
-        items.push({ kind: 'template', name: base, path: p, id: id, lang: mobile ? 'mobile' : 'main' });
+        items.push({ kind: 'template', name: base, path: p, id: id, lang: mobile ? 'mobile' : 'main',
+          group: (!mobile && GROUP_OF[base]) || 'Other', ord: (!mobile && ORDER_OF[base] != null) ? ORDER_OF[base] : 9999 });
       }
     });
+    if (!hasCss) { items.push({ kind: 'css', name: 'style.css', path: CFG.cssPath, id: null, lang: null, group: 'Stylesheet', ord: -1, missing: true }); }
+    Object.keys(IDS).forEach(function (n) {
+      if (!seen[n]) { items.push({ kind: 'template', name: n, path: null, id: IDS[n], lang: 'main', group: GROUP_OF[n], ord: ORDER_OF[n], missing: true }); }
+    });
     items.sort(function (a, b) {
-      if (a.kind !== b.kind) { return a.kind === 'css' ? -1 : 1; }
+      var ga = GROUP_ORDER.indexOf(a.group), gb = GROUP_ORDER.indexOf(b.group);
+      if (ga !== gb) { return ga - gb; }
+      if (a.ord !== b.ord) { return a.ord - b.ord; }
       return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
     });
+    items.ignored = ignored;
     return items;
   }
 
@@ -191,7 +196,7 @@
   }
 
   if (typeof module === 'object' && module.exports) {   // node: export helpers for tests and stop
-    module.exports = { esc: esc, norm: norm, encVal: encVal, encodeForm: encodeForm, diffLines: diffLines, planFromPaths: planFromPaths, IDS: IDS };
+    module.exports = { esc: esc, norm: norm, encVal: encVal, encodeForm: encodeForm, diffLines: diffLines, planFromPaths: planFromPaths, IDS: IDS, GROUPS: GROUPS };
     return;
   }
 
@@ -262,7 +267,7 @@
     items: [], filter: 'all', backupDone: false,
     opts: { verify: true, baseCss: false, phpbb3: false },
     log: [], progress: { done: 0, total: 0 }, failed: null, pending: null,
-    summary: { ok: 0, warn: 0 }, errorMsg: '', modal: null, mode: 'install', theme: 'auto'
+    summary: { ok: 0, warn: 0 }, ignored: [], errorMsg: '', modal: null, mode: 'install', theme: 'auto'
   };
   var root, host;
 
@@ -289,10 +294,11 @@
         return planFromPaths(paths, manifest);
       });
     }).then(function (items) {
-      if (!items.length) { throw new Error('No templates or css/style.css found in ' + CFG.owner + '/' + CFG.repo + '@' + CFG.ref); }
-      state.items = items; state.scanTotal = items.length * 2; state.scanDone = 0;
+      if (!items.some(function (i) { return !i.missing; })) { throw new Error('No templates or css/style.css found in ' + CFG.owner + '/' + CFG.repo + '@' + CFG.ref); }
+      state.items = items; state.ignored = items.ignored || []; state.scanTotal = items.length * 2; state.scanDone = 0;
       state.scanMsg = 'Downloading theme files and reading your current forum…'; render();
       return pool(items, CFG.concurrency, function (it) {
+        if (it.missing) { state.scanDone += 2; renderProgressOnly(); return; }
         return getText(RAW + it.path).then(function (c) { it.remote = c; }, function (e) { it.remoteErr = e.message; })
           .then(function () { state.scanDone++; renderProgressOnly(); })
           .then(function () {
@@ -315,6 +321,7 @@
   }
 
   function classify(it) {
+    if (it.missing) { it.status = 'missing'; it.selected = false; return; }
     if (it.remote == null) { it.status = 'bad'; it.note = 'could not download'; it.selected = false; return; }
     if (it.kind === 'template' && !it.id) { it.status = 'noid'; it.selected = false; return; }
     if (it.current == null) { it.status = 'unreadable'; it.selected = false; return; }
@@ -478,6 +485,7 @@
     'th{position:sticky;top:0;background:var(--panel2);text-align:left;color:var(--mut);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line);z-index:1}',
     'td{padding:7px 10px;border-bottom:1px solid var(--soft);vertical-align:middle;color:var(--text);text-align:left}',
     'tr:last-child td{border-bottom:0}.nm{font-family:ui-monospace,Consolas,monospace;font-size:12.5px;color:var(--text)}',
+    'tr.gh td{background:var(--panel2);color:var(--gold2);border-top:1px solid var(--line);padding:9px 10px}tr.gh b{color:var(--gold2)}',
     '.mut{color:var(--mut)}.r{text-align:right}',
     '.btn{cursor:pointer;border:1px solid var(--gold);background:linear-gradient(180deg,var(--b1),var(--b2));color:var(--bt);font-weight:700;border-radius:9px;padding:9px 18px;font-size:14px}',
     '.btn.ghost{background:transparent;color:var(--gold2)}',
@@ -500,7 +508,7 @@
 
   var STATUS = {
     diff: ['warn', 'Will overwrite'], 'new': ['gold', 'Empty → new'], same: ['ok', 'Identical (skipped)'],
-    noid: ['bad', 'Unknown template ID'], unreadable: ['warn', 'Can’t read current'], bad: ['bad', 'Download failed']
+    noid: ['bad', 'Unknown template ID'], missing: ['bad', 'Not in repo'], unreadable: ['warn', 'Can’t read current'], bad: ['bad', 'Download failed']
   };
 
   function counts() {
@@ -540,13 +548,17 @@
       '<div class="acts"><button class="btn" data-action="rescan">Try again</button></div></div>';
   }
 
+  function visible(it) {
+    var s = it.status, f = state.filter;
+    return f === 'all' || (f === 'diff' && (s === 'diff' || s === 'new')) || (f === 'same' && s === 'same') ||
+      (f === 'bad' && (s === 'noid' || s === 'bad' || s === 'unreadable' || s === 'missing'));
+  }
+  function installable(it) { return it.status === 'diff' || it.status === 'new'; }
+  function selectable(it) { return it.status !== 'noid' && it.status !== 'bad' && it.status !== 'missing'; }
+
   function viewReview() {
-    var c = counts(), rows = state.items.map(function (it, i) { return { it: it, i: i }; }).filter(function (r) {
-      var s = r.it.status;
-      return state.filter === 'all' || (state.filter === 'diff' && (s === 'diff' || s === 'new')) || (state.filter === 'same' && s === 'same') || (state.filter === 'bad' && (s === 'noid' || s === 'bad' || s === 'unreadable'));
-    });
-    var allOn = rows.length && rows.every(function (r) { return r.it.selected || r.it.status === 'noid' || r.it.status === 'bad'; });
-    var h = '<div class="tiles">' +
+    var c = counts(), h = '';
+    h += '<div class="tiles">' +
       '<div class="tile diff"><div class="n">' + c.diff + '</div><div class="l">will be overwritten</div></div>' +
       '<div class="tile same"><div class="n">' + c.same + '</div><div class="l">already identical</div></div>' +
       '<div class="tile bad"><div class="n">' + c.bad + '</div><div class="l">can’t be installed</div></div></div>';
@@ -559,20 +571,42 @@
       return '<button class="f ' + (state.filter === f[0] ? 'on' : '') + '" data-action="filter" data-v="' + f[0] + '">' + f[1] + '</button>';
     }).join('') + '<span class="mut" style="margin-left:auto">' + c.sel + ' selected</span></div>';
 
-    h += '<div class="tw"><table><thead><tr><th style="width:34px"><input type="checkbox" data-action="all"' + (allOn ? ' checked' : '') + '></th><th>Item</th><th>ID</th><th>Status</th><th class="r">Change</th><th></th></tr></thead><tbody>';
-    rows.forEach(function (r) {
-      var it = r.it, st = STATUS[it.status], dis = it.status === 'noid' || it.status === 'bad';
-      h += '<tr><td><input type="checkbox" data-action="toggle" data-i="' + r.i + '"' + (it.selected ? ' checked' : '') + (dis ? ' disabled' : '') + '></td>' +
-        '<td class="nm">' + (it.kind === 'css' ? 'css/style.css' : esc(it.name) + (it.lang === 'mobile' ? ' <span class="chip">mobile</span>' : '')) + '</td>' +
-        '<td class="mut">' + (it.id || '—') + '</td><td><span class="chip ' + st[0] + '">' + st[1] + '</span></td>' +
-        '<td class="r mut">' + (it.delta != null ? fmtDelta(it.delta) : '') + '</td>' +
-        '<td class="r">' + ((it.status === 'diff' || it.status === 'new') ? '<button class="lk" data-action="diff" data-i="' + r.i + '">view diff</button>' : '') + '</td></tr>';
+    var body = '', shownAny = false, vis = [];
+    GROUP_ORDER.forEach(function (g) {
+      var gi = [];
+      state.items.forEach(function (it, i) { if (it.group === g) { gi.push({ it: it, i: i }); } });
+      var shown = gi.filter(function (r) { return visible(r.it); });
+      if (!shown.length) { return; }
+      var n = { change: 0, same: 0, bad: 0 }, inst = [];
+      gi.forEach(function (r) {
+        if (installable(r.it)) { n.change++; inst.push(r); } else if (r.it.status === 'same') { n.same++; } else { n.bad++; }
+      });
+      var gOn = inst.length && inst.every(function (r) { return r.it.selected; });
+      body += '<tr class="gh"><td><input type="checkbox" data-action="grp" data-g="' + esc(g) + '"' + (gOn ? ' checked' : '') + (inst.length ? '' : ' disabled') + '></td>' +
+        '<td colspan="5"><b>' + esc(g) + '</b> <span class="mut">· ' + gi.length + (gi.length === 1 ? ' item' : ' items') + '</span> &nbsp;' +
+        (n.change ? '<span class="chip warn">' + n.change + ' will be overwritten</span> ' : '') +
+        (n.same ? '<span class="chip ok">' + n.same + ' identical</span> ' : '') +
+        (n.bad ? '<span class="chip bad">' + n.bad + ' can’t be installed</span>' : '') + '</td></tr>';
+      shown.forEach(function (r) {
+        var it = r.it, st = STATUS[it.status], dis = !selectable(it);
+        shownAny = true; vis.push(it);
+        body += '<tr><td><input type="checkbox" data-action="toggle" data-i="' + r.i + '"' + (it.selected ? ' checked' : '') + (dis ? ' disabled' : '') + '></td>' +
+          '<td class="nm">' + (it.kind === 'css' ? 'css/style.css' : esc(it.name) + (it.lang === 'mobile' ? ' <span class="chip">mobile</span>' : '')) + '</td>' +
+          '<td class="mut">' + (it.id || '—') + '</td><td><span class="chip ' + st[0] + '">' + st[1] + '</span></td>' +
+          '<td class="r mut">' + (it.delta != null ? fmtDelta(it.delta) : '') + '</td>' +
+          '<td class="r">' + (installable(it) ? '<button class="lk" data-action="diff" data-i="' + r.i + '">view diff</button>' : '') + '</td></tr>';
+      });
     });
-    if (!rows.length) { h += '<tr><td colspan="6" class="mut" style="text-align:center;padding:22px">Nothing in this filter.</td></tr>'; }
-    h += '</tbody></table></div>';
+    var allOn = vis.filter(installable).length && vis.filter(installable).every(function (it) { return it.selected; });
+    h += '<div class="tw"><table><thead><tr><th style="width:34px"><input type="checkbox" data-action="all"' + (allOn ? ' checked' : '') + '></th><th>Item</th><th>ID</th><th>Status</th><th class="r">Change</th><th></th></tr></thead><tbody>' +
+      (shownAny ? body : '<tr><td colspan="6" class="mut" style="text-align:center;padding:22px">Nothing in this filter.</td></tr>') + '</tbody></table></div>';
 
     h += '<div class="note">Forumotion shows its default template for anything you haven’t customised, so “Will overwrite” also covers templates that are still on the default. ' +
-      (c.bad ? 'Items marked “Unknown template ID” are skipped; add their IDs to manifest.json to include them.' : '') + '</div>';
+      'Tick a group’s box to select everything in it that would change; identical items are skipped unless you tick them yourself.</div>';
+    if (state.ignored.length) {
+      h += '<div class="note">' + state.ignored.length + ' file' + (state.ignored.length === 1 ? '' : 's') + ' in the repo ' + (state.ignored.length === 1 ? 'is' : 'are') + ' not part of the Aurum template list and will be ignored: ' +
+        esc(state.ignored.slice(0, 6).join(', ')) + (state.ignored.length > 6 ? ', …' : '') + '</div>';
+    }
 
     h += '<div class="acts"><button class="btn ghost" data-action="backup">' + (state.backupDone ? '✓ Backup downloaded — download again' : '1. Download backup of what will be overwritten') + '</button>' +
       '<button class="btn" data-action="install"' + (state.backupDone && c.sel ? '' : ' disabled') + '>2. Install ' + c.sel + ' item' + (c.sel === 1 ? '' : 's') + '</button>' +
@@ -661,10 +695,12 @@
       else if (f) { state.opts[f] = t.checked; }
       else if (a === 'toggle') { var it = state.items[+t.getAttribute('data-i')]; it.selected = t.checked; state.backupDone = false; render(); }
       else if (a === 'all') {
-        state.items.forEach(function (it) {
-          var visible = state.filter === 'all' || (state.filter === 'diff' && (it.status === 'diff' || it.status === 'new')) || (state.filter === 'same' && it.status === 'same') || (state.filter === 'bad' && (it.status === 'noid' || it.status === 'bad' || it.status === 'unreadable'));
-          if (visible && it.status !== 'noid' && it.status !== 'bad') { it.selected = t.checked; }
-        });
+        state.items.forEach(function (it) { if (visible(it) && installable(it)) { it.selected = t.checked; } });
+        state.backupDone = false; render();
+      }
+      else if (a === 'grp') {
+        var g = t.getAttribute('data-g');
+        state.items.forEach(function (it) { if (it.group === g && installable(it)) { it.selected = t.checked; } });
         state.backupDone = false; render();
       }
     });
