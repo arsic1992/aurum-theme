@@ -1,60 +1,20 @@
 /*!
- * Aurum Theme Installer for Forumotion / Forumactif
- * - Lists exactly what will be overwritten (with a diff) before touching anything
- * - Forces a downloadable backup, can restore from it
- * - Runs inside the admin's own logged-in session; talks only to this forum and GitHub
+ * Universal Forum Theme Installer for Forumotion / Forumactif
  *
- * Loaded by installer.html. Config comes from window.AURUM_INSTALLER { owner, repo, ref }.
+ * Three layers, kept apart on purpose:
+ *   1. THIS FILE            generic installer code (one shared repo for all themes)
+ *   2. installer/catalog.json   every template that exists: name, ID, group   (shared)
+ *   3. <theme repo>/manifest.json   which templates + CSS that theme installs  (one per theme)
+ *
+ * Anything in the catalog that a theme does not list is shown as "not touched".
+ * Which repo gets installed comes from the themes list in installer.html.
  */
 (function () {
   'use strict';
 
-  var L = (typeof window !== 'undefined' && window.AURUM_INSTALLER) || {};
-  var CFG = {
-    name: 'Aurum Theme',
-    owner: L.owner || 'arsic1992',
-    repo: L.repo || 'aurum-theme',
-    ref: L.ref || 'main',
-    cssPath: 'css/style.css',        // aurum-min.css is intentionally ignored
-    templatesPath: 'templates/',
-    delay: 150,                      // ms between admin requests (be gentle with the forum)
-    concurrency: 4,
-    retries: 2
-  };
-
-  /* ------------------------------------------------------------------ *
-   * The Aurum template list: group -> { template name: template ID }.
-   * Only these templates are ever installed. Anything else in the repo is ignored.
-   * (Extra templates can be added without editing this file via manifest.json:
-   *  { "ids": { "some_template": 123 } }  -> they show up under "Other".)
-   * ------------------------------------------------------------------ */
-  var GROUPS = [
-    ['General', {
-      faq_dhtml: 108, index_body: 110, index_box: 111, memberlist_body: 113, overall_footer_begin: 115,
-      overall_footer_end: 133, overall_header: 116, search_body: 118, topics_list_box: 124,
-      viewforum_body: 125, viewtopic_body: 127, viewtopic_poll_ballot: 128, viewtopic_poll_result: 129
-    }],
-    ['Usergroups', { groupcp_info_body: 801, groupcp_pending_info: 802, groupcp_user_body: 803 }],
-    ['Post and Private messages', {
-      posting_body: 501, posting_confirm_code: 503, posting_poll_body: 504, posting_preview: 505,
-      posting_topic_review: 509, privmsg_topic_review: 510, privmsgs_body: 511, privmsgs_popup: 512,
-      privmsgs_preview: 513, privmsgs_read_body: 514
-    }],
-    ['Moderation', {
-      merge_body: 601, merge_select_body: 602, modcp_body: 603, modcp_move: 604, modcp_split: 605,
-      modcp_viewip: 606, report_list_body: 607, report_popup_body: 608, report_view_body: 609
-    }],
-    ['Profile', {
-      profile_add_body: 701, profile_advanced_body: 1139, profile_avatar_gallery: 702,
-      profile_edit_signature: 704, profile_send_email: 705, profile_send_pass: 706,
-      profile_view_body: 708, rpg_sheet: 710, rpg_sheet_edit: 711
-    }]
-  ];
-  var GROUP_ORDER = ['Stylesheet'].concat(GROUPS.map(function (g) { return g[0]; }), ['Other']);
-  var IDS = {}, GROUP_OF = {}, ORDER_OF = {}, ORD = 0;
-  GROUPS.forEach(function (g) {
-    Object.keys(g[1]).forEach(function (n) { IDS[n] = g[1][n]; GROUP_OF[n] = g[0]; ORDER_OF[n] = ORD++; });
-  });
+  var L = (typeof window !== 'undefined' && (window.UNIVERSAL_INSTALLER || window.AURUM_INSTALLER)) || {};
+  var CORE = L.core || { owner: L.owner, repo: L.repo, ref: L.ref };
+  var CFG = { delay: 150, concurrency: 4, retries: 2 };
 
   /* ------------------------------------------------------------------ *
    * Pure helpers (unit-testable without a browser)
@@ -139,40 +99,66 @@
     return res;
   }
 
-  // Turns the repo's file list into install items: only templates on the Aurum list (plus any
-  // IDs given in manifest.json). Listed templates with no file in the repo come back as
-  // {missing:true} so the review screen can flag them. Skipped files are in result.ignored.
-  function planFromPaths(paths, manifest) {
-    var ids = (manifest && manifest.ids) || {}, items = [], seen = {}, ignored = [], hasCss = false;
-    paths.forEach(function (p) {
-      if (p === CFG.cssPath) {
-        hasCss = true;
-        items.push({ kind: 'css', name: 'style.css', path: p, id: null, lang: null, group: 'Stylesheet', ord: -1 });
-      } else if (p.indexOf(CFG.templatesPath) === 0 && /\.html?$/i.test(p)) {
-        var base = p.split('/').pop().replace(/\.html?$/i, '');
-        if (base.charAt(0) === '.') { return; }
-        var mobile = /(^|\/)mobile/i.test(p.slice(CFG.templatesPath.length));
-        var key = (mobile ? 'mobile:' : '') + base;
-        if (seen[key]) { return; }
-        var id = ids[(mobile ? 'mobile/' : '') + base] || (mobile ? null : IDS[base]) || null;
-        if (!id) { ignored.push(p.slice(CFG.templatesPath.length)); return; }
-        seen[key] = 1;
-        items.push({ kind: 'template', name: base, path: p, id: id, lang: mobile ? 'mobile' : 'main',
-          group: (!mobile && GROUP_OF[base]) || 'Other', ord: (!mobile && ORDER_OF[base] != null) ? ORDER_OF[base] : 9999 });
+  // catalog.json -> lookup by key. Mobile templates use the key "mobile/<name>".
+  function catalogIndex(catalog) {
+    var idx = {}, n = 0;
+    ((catalog && catalog.groups) || []).forEach(function (g) {
+      var mobile = g.lang === 'mobile';
+      Object.keys(g.templates || {}).forEach(function (name) {
+        var key = (mobile ? 'mobile/' : '') + name;
+        idx[key] = { key: key, name: name, id: g.templates[name], group: g.name, lang: mobile ? 'mobile' : 'main', ord: n++ };
+      });
+    });
+    return idx;
+  }
+
+  // manifest + catalog (+ the repo's file list, or null) -> what to install, what is untouched.
+  function buildPlan(manifest, catalog, paths) {
+    var idx = catalogIndex(catalog), extraIds = manifest.ids || {}, dir = manifest.templatesDir == null ? 'templates/' : manifest.templatesDir;
+    if (dir && dir.slice(-1) !== '/') { dir += '/'; }
+    var list = manifest.templates || [], explicit = !Array.isArray(list);
+    var keys = explicit ? Object.keys(list) : list.slice(), byBase = {}, used = {}, seen = {}, items = [], untouched = [], ignored = [];
+    var have = {};
+    (paths || []).forEach(function (p) { have[p] = 1; });
+
+    (paths || []).forEach(function (p) {
+      if (p.indexOf(dir) === 0 && /\.html?$/i.test(p)) {
+        var b = p.split('/').pop().replace(/\.html?$/i, ''), mob = /(^|\/)mobile/i.test(p.slice(dir.length)), k = (mob ? 'mobile/' : '') + b;
+        if (!byBase[k]) { byBase[k] = p; }
       }
     });
-    if (!hasCss) { items.push({ kind: 'css', name: 'style.css', path: CFG.cssPath, id: null, lang: null, group: 'Stylesheet', ord: -1, missing: true }); }
-    Object.keys(IDS).forEach(function (n) {
-      if (!seen[n]) { items.push({ kind: 'template', name: n, path: null, id: IDS[n], lang: 'main', group: GROUP_OF[n], ord: ORDER_OF[n], missing: true }); }
+
+    keys.forEach(function (key) {
+      if (seen[key]) { return; }
+      seen[key] = 1;
+      var cat = idx[key], id = extraIds[key] || (cat && cat.id) || null, mobile = key.indexOf('mobile/') === 0;
+      var path = explicit ? list[key] : (byBase[key] || (paths ? null : dir + key.replace(/^mobile\//, '') + '.html'));
+      var it = { kind: 'template', key: key, name: key.replace(/^mobile\//, ''), id: id, lang: mobile ? 'mobile' : 'main', path: path,
+        group: cat ? cat.group : 'Other', ord: cat ? cat.ord : 9000 + items.length };
+      if (!path || (paths && !have[path])) { it.missing = true; } else { used[path] = 1; }
+      items.push(it);
     });
+
+    if (manifest.css) {
+      items.push({ kind: 'css', key: 'css', name: 'style.css', path: manifest.css, id: null, lang: null, group: 'Stylesheet', ord: -1,
+        missing: !!(paths && !have[manifest.css]) });
+    } else {
+      untouched.push({ key: 'css', name: 'Stylesheet (CSS)', group: 'Stylesheet' });
+    }
+    Object.keys(idx).forEach(function (k) {
+      if (!seen[k]) { untouched.push({ key: k, name: idx[k].name + (idx[k].lang === 'mobile' ? ' (mobile)' : ''), group: idx[k].group }); }
+    });
+    (paths || []).forEach(function (p) {
+      if (p.indexOf(dir) === 0 && /\.html?$/i.test(p) && !used[p] && p.split('/').pop().charAt(0) !== '.') { ignored.push(p.slice(dir.length)); }
+    });
+
+    var order = ['Stylesheet'].concat(((catalog && catalog.groups) || []).map(function (g) { return g.name; }), ['Other']);
     items.sort(function (a, b) {
-      var ga = GROUP_ORDER.indexOf(a.group), gb = GROUP_ORDER.indexOf(b.group);
+      var ga = order.indexOf(a.group), gb = order.indexOf(b.group);
       if (ga !== gb) { return ga - gb; }
-      if (a.ord !== b.ord) { return a.ord - b.ord; }
-      return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
+      return a.ord !== b.ord ? a.ord - b.ord : (a.name < b.name ? -1 : 1);
     });
-    items.ignored = ignored;
-    return items;
+    return { items: items, untouched: untouched, ignored: ignored, groupOrder: order };
   }
 
   function fmtBytes(n) { return n < 1024 ? n + ' B' : (n / 1024).toFixed(1) + ' KB'; }
@@ -196,16 +182,18 @@
   }
 
   if (typeof module === 'object' && module.exports) {   // node: export helpers for tests and stop
-    module.exports = { esc: esc, norm: norm, encVal: encVal, encodeForm: encodeForm, diffLines: diffLines, planFromPaths: planFromPaths, IDS: IDS, GROUPS: GROUPS };
+    module.exports = { esc: esc, norm: norm, encVal: encVal, encodeForm: encodeForm, diffLines: diffLines, catalogIndex: catalogIndex, buildPlan: buildPlan };
     return;
   }
 
   /* ------------------------------------------------------------------ *
    * Network
    * ------------------------------------------------------------------ */
-  var RAW = 'https://raw.githubusercontent.com/' + CFG.owner + '/' + CFG.repo + '/' + CFG.ref + '/';
-  var TREE = 'https://api.github.com/repos/' + CFG.owner + '/' + CFG.repo + '/git/trees/' + encodeURIComponent(CFG.ref) + '?recursive=1';
-  var tid = null;
+  function rawBase(o) { return 'https://raw.githubusercontent.com/' + o.owner + '/' + o.repo + '/' + (o.ref || 'main') + '/'; }
+  function treeUrl(o) { return 'https://api.github.com/repos/' + o.owner + '/' + o.repo + '/git/trees/' + encodeURIComponent(o.ref || 'main') + '?recursive=1'; }
+  function catalogUrl() { return L.catalog || rawBase(CORE) + 'installer/catalog.json'; }
+
+  var tid = null, theme = null;
 
   function getText(url) {
     return fetch(url, { credentials: url.charAt(0) === '/' ? 'same-origin' : 'omit' }).then(function (r) {
@@ -213,6 +201,7 @@
       return r.text();
     });
   }
+  function getJson(url) { return getText(url).then(function (t) { return JSON.parse(t); }); }
   function adminUrl(q) { return '/admin/?' + q + '&tid=' + tid; }
   function post(q, data) {
     return fetch(adminUrl(q), {
@@ -238,17 +227,21 @@
   var TPL_EDIT = 'part=themes&sub=templates&mode=edit_main&extended_admin=1';
   function tplReadUrl(id, lang) { return adminUrl(TPL_EDIT + '&main_mode=edit&t=' + id + '&l=' + lang); }
 
-  function textareaValue(html, names) {
-    var doc = new DOMParser().parseFromString(html, 'text/html'), ta = null, i;
-    for (i = 0; i < names.length && !ta; i++) { ta = doc.querySelector('textarea[name="' + names[i] + '"]'); }
-    if (!ta) { throw new Error('editor not found (not logged in to the admin panel?)'); }
-    return ta.value;
-  }
   function readCurrent(it) {
     if (it.kind === 'css') {
-      return getText(adminUrl('part=themes&sub=logos&mode=css&extended_admin=1')).then(function (h) { return textareaValue(h, ['edit_code']); });
+      return getText(adminUrl('part=themes&sub=logos&mode=css&extended_admin=1')).then(function (h) {
+        var ta = new DOMParser().parseFromString(h, 'text/html').querySelector('textarea[name="edit_code"]');
+        if (!ta) { throw new Error('editor not found (not logged in to the admin panel?)'); }
+        return ta.value;
+      });
     }
-    return getText(tplReadUrl(it.id, it.lang)).then(function (h) { return textareaValue(h, ['template']); });
+    return getText(tplReadUrl(it.id, it.lang)).then(function (h) {
+      var doc = new DOMParser().parseFromString(h, 'text/html'), ta = doc.querySelector('textarea[name="template"]');
+      if (!ta) { throw new Error('editor not found (not logged in to the admin panel?)'); }
+      var nm = doc.querySelector('input[name="tpl_name"]');
+      it.tplName = nm ? nm.value : '';          // the forum's own name for this template, reused when saving
+      return ta.value;
+    });
   }
   function writeTemplate(id, lang, name, content) {
     return post(TPL_EDIT, { t: id, l: lang, tpl_name: name, template: content, submit: 'Save' }).then(function () {
@@ -264,42 +257,72 @@
    * ------------------------------------------------------------------ */
   var state = {
     stage: 'scan', scanMsg: 'Starting…', scanDone: 0, scanTotal: 0,
-    items: [], filter: 'all', backupDone: false,
+    themes: [], items: [], untouched: [], ignored: [], groupOrder: [], showUntouched: false,
+    filter: 'all', backupDone: false,
     opts: { verify: true, baseCss: false, phpbb3: false },
     log: [], progress: { done: 0, total: 0 }, failed: null, pending: null,
-    summary: { ok: 0, warn: 0 }, ignored: [], errorMsg: '', modal: null, mode: 'install', theme: 'auto'
+    summary: { ok: 0, warn: 0 }, errorMsg: '', modal: null, mode: 'install', theme: 'auto'
   };
   var root, host;
 
+  function pinned(r) { return /^[0-9a-f]{40}$/i.test(r) || /^v?\d/.test(r); }
   function refKind() {
-    if (/^[0-9a-f]{40}$/i.test(CFG.ref)) { return { cls: 'ok', txt: 'pinned to commit ' + CFG.ref.slice(0, 7) }; }
-    if (/^v?\d/.test(CFG.ref)) { return { cls: 'ok', txt: 'release ' + CFG.ref }; }
-    return { cls: 'warn', txt: 'branch “' + CFG.ref + '” (can change over time)' };
+    var tr = theme ? theme.ref : '', cr = CORE.ref || 'main', bad = [];
+    if (theme && !pinned(tr)) { bad.push('theme “' + tr + '”'); }
+    if (!pinned(cr)) { bad.push('installer “' + cr + '”'); }
+    if (!bad.length) { return { cls: 'ok', txt: 'pinned' + (theme ? ' · ' + (/^[0-9a-f]{40}$/i.test(tr) ? tr.slice(0, 7) : tr) : '') }; }
+    return { cls: 'warn', txt: 'unpinned: ' + bad.join(', ') + ' (can change over time)' };
   }
 
   /* ------------------------------------------------------------------ *
-   * Scan
+   * Themes list, scan
    * ------------------------------------------------------------------ */
+  function loadThemes() {
+    var p = L.themes ? Promise.resolve(L.themes) : (L.registry ? getJson(L.registry) : Promise.resolve(L.owner ? [{ id: 'default', owner: L.owner, repo: L.repo, ref: L.ref }] : []));
+    return p.then(function (list) {
+      return (list.themes || list).map(function (t) { t.ref = t.ref || 'main'; t.id = t.id || t.repo; return t; });
+    });
+  }
+
+  function choose(t) {
+    theme = t; state.backupDone = false; state.filter = 'all'; state.showUntouched = false;
+    return scan();
+  }
+
   function scan() {
-    state.stage = 'scan'; state.scanMsg = 'Checking your admin session…'; render();
+    state.stage = 'scan'; state.scanMsg = 'Checking your admin session…'; state.items = []; state.untouched = []; state.ignored = []; render();
+    var catalog, manifest;
     return findTid().then(function (t) {
       if (!t) { throw new Error('admin'); }
       tid = t;
-      state.scanMsg = 'Reading the theme file list from GitHub…'; render();
-      return getText(RAW + 'manifest.json').then(function (t) { return JSON.parse(t); }, function () { return null; });
-    }).then(function (manifest) {
-      if (manifest && manifest.files) { return planFromPaths(manifest.files, manifest); }
-      return getText(TREE).then(function (t) {
-        var paths = (JSON.parse(t).tree || []).filter(function (x) { return x.type === 'blob'; }).map(function (x) { return x.path; });
-        return planFromPaths(paths, manifest);
-      });
-    }).then(function (items) {
-      if (!items.some(function (i) { return !i.missing; })) { throw new Error('No templates or css/style.css found in ' + CFG.owner + '/' + CFG.repo + '@' + CFG.ref); }
-      state.items = items; state.ignored = items.ignored || []; state.scanTotal = items.length * 2; state.scanDone = 0;
+      state.scanMsg = 'Reading ' + theme.owner + '/' + theme.repo + ' …'; render();
+      return Promise.all([
+        getJson(catalogUrl()).catch(function (e) { throw new Error('Could not load the template catalog (' + e.message + ').'); }),
+        getJson(rawBase(theme) + 'manifest.json').catch(function (e) {
+          throw new Error('Could not load manifest.json from ' + theme.owner + '/' + theme.repo + '@' + theme.ref + ' (' + e.message + '). Every theme repo needs a manifest.json in its root.');
+        })
+      ]);
+    }).then(function (r) {
+      catalog = r[0]; manifest = r[1];
+      theme.name = manifest.name || theme.name || theme.repo; theme.version = manifest.version || '';
+      if (!manifest.css && !(manifest.templates && (Array.isArray(manifest.templates) ? manifest.templates.length : Object.keys(manifest.templates).length))) {
+        throw new Error('manifest.json lists no templates and no CSS, so there is nothing to install.');
+      }
+      state.scanMsg = 'Reading the theme’s file list…'; render();
+      if (Array.isArray(manifest.templates) || manifest.css) {
+        return getJson(treeUrl(theme)).then(function (t) {
+          return (t.tree || []).filter(function (x) { return x.type === 'blob'; }).map(function (x) { return x.path; });
+        }, function () { return null; });   // GitHub API unavailable (rate limit): fall back to guessed file names
+      }
+      return null;
+    }).then(function (paths) {
+      var plan = buildPlan(manifest, catalog, paths);
+      state.items = plan.items; state.untouched = plan.untouched; state.ignored = plan.ignored; state.groupOrder = plan.groupOrder;
+      state.scanTotal = plan.items.length * 2; state.scanDone = 0;
       state.scanMsg = 'Downloading theme files and reading your current forum…'; render();
-      return pool(items, CFG.concurrency, function (it) {
+      return pool(plan.items, CFG.concurrency, function (it) {
         if (it.missing) { state.scanDone += 2; renderProgressOnly(); return; }
-        return getText(RAW + it.path).then(function (c) { it.remote = c; }, function (e) { it.remoteErr = e.message; })
+        return getText(rawBase(theme) + it.path).then(function (c) { it.remote = c; }, function (e) { it.remoteErr = e.message; })
           .then(function () { state.scanDone++; renderProgressOnly(); })
           .then(function () {
             if (it.kind === 'template' && !it.id) { return; }
@@ -322,7 +345,7 @@
 
   function classify(it) {
     if (it.missing) { it.status = 'missing'; it.selected = false; return; }
-    if (it.remote == null) { it.status = 'bad'; it.note = 'could not download'; it.selected = false; return; }
+    if (it.remote == null) { it.status = 'bad'; it.selected = false; return; }
     if (it.kind === 'template' && !it.id) { it.status = 'noid'; it.selected = false; return; }
     if (it.current == null) { it.status = 'unreadable'; it.selected = false; return; }
     if (norm(it.current) === norm(it.remote)) { it.status = 'same'; it.selected = false; return; }
@@ -336,7 +359,7 @@
    * ------------------------------------------------------------------ */
   function log(msg, cls) { state.log.push({ m: msg, c: cls || '' }); if (state.log.length > 400) { state.log.shift(); } updateLog(); }
 
-  function buildTasks(entries) {   // entries: [{kind,name,id,lang,content}]
+  function buildTasks(entries) {   // entries: [{kind,name,tplName,id,lang,content}]
     var tasks = [], anyTpl = false;
     if (state.mode === 'install') {
       if (state.opts.phpbb3) {
@@ -357,7 +380,7 @@
       } else {
         anyTpl = true;
         tasks.push({ label: 'Template: ' + e.name + (e.lang === 'mobile' ? ' (mobile)' : ''), run: function () {
-          return writeTemplate(e.id, e.lang, e.name, e.content).then(function () {
+          return writeTemplate(e.id, e.lang, e.tplName || e.name, e.content).then(function () {
             if (state.mode !== 'install' || !state.opts.verify) { return; }
             return readCurrent({ kind: 'template', id: e.id, lang: e.lang }).then(function (c) {
               if (norm(c) !== norm(e.content)) { return { warn: e.name + ' saved, but the stored text differs slightly' }; }
@@ -402,14 +425,15 @@
 
   function selectedEntries() {
     return state.items.filter(function (it) { return it.selected && (it.status === 'diff' || it.status === 'new' || it.status === 'same' || it.status === 'unreadable'); })
-      .map(function (it) { return { kind: it.kind, name: it.name, id: it.id, lang: it.lang, content: it.remote }; });
+      .map(function (it) { return { kind: it.kind, name: it.name, tplName: it.tplName, id: it.id, lang: it.lang, content: it.remote }; });
   }
 
   function downloadBackup() {
     var sel = state.items.filter(function (it) { return it.selected && it.current != null; });
     var data = {
-      format: 'aurum-installer-backup', version: 1, created: new Date().toISOString(), forum: location.host,
-      items: sel.map(function (it) { return { kind: it.kind, name: it.name, id: it.id, lang: it.lang, content: it.current }; })
+      format: 'forum-theme-installer-backup', version: 2, created: new Date().toISOString(), forum: location.host,
+      theme: theme ? theme.name : '',
+      items: sel.map(function (it) { return { kind: it.kind, name: it.name, tplName: it.tplName, id: it.id, lang: it.lang, content: it.current }; })
     };
     var blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
     var a = document.createElement('a');
@@ -432,7 +456,7 @@
     fr.onload = function () {
       var data;
       try { data = JSON.parse(fr.result); } catch (e) { alert('That file is not valid JSON.'); return; }
-      if (!data || data.format !== 'aurum-installer-backup' || !data.items) { alert('That is not a backup made by this installer.'); return; }
+      if (!data || (data.format !== 'forum-theme-installer-backup' && data.format !== 'aurum-installer-backup') || !data.items) { alert('That is not a backup made by this installer.'); return; }
       if (!confirm('Restore ' + data.items.length + ' item(s) from the backup made on ' + data.created + '?\nThis overwrites what is on the forum now.')) { return; }
       var go = function () { state.mode = 'restore'; exec(buildTasks(data.items), true); };
       if (tid) { go(); } else { findTid().then(function (t) { if (!t) { alert('Admin session not found. Log in to the Administration Panel first.'); return; } tid = t; go(); }); }
@@ -503,7 +527,9 @@
     '.mb h2{margin:0;padding:12px 16px;font-size:15px;color:var(--gold2);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}',
     '.df{overflow:auto;padding:8px 0;font:12px/1.5 ui-monospace,Consolas,monospace}',
     '.df div{padding:0 16px;white-space:pre-wrap;word-break:break-all}',
-    '.df .a{background:var(--addbg);color:var(--addtx)}.df .d{background:var(--delbg);color:var(--deltx)}.df .u{color:var(--mut)}.df .g{color:var(--gold2);text-align:center;padding:3px 16px}'
+    '.df .a{background:var(--addbg);color:var(--addtx)}.df .d{background:var(--delbg);color:var(--deltx)}.df .u{color:var(--mut)}.df .g{color:var(--gold2);text-align:center;padding:3px 16px}',
+    '.un{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}.ug{margin-top:10px;font-weight:600;color:var(--gold2);font-size:12.5px}',
+    '.tile.nt .n{color:var(--mut)}'
   ].join('');
 
   var STATUS = {
@@ -512,7 +538,7 @@
   };
 
   function counts() {
-    var c = { diff: 0, same: 0, bad: 0, sel: 0 };
+    var c = { diff: 0, same: 0, bad: 0, sel: 0, nt: state.untouched.length };
     state.items.forEach(function (it) {
       if (it.status === 'diff' || it.status === 'new') { c.diff++; }
       else if (it.status === 'same') { c.same++; }
@@ -524,17 +550,29 @@
 
   function stepper() {
     var order = ['scan', 'review', 'installing', 'done'], labels = ['Scan', 'Review', 'Install', 'Done'], subs = ['Read forum + GitHub', 'Check the list, back up', 'Writing templates + CSS', 'Reload your forum'];
-    var cur = { scan: 0, fatal: 0, review: 1, installing: 2, error: 2, done: 3 }[state.stage];
+    var cur = { pick: 0, scan: 0, fatal: 0, review: 1, installing: 2, error: 2, done: 3 }[state.stage];
     return '<div class="steps">' + order.map(function (s, i) {
       return '<div class="step ' + (i === cur ? 'on' : i < cur ? 'done' : '') + '"><b>' + (i + 1) + '. ' + labels[i] + '</b>' + subs[i] + '</div>';
     }).join('') + '</div>';
   }
 
   function header() {
-    var k = refKind();
-    return '<div class="hd"><div class="mark">Au</div><div><h1>' + esc(CFG.name) + ' Installer</h1>' +
-      '<div class="sub">' + esc(CFG.owner + '/' + CFG.repo) + ' · <span class="chip ' + k.cls + '">' + esc(k.txt) + '</span></div></div>' +
-      '<button class="tg" data-action="theme">' + (host.getAttribute('data-theme') === 'light' ? '☾ Dark' : '☀ Light') + '</button></div>';
+    var k = refKind(), nm = theme && theme.name ? theme.name : '', mark = nm ? nm.charAt(0).toUpperCase() + nm.charAt(1).toLowerCase() : 'FT';
+    return '<div class="hd"><div class="mark">' + esc(mark) + '</div><div><h1>Forum Theme Installer</h1>' +
+      '<div class="sub">' + (theme ? '<b>' + esc(nm) + '</b>' + (theme.version ? ' v' + esc(theme.version) : '') + ' · ' + esc(theme.owner + '/' + theme.repo) + ' · ' : '') +
+      '<span class="chip ' + k.cls + '">' + esc(k.txt) + '</span></div></div>' +
+      '<span style="margin-left:auto;display:flex;gap:12px;align-items:center">' +
+      (state.themes.length > 1 && state.stage !== 'pick' && state.stage !== 'installing' ? '<button class="lk" data-action="themes">Change theme</button>' : '') +
+      '<button class="tg" style="margin-left:0" data-action="theme">' + (host.getAttribute('data-theme') === 'light' ? '☾ Dark' : '☀ Light') + '</button></span></div>';
+  }
+
+  function viewPick() {
+    if (!state.themes.length) { return '<div class="card err"><b>No themes configured</b><div style="margin-top:6px">Add at least one theme to the themes list in installer.html.</div></div>'; }
+    return '<div class="card"><b>Choose a theme to install</b><div class="note">Nothing is changed until you review the list and confirm.</div></div><div class="tiles">' +
+      state.themes.map(function (t, i) {
+        return '<div class="tile"><div class="n" style="font-size:18px">' + esc(t.name || t.id) + '</div><div class="l">' + esc(t.description || (t.owner + '/' + t.repo)) + '</div>' +
+          '<div class="acts" style="justify-content:center"><button class="btn" data-action="pick" data-i="' + i + '">Select</button></div></div>';
+      }).join('') + '</div>';
   }
 
   function viewScan() {
@@ -556,15 +594,30 @@
   function installable(it) { return it.status === 'diff' || it.status === 'new'; }
   function selectable(it) { return it.status !== 'noid' && it.status !== 'bad' && it.status !== 'missing'; }
 
+  function viewUntouched() {
+    if (!state.untouched.length) { return ''; }
+    var h = '<div class="card"><button class="lk" data-action="untouched">' + (state.showUntouched ? '▾' : '▸') + ' Not touched by this theme (' + state.untouched.length + ')</button>';
+    if (state.showUntouched) {
+      state.groupOrder.forEach(function (g) {
+        var l = state.untouched.filter(function (u) { return u.group === g; });
+        if (!l.length) { return; }
+        h += '<div class="ug">' + esc(g) + '</div><div class="un">' + l.map(function (u) { return '<span class="chip">' + esc(u.name) + '</span>'; }).join('') + '</div>';
+      });
+      h += '<div class="note">These stay exactly as they are on your forum.</div>';
+    }
+    return h + '</div>';
+  }
+
   function viewReview() {
     var c = counts(), h = '';
     h += '<div class="tiles">' +
       '<div class="tile diff"><div class="n">' + c.diff + '</div><div class="l">will be overwritten</div></div>' +
       '<div class="tile same"><div class="n">' + c.same + '</div><div class="l">already identical</div></div>' +
-      '<div class="tile bad"><div class="n">' + c.bad + '</div><div class="l">can’t be installed</div></div></div>';
+      '<div class="tile bad"><div class="n">' + c.bad + '</div><div class="l">can’t be installed</div></div>' +
+      '<div class="tile nt"><div class="n">' + c.nt + '</div><div class="l">not touched</div></div></div>';
 
     h += '<div class="card opts"><label><input type="checkbox" data-field="verify"' + (state.opts.verify ? ' checked' : '') + '><span>Verify every item after saving<small>Reads each template back and compares it. Slower, but catches silent failures.</small></span></label>' +
-      '<label><input type="checkbox" data-field="baseCss"' + (state.opts.baseCss ? ' checked' : '') + '><span>Deactivate Forumotion’s default CSS first<small>Only tick this if style.css is a complete stylesheet that replaces the default one.</small></span></label>' +
+      '<label><input type="checkbox" data-field="baseCss"' + (state.opts.baseCss ? ' checked' : '') + '><span>Deactivate Forumotion’s default CSS first<small>Only tick this if the theme’s stylesheet is complete and replaces the default one.</small></span></label>' +
       '<label><input type="checkbox" data-field="phpbb3"' + (state.opts.phpbb3 ? ' checked' : '') + '><span>Switch the forum to the phpBB3 version first<small>The template IDs are for phpBB3 forums. Leave off if your forum already runs phpBB3.</small></span></label></div>';
 
     h += '<div class="bar">' + [['all', 'All'], ['diff', 'Will overwrite'], ['same', 'Identical'], ['bad', 'Problems']].map(function (f) {
@@ -572,7 +625,7 @@
     }).join('') + '<span class="mut" style="margin-left:auto">' + c.sel + ' selected</span></div>';
 
     var body = '', shownAny = false, vis = [];
-    GROUP_ORDER.forEach(function (g) {
+    state.groupOrder.forEach(function (g) {
       var gi = [];
       state.items.forEach(function (it, i) { if (it.group === g) { gi.push({ it: it, i: i }); } });
       var shown = gi.filter(function (r) { return visible(r.it); });
@@ -591,22 +644,23 @@
         var it = r.it, st = STATUS[it.status], dis = !selectable(it);
         shownAny = true; vis.push(it);
         body += '<tr><td><input type="checkbox" data-action="toggle" data-i="' + r.i + '"' + (it.selected ? ' checked' : '') + (dis ? ' disabled' : '') + '></td>' +
-          '<td class="nm">' + (it.kind === 'css' ? 'css/style.css' : esc(it.name) + (it.lang === 'mobile' ? ' <span class="chip">mobile</span>' : '')) + '</td>' +
+          '<td class="nm">' + (it.kind === 'css' ? esc(it.path) : esc(it.name) + (it.lang === 'mobile' ? ' <span class="chip">mobile</span>' : '')) + '</td>' +
           '<td class="mut">' + (it.id || '—') + '</td><td><span class="chip ' + st[0] + '">' + st[1] + '</span></td>' +
           '<td class="r mut">' + (it.delta != null ? fmtDelta(it.delta) : '') + '</td>' +
           '<td class="r">' + (installable(it) ? '<button class="lk" data-action="diff" data-i="' + r.i + '">view diff</button>' : '') + '</td></tr>';
       });
     });
-    var allOn = vis.filter(installable).length && vis.filter(installable).every(function (it) { return it.selected; });
+    var instVis = vis.filter(installable), allOn = instVis.length && instVis.every(function (it) { return it.selected; });
     h += '<div class="tw"><table><thead><tr><th style="width:34px"><input type="checkbox" data-action="all"' + (allOn ? ' checked' : '') + '></th><th>Item</th><th>ID</th><th>Status</th><th class="r">Change</th><th></th></tr></thead><tbody>' +
       (shownAny ? body : '<tr><td colspan="6" class="mut" style="text-align:center;padding:22px">Nothing in this filter.</td></tr>') + '</tbody></table></div>';
 
     h += '<div class="note">Forumotion shows its default template for anything you haven’t customised, so “Will overwrite” also covers templates that are still on the default. ' +
       'Tick a group’s box to select everything in it that would change; identical items are skipped unless you tick them yourself.</div>';
     if (state.ignored.length) {
-      h += '<div class="note">' + state.ignored.length + ' file' + (state.ignored.length === 1 ? '' : 's') + ' in the repo ' + (state.ignored.length === 1 ? 'is' : 'are') + ' not part of the Aurum template list and will be ignored: ' +
+      h += '<div class="note">' + state.ignored.length + ' file' + (state.ignored.length === 1 ? '' : 's') + ' in the repo ' + (state.ignored.length === 1 ? 'is' : 'are') + ' not listed in manifest.json and will be ignored: ' +
         esc(state.ignored.slice(0, 6).join(', ')) + (state.ignored.length > 6 ? ', …' : '') + '</div>';
     }
+    h += viewUntouched();
 
     h += '<div class="acts"><button class="btn ghost" data-action="backup">' + (state.backupDone ? '✓ Backup downloaded — download again' : '1. Download backup of what will be overwritten') + '</button>' +
       '<button class="btn" data-action="install"' + (state.backupDone && c.sel ? '' : ' disabled') + '>2. Install ' + c.sel + ' item' + (c.sel === 1 ? '' : 's') + '</button>' +
@@ -625,7 +679,7 @@
 
   function viewError() {
     return '<div class="card err"><b>Stopped at: ' + esc(state.failed.label) + '</b><div style="margin-top:6px">' + esc(state.failed.msg) +
-      '</div><div class="note" style="color:#f3c3bb">Nothing after this step was written. Items before it are already installed.</div>' +
+      '</div><div class="note">Nothing after this step was written. Items before it are already installed.</div>' +
       '<div class="acts"><button class="btn" data-action="retry">Retry from this step</button><button class="btn ghost" data-action="restore">Restore from backup…</button>' +
       '<input type="file" id="rf" accept=".json,application/json" style="display:none"></div></div>' +
       '<div class="log" id="lg"></div>';
@@ -647,17 +701,17 @@
       var cls = d.t === '+' ? 'a' : d.t === '-' ? 'd' : d.t === '…' ? 'g' : 'u';
       return '<div class="' + cls + '">' + (d.t === '…' ? '… ' + esc(d.s) + ' …' : (d.t === '=' ? '  ' : d.t + ' ') + esc(d.s)) + '</div>';
     }).join('');
-    return '<div class="mo" data-action="closemodal"><div class="mb" data-keep="1"><h2><span>' + esc(it.kind === 'css' ? 'css/style.css' : it.name) +
+    return '<div class="mo" data-action="closemodal"><div class="mb" data-keep="1"><h2><span>' + esc(it.kind === 'css' ? it.path : it.name) +
       ' — <span class="mut">red = on your forum now, green = from the theme</span></span><button class="lk" data-action="closemodal">close</button></h2><div class="df">' + (rows || '<div class="u">No line differences.</div>') + '</div></div></div>';
   }
 
   function render() {
-    var body = { scan: viewScan, fatal: viewFatal, review: viewReview, installing: viewInstalling, error: viewError, done: viewDone }[state.stage]();
+    var body = { pick: viewPick, scan: viewScan, fatal: viewFatal, review: viewReview, installing: viewInstalling, error: viewError, done: viewDone }[state.stage]();
     root.innerHTML = '<style>' + CSS + '</style><div class="wrap">' + header() + stepper() + body + '</div>' + (state.modal ? viewModal() : '');
     updateLog();
   }
   function renderProgressOnly() {
-    var a = root.getElementById ? root.getElementById('pb') : root.querySelector('#pb');
+    var a = root.querySelector('#pb');
     if (a) { a.style.width = (state.progress.total ? state.progress.done / state.progress.total * 100 : 0) + '%'; var t = root.querySelector('#pt'); if (t) { t.textContent = state.progress.done + ' / ' + state.progress.total; } }
     var s = root.querySelector('#sbar');
     if (s) { s.style.width = (state.scanTotal ? state.scanDone / state.scanTotal * 100 : 5) + '%'; }
@@ -681,10 +735,13 @@
       else if (a === 'skipbackup') { if (confirm('Install without a backup? You will not be able to undo this.')) { state.backupDone = true; render(); } }
       else if (a === 'install') { if (confirm('Install the selected items now? This overwrites them on your forum.')) { startInstall(); } }
       else if (a === 'retry') { exec(state.pending, false); }
-      else if (a === 'rescan') { scan(); }
+      else if (a === 'rescan') { if (theme) { scan(); } else { state.stage = 'pick'; render(); } }
+      else if (a === 'pick') { choose(state.themes[i]); }
+      else if (a === 'themes') { state.stage = 'pick'; render(); }
+      else if (a === 'untouched') { state.showUntouched = !state.showUntouched; render(); }
       else if (a === 'theme') {
         state.theme = host.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-        try { localStorage.setItem('aurum-installer-theme', state.theme); } catch (x) { /* storage blocked: fine */ }
+        try { localStorage.setItem('forum-installer-theme', state.theme); } catch (x) { /* storage blocked: fine */ }
         applyTheme(); render();
       }
       else if (a === 'restore') { var f = root.querySelector('#rf'); if (f) { f.click(); } }
@@ -713,15 +770,21 @@
   }
 
   function init() {
-    host = document.getElementById('aurum-installer');
+    host = document.getElementById('theme-installer') || document.getElementById('aurum-installer');
     if (!host) { return; }
     var saved = null;
-    try { saved = localStorage.getItem('aurum-installer-theme'); } catch (x) { /* ignore */ }
+    try { saved = localStorage.getItem('forum-installer-theme'); } catch (x) { /* ignore */ }
     state.theme = saved || L.theme || 'auto';
     applyTheme();
     root = host.attachShadow ? host.attachShadow({ mode: 'open' }) : host;
-    if (!root.getElementById) { root.getElementById = function (id) { return host.querySelector('#' + id); }; }
-    bind(); scan();
+    bind();
+    state.stage = 'scan'; state.scanMsg = 'Loading themes…'; render();
+    loadThemes().then(function (list) {
+      state.themes = list;
+      var hash = (location.hash || '').replace('#', ''), pick = list.length === 1 ? list[0] : list.filter(function (t) { return t.id === hash; })[0];
+      if (pick) { return choose(pick); }
+      state.stage = 'pick'; render();
+    }).catch(function (e) { state.stage = 'fatal'; state.errorMsg = 'Could not load the themes list: ' + e.message; render(); });
   }
   init();
 })();
