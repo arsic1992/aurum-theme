@@ -48,6 +48,9 @@
         "mod_search": 905,
         "mod_statistics": 906,
         "mod_whoisonline": 907,
+        "poll_ballot": 908,
+        "poll_result": 909,
+        "portal_body": 910,
         "standard": 911,
         "mod_top_posters": 912,
         "mod_keywords": 913,
@@ -58,7 +61,16 @@
         "mod_most_viewed_topics": 918,
         "mod_most_active_starters": 919,
         "mod_top_post_users_week": 920,
-        "mod_top_post_users_month": 921
+        "mod_top_post_users_month": 921,
+        "mod_social_iframe": 922,
+        "mod_top_liked_post_month": 923,
+        "mod_new_topics": 924,
+        "mod_about": 925,
+        "mod_publi": 926,
+        "mod_last_images": 927,
+        "mod_events": 928,
+        "mod_last_donators": 929,
+        
       }
     },
     {
