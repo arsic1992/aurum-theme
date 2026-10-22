@@ -140,6 +140,13 @@
       }
     },
     {
+      "1ame": "Publications",
+      "templates": {
+        "view_publication": 1500,
+        "list_publication": 1501
+      }
+    },
+    {
       "name": "Profile",
       "templates": {
         "profile_add_body": 701,
