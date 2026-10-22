@@ -21,6 +21,9 @@
         "search_body": 118,
         "search_results_posts": 119,
         "search_results_topics": 120,
+        "search_username": 121,
+        "search_results_topics_grid": 122,
+        "simple_header": 123,
         "topics_list_box": 124,
         "viewforum_body": 125,
         "viewonline_body": 126,
@@ -29,7 +32,10 @@
         "viewtopic_poll_result": 129,
         "topics_blog_box": 130,
         "viewcomments_body": 131,
-        "overall_footer_end": 133
+        "overall_footer_end": 133,
+        "footer_widgets": 135,
+        "topics_grid_box": 136,
+        "images_list": 137
       }
     },
     {
