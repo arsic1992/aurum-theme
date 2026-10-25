@@ -19,7 +19,10 @@
 	<meta name="title" content="{SITENAME_TITLE}{PAGE_TITLE}"/>
 	{T_HEAD_STYLESHEET}
 	{CSS}
-  	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/arsic1992/aurum-theme@800c1bf/css/aurum-min.css">
+  	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/arsic1992/aurum-theme@d723b34/css/aurum-min.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
 	<script type="text/javascript">
 		/* dark mode: runs before the page paints so there is no light flash. Saved choice first, otherwise the system setting */
 		(function () {
@@ -39,14 +42,16 @@
 		(function () {
 			var root = document.documentElement;
 			var CSS = {
-				light: 'html{color-scheme:light}body{background:#fffdf9!important;color:#1e1c19!important;font:14px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}'
+				light: '@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");html{color-scheme:light}body{background:#fffdf9!important;color:#1e1c19!important;font:14px/1.55 "Nunito",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}'
+					+ 'table.tut{--tb-a:#b0559a;--tb-b:#ffa068;--tb-accent:#ee7865}table.info{--tb-a:#3a7bd5;--tb-b:#5bb5e8;--tb-accent:#3a7bd5}table.warn{--tb-a:#f2994a;--tb-b:#f2c94c;--tb-accent:#f2994a}table.ban{--tb-a:#b83755;--tb-b:#e5565f;--tb-accent:#b83755}table.tut,table.info,table.warn,table.ban{display:block;width:100%;max-width:100%;box-sizing:border-box;margin:14px 0;overflow:hidden;border:0!important;border-radius:4px 22px 4px 22px;background:#fffdf9;box-shadow:0 0 0 1px rgba(30,28,25,.1)}table.tut tbody,table.info tbody,table.warn tbody,table.ban tbody,table.tut tr,table.info tr,table.warn tr,table.ban tr{display:block}table.tut td,table.info td,table.warn td,table.ban td{display:block;width:100%;box-sizing:border-box;border:0!important;white-space:normal}table.tut tr:first-child td,table.info tr:first-child td,table.warn tr:first-child td,table.ban tr:first-child td{padding:16px 22px 18px;color:#fff;font-size:20px;font-weight:800;line-height:1.35;background:linear-gradient(100deg,var(--tb-a),var(--tb-b))}table.tut tr:first-child td::first-line,table.info tr:first-child td::first-line,table.warn tr:first-child td::first-line,table.ban tr:first-child td::first-line{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase}table.tut tr:not(:first-child):not(:last-child) td,table.info tr:not(:first-child):not(:last-child) td,table.warn tr:not(:first-child):not(:last-child) td,table.ban tr:not(:first-child):not(:last-child) td{padding:18px 22px;color:#3a362f;background:#fffdf9;font-size:15px;line-height:1.7}table.tut tr:last-child td,table.info tr:last-child td,table.warn tr:last-child td,table.ban tr:last-child td{padding:9px 22px;color:#bdb4a3;background:#1e1c19;border-top:3px solid var(--tb-accent)!important;font-size:11px;text-align:right}'
 					+ 'a{color:#8a6a2c}blockquote{margin:.6em 0;padding:6px 12px;background:#f6f0e2;border:0;border-left:3px solid #b08433;border-radius:0 8px 8px 0}'
 					+ '#sce_smilies_body{padding:6px 4px!important}#smilies_header{margin-bottom:10px!important}'
 					+ '#smilies_categ select{color:#1e1c19;background:#fffdf9;border:1px solid #d9cdb2;border-radius:999px;padding:5px 12px;font:inherit;font-size:12px}'
 					+ '.smiley-element{display:flex!important;flex-wrap:wrap;justify-content:center;gap:2px;font-size:0;padding:0!important}'
 					+ '.smiley-element img{box-sizing:content-box;padding:4px;border-radius:8px;cursor:pointer;transition:background-color .15s,transform .15s}'
 					+ '.smiley-element img:hover{background:rgba(176,132,51,.2);transform:scale(1.18)}',
-				dark: 'html{color-scheme:dark}body{background:#2b261e!important;color:#ede7d9!important;font:14px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}'
+				dark: '@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");html{color-scheme:dark}body{background:#2b261e!important;color:#ede7d9!important;font:14px/1.55 "Nunito",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}'
+					+ 'table.tut{--tb-a:#b0559a;--tb-b:#ffa068;--tb-accent:#ee7865}table.info{--tb-a:#3a7bd5;--tb-b:#5bb5e8;--tb-accent:#3a7bd5}table.warn{--tb-a:#f2994a;--tb-b:#f2c94c;--tb-accent:#f2994a}table.ban{--tb-a:#b83755;--tb-b:#e5565f;--tb-accent:#b83755}table.tut,table.info,table.warn,table.ban{display:block;width:100%;max-width:100%;box-sizing:border-box;margin:14px 0;overflow:hidden;border:0!important;border-radius:4px 22px 4px 22px;background:#1b1812;box-shadow:0 0 0 1px rgba(237,231,217,.12)}table.tut tbody,table.info tbody,table.warn tbody,table.ban tbody,table.tut tr,table.info tr,table.warn tr,table.ban tr{display:block}table.tut td,table.info td,table.warn td,table.ban td{display:block;width:100%;box-sizing:border-box;border:0!important;white-space:normal}table.tut tr:first-child td,table.info tr:first-child td,table.warn tr:first-child td,table.ban tr:first-child td{padding:16px 22px 18px;color:#fff;font-size:20px;font-weight:800;line-height:1.35;background:linear-gradient(100deg,var(--tb-a),var(--tb-b))}table.tut tr:first-child td::first-line,table.info tr:first-child td::first-line,table.warn tr:first-child td::first-line,table.ban tr:first-child td::first-line{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase}table.tut tr:not(:first-child):not(:last-child) td,table.info tr:not(:first-child):not(:last-child) td,table.warn tr:not(:first-child):not(:last-child) td,table.ban tr:not(:first-child):not(:last-child) td{padding:18px 22px;color:#ddd6c6;background:#1b1812;font-size:15px;line-height:1.7}table.tut tr:last-child td,table.info tr:last-child td,table.warn tr:last-child td,table.ban tr:last-child td{padding:9px 22px;color:#a69f90;background:#0f0d0a;border-top:3px solid var(--tb-accent)!important;font-size:11px;text-align:right}'
 					+ 'a{color:#d6ac5b}blockquote{margin:.6em 0;padding:6px 12px;background:#1f1b14;border:0;border-left:3px solid #b08433;border-radius:0 8px 8px 0;color:#cfc7b6}'
 					+ '#sce_smilies_body{padding:6px 4px!important;background:#2b261e!important}#smilies_header{margin-bottom:10px!important}'
 					+ '#smilies_categ select{color:#ede7d9;background:#221e17;border:1px solid #4a4132;border-radius:999px;padding:5px 12px;font:inherit;font-size:12px}'
@@ -93,7 +98,7 @@
 				else { fallback(); }
 			}
 			function decorate() {
-				var boxes = document.querySelectorAll('dl.codebox:not(.fx-code)');
+				var boxes = document.querySelectorAll('dl.codebox:not(.fx-code):not(.spoiler)');
 				for (var i = 0; i < boxes.length; i++) {
 					var box = boxes[i], head = box.querySelector('dt'), code = box.querySelector('code');
 					if (!head || !code) { continue; }
@@ -123,6 +128,261 @@
 		})();
 		/* FX CODE COPY - end */
 	//]]>
+	</script>
+	<script type="text/javascript">
+		/* FX MENTIONS - start: puts the member's 32px avatar in front of every @mention in a post.
+		   The avatar is read from the member's own profile page (same site) and remembered for a day in this browser.
+		   Delete this whole <script> and mentions stay as plain gold pills without a picture. */
+		(function () {
+			var KEY = 'fx-mention-av:', DAY = 86400000, pending = {};
+			function remembered(id) {
+				try {
+					var o = JSON.parse(localStorage.getItem(KEY + id) || 'null');
+					if (o && o.s && (Date.now() - o.t) < DAY) { return o.s; }
+				} catch (e) { }
+				return '';
+			}
+			async function avatarFor(id, url) {
+				var src = remembered(id);
+				if (src) { return src; }
+				if (!pending[id]) {
+					pending[id] = (async function () {
+						try {
+							var res = await fetch(url, { credentials: 'same-origin' });
+							if (!res.ok) { return ''; }
+							var doc = new DOMParser().parseFromString(await res.text(), 'text/html');
+							var img = doc.querySelector('.fx-side__body img') || doc.querySelector('img[src*="/avatars/"]');
+							var found = img ? new URL(img.getAttribute('src'), url).href : '';
+							if (found) { try { localStorage.setItem(KEY + id, JSON.stringify({ s: found, t: Date.now() })); } catch (e) { } }
+							return found;
+						} catch (e) { return ''; }
+					})();
+				}
+				return pending[id];
+			}
+			async function decorate() {
+				var tags = document.querySelectorAll('a.mentiontag:not([data-fx-av])');
+				for (var i = 0; i < tags.length; i++) {
+					var a = tags[i], id = a.getAttribute('data-id') || '';
+					a.setAttribute('data-fx-av', '1');
+					a.className += ' fx-mention';
+					if (!id) { continue; }
+					(function (a, id) {
+						avatarFor(id, a.href).then(function (src) {
+							if (!src || a.querySelector('.fx-mention__av')) { return; }
+							var im = document.createElement('img');
+							im.className = 'fx-mention__av'; im.alt = ''; im.width = 32; im.height = 32; im.src = src;
+							a.insertBefore(im, a.firstChild);
+							a.className += ' fx-mention--av';
+						});
+					})(a, id);
+				}
+			}
+			function start() {
+				decorate();
+				if (window.MutationObserver) {
+					var t = 0;
+					new MutationObserver(function () { clearTimeout(t); t = setTimeout(decorate, 150); }).observe(document.body, { childList: true, subtree: true });
+				}
+			}
+			if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', start); } else { start(); }
+		})();
+		/* FX MENTIONS - end */
+	</script>
+	<script type="text/javascript">
+		/* FX TEMPLATES - start: the "Templates" button (info / warning / tutorial / ban tables) in EVERY editor on the forum:
+		   quick reply, new topic / reply page (/post), private messages, edit. It looks for editors itself, so no page address is checked.
+		   Who may see it: change canUseTemplates() below. Delete this whole <script> to remove the button. */
+		/* =====================================================================
+		   Editor button: "Templates" (info / warning / tutorial / ban tables)
+		   Adds one extra button to every SCEditor toolbar and a small dropdown.
+		   Clicking an item appends the ready-made BBCode to the post textarea.
+		   ===================================================================== */
+		(function () {
+			'use strict';
+
+			/* ---------- WHO CAN SEE THE BUTTON ----------
+			   You said you will handle this. Return true only for admins / moderators.
+			   Example: return document.body.className.indexOf('is-staff') > -1;       */
+			function canUseTemplates() {
+				return true;
+			}
+
+			/* ---------- THE TEMPLATES (edit the text as you like) ---------- */
+			var TEMPLATES = [
+				{
+					name: 'Info template',
+					color: '#3a7bd5',
+					code:
+						'[table class="info"]\n' +
+						'[tr][td]Information\n' +
+						'Title of the announcement[/td][/tr]\n' +
+						'[tr][td]Write the information here.\n' +
+						'\n' +
+						'You can use as many lines as you need.[/td][/tr]\n' +
+						'[tr][td]FM World Staff[/td][/tr]\n' +
+						'[/table]'
+				},
+				{
+					name: 'Warning template',
+					color: '#f2994a',
+					code:
+						'[table class="warn"]\n' +
+						'[tr][td]Warning\n' +
+						'Reason for the warning[/td][/tr]\n' +
+						'[tr][td]Member: \n' +
+						'Rule broken: \n' +
+						'What happens next: \n' +
+						'\n' +
+						'Please read the forum rules again.[/td][/tr]\n' +
+						'[tr][td]Issued by FM World Staff[/td][/tr]\n' +
+						'[/table]'
+				},
+				{
+					name: 'Tutorial template',
+					color: '#ee7865',
+					code:
+						'[table class="tut"]\n' +
+						'[tr][td]Tutorial\n' +
+						'How to change your avatar[/td][/tr]\n' +
+						'[tr][td]This is the body of the tutorial.\n' +
+						'\n' +
+						'Step 1: open your profile.\n' +
+						'Step 2: click the avatar tab.[/td][/tr]\n' +
+						'[tr][td]Copyrighted by FM World[/td][/tr]\n' +
+						'[/table]'
+				},
+				{
+					name: 'Ban template',
+					color: '#b83755',
+					code:
+						'[table class="ban"]\n' +
+						'[tr][td]Ban\n' +
+						'Member name[/td][/tr]\n' +
+						'[tr][td]Reason: \n' +
+						'Duration: \n' +
+						'Banned by: \n' +
+						'\n' +
+						'You can appeal this decision by sending a private message to the staff.[/td][/tr]\n' +
+						'[tr][td]Decision by FM World Staff[/td][/tr]\n' +
+						'[/table]'
+				}
+			];
+
+			/* ---------- Dropdown menu (one for the whole page) ---------- */
+			var menu = document.createElement('div');
+			menu.className = 'fm-tpl-menu';
+			menu.style.display = 'none';
+			var currentContainer = null;
+
+			TEMPLATES.forEach(function (tpl, i) {
+				var item = document.createElement('a');
+				item.href = '#';
+				item.className = 'fm-tpl-item';
+				item.setAttribute('data-index', i);
+				item.innerHTML = '<span class="fm-tpl-dot" style="background:' + tpl.color + '"></span>' + tpl.name;
+				menu.appendChild(item);
+			});
+
+			function closeMenu() {
+				menu.style.display = 'none';
+				currentContainer = null;
+			}
+
+			function openMenu(button, container) {
+				var rect = button.getBoundingClientRect();
+				currentContainer = container;
+				menu.style.display = 'block';
+				menu.style.top = (rect.bottom + 6) + 'px';
+				menu.style.left = Math.max(8, Math.min(rect.left, window.innerWidth - menu.offsetWidth - 8)) + 'px';
+			}
+
+			/* ---------- Put the BBCode into the textarea ---------- */
+			function appendToTextarea(container, text) {
+				/* The textarea is only visible/used in source mode, so switch to it if needed */
+				if (!container.classList.contains('sourceMode')) {
+					var sourceBtn = container.querySelector('.sceditor-button-source');
+					if (sourceBtn) { sourceBtn.click(); }
+				}
+
+				var ta = container.querySelector('textarea');
+				if (!ta) { return; }
+
+				var value = ta.value;
+				var glue = value && !/\n$/.test(value) ? '\n\n' : (value ? '\n' : '');
+				ta.value = value + glue + text;
+
+				ta.focus();
+				ta.selectionStart = ta.selectionEnd = ta.value.length;
+				ta.scrollTop = ta.scrollHeight;
+
+				/* tell the editor the content changed */
+				ta.dispatchEvent(new Event('input', { bubbles: true }));
+				ta.dispatchEvent(new Event('change', { bubbles: true }));
+			}
+
+			menu.addEventListener('click', function (e) {
+				var item = e.target.closest ? e.target.closest('.fm-tpl-item') : null;
+				if (!item) { return; }
+				e.preventDefault();
+				var tpl = TEMPLATES[parseInt(item.getAttribute('data-index'), 10)];
+				if (tpl && currentContainer) { appendToTextarea(currentContainer, tpl.code); }
+				closeMenu();
+			});
+
+			document.addEventListener('click', function (e) {
+				if (menu.style.display === 'none') { return; }
+				if (e.target.closest && (e.target.closest('.fm-tpl-menu') || e.target.closest('.sceditor-button-templates'))) { return; }
+				closeMenu();
+			});
+			document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeMenu(); } });
+			window.addEventListener('scroll', closeMenu, true);
+			window.addEventListener('resize', closeMenu);
+
+			/* ---------- Add the button to each toolbar ---------- */
+			function addButton(toolbar) {
+				if (toolbar.querySelector('.sceditor-button-templates')) { return; }
+
+				var container = toolbar.closest('.sceditor-container');
+				if (!container) { return; }
+
+				var group = document.createElement('div');
+				group.className = 'sceditor-group';
+
+				var btn = document.createElement('a');
+				btn.className = 'sceditor-button sceditor-button-templates';
+				btn.setAttribute('unselectable', 'on');
+				btn.setAttribute('title', 'Templates');
+				btn.innerHTML = '<div unselectable="on">Templates</div>';
+
+				btn.addEventListener('click', function (e) {
+					e.preventDefault();
+					e.stopPropagation();
+					if (menu.style.display === 'block' && currentContainer === container) { closeMenu(); }
+					else { openMenu(btn, container); }
+				});
+
+				group.appendChild(btn);
+				toolbar.appendChild(group);
+			}
+
+			function scan() {
+				if (!canUseTemplates()) { return; }
+				var toolbars = document.querySelectorAll('.sceditor-toolbar');
+				for (var i = 0; i < toolbars.length; i++) { addButton(toolbars[i]); }
+			}
+
+			function start() {
+				document.body.appendChild(menu);
+				scan();
+				/* the editor builds its toolbar after the page loads, so keep watching */
+				new MutationObserver(scan).observe(document.documentElement, { childList: true, subtree: true });
+			}
+
+			if (document.body) { start(); }
+			else { document.addEventListener('DOMContentLoaded', start); }
+		})();
+		/* FX TEMPLATES - end */
 	</script>
 	<link rel="search" type="application/opensearchdescription+xml" href="/improvedsearch.xml" title="{SITENAME}"/>
 	<link rel="search" type="application/opensearchdescription+xml" href="{URL_BOARD_DIRECTORY}/search/improvedsearch.xml" title="{SEARCH_FORUMS}"/>
