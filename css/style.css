@@ -1,7 +1,3 @@
-#wrap {
-    width: 70%!important;
-    margin: 0 auto!important;
-}
 .tooltipster-base {
     display: none;
 }
@@ -34,4 +30,15 @@ border:none!important;
 }
 fieldset dl:hover dt label{
 color:#d6ac5b!important;
+}
+span.corners-top, span.corners-bottom, span.corners-top span, span.corners-bottom span {
+display:none!important;
+}
+
+#fa_right {
+    visibility: hidden !important;
+}
+
+:is(#main-content form[name="form_login"]>.panel,#main-content form:has(input[name="magic_request"])>.panel,#main-content>.panel:has(a.button2[href="/register"])) .content {
+padding:10px!important;
 }
