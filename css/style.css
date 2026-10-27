@@ -42,3 +42,10 @@ display:none!important;
 :is(#main-content form[name="form_login"]>.panel,#main-content form:has(input[name="magic_request"])>.panel,#main-content>.panel:has(a.button2[href="/register"])) .content {
 padding:10px!important;
 }
+
+.postprofile {
+border:none!important;
+}
+.fx-hero #search-box.fx-hero__form {
+display:none!important;
+}
