@@ -2708,11 +2708,15 @@ form:has(.sceditor-container) :is(input[name="preview"], input.button2:not([name
    a script in overall_header (FX ACCOUNT MENUS) copies its profile menu and notification list into the two panels below and keeps
    them in sync. Words that are not copied from the forum (titles, "no notifications") are written in the overall_header markup.
    ========================================================================== */
-/* the original Forumotion toolbar (logo, search, share, welcome menu, notifications) is shown again, exactly as the forum draws it, fixed at the very top.
-   Our bar sits right below it: the toolbar is 30px high, so the bar and its spacer are pushed down by 30px. Only the pop-up for a NEW notification stays hidden,
-   because the script re-draws it as a toast under the bell (.fx-toasts below). */
-.fx-nav, .fx-nav-spacer { --fx-nav-top: 30px; }
+/* the original Forumotion toolbar stays in the page. Its logo + "Forumotion" link (#fa_left) is NOT hidden or changed: it is only moved, by position, into the top bar
+   right after the profile and bell buttons. The rest of the toolbar (search, share, welcome menu, notifications) is replaced by our own buttons, and the forum's
+   pop-up for a NEW notification is re-drawn as a toast under the bell (.fx-toasts below). */
+#fa_toolbar { height: 0 !important; min-height: 0 !important; padding: 0 !important; background: none !important; border: 0 !important; box-shadow: none !important; overflow: visible !important; }
+#fa_toolbar :is(#fa_search, #fa_share, #fa_menu, #fa_notifications, #notif_list, #fa_hide) { display: none !important; }
 #fa_toolbar #live_notif { display: none !important; }
+#fa_toolbar #fa_left { position: fixed !important; top: 25px !important; left: 14px !important; z-index: 10000; margin: 0 !important; transform: translateY(-50%); }
+html:has(#fx-act-profile:not([hidden]), #fx-act-notif:not([hidden])) #fa_toolbar #fa_left { left: 102px !important; }
+
 
 .fx-nav__acts { position: absolute; top: 50%; left: 14px; z-index: 3; transform: translateY(-50%); display: flex; align-items: center; gap: 10px; margin: 0; padding: 0; }
 .fx-nav__acts[hidden], .fx-act[hidden], .fx-act__panel[hidden], .fx-act__badge[hidden], .fx-act__avatar[hidden], .fx-prof__img[hidden], .fx-notif__empty[hidden], .fx-notif__all[hidden], .fx-notif__count[hidden] { display: none !important; }
@@ -4903,3 +4907,14 @@ html[data-fx-theme="dark"] img[src*="icon_participate"] { background: #d6ac5b !i
 /* 28z5. LIKE BUTTON — robust version: any button that is the last one in the row and ends with a count */
 .fx-post .fx-post__likes .rep-button:not(:has(~ .rep-button)):has(> .rep-nb:last-child:not(:empty)) { padding-right: 5px !important; }
 .fx-post .fx-post__likes .rep-button:not(:has(~ .rep-button)) > .rep-nb { margin: 0 !important; flex: 0 0 auto; min-width: 22px; height: 22px; }
+
+/* 28za. top bar: room for the Forumotion link (placed after section 30 so it wins) */
+/* the centre menu keeps clear of the left group (profile + bell + Forumotion) and of the switch on the right */
+.fx-nav .fx-nav__inner { width: calc(100% - 520px) !important; }
+@media (max-width: 1239px) {
+  .fx-nav .fx-nav__inner { width: auto !important; margin: 0 90px 0 270px !important; justify-content: safe center; overflow-x: auto; scrollbar-width: none; }
+  .fx-nav .fx-nav__inner::-webkit-scrollbar { display: none; }
+}
+@media (max-width: 600px) {
+  .fx-nav .fx-nav__inner { margin: 0 80px 0 240px !important; }
+}
